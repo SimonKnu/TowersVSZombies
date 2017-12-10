@@ -14,6 +14,7 @@ int main(int argc, char *argv[]){
     MyCanvas* SFMLView = new MyCanvas(MainFrame, QPoint(20, 20), QSize(360, 360));
     SFMLView->show();
     return App.exec();
+    tesgbdrhdrhdr
 }
 
 /*
