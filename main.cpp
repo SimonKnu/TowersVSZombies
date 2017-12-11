@@ -2,7 +2,7 @@
 #include "mycanvas.h"
 #include <QFrame>
 #include <SFML/Graphics.hpp>
-
+/*
 int main(int argc, char *argv[]){
     QApplication App(argc, argv);
     // Create the main frame
@@ -15,8 +15,8 @@ int main(int argc, char *argv[]){
     SFMLView->show();
     return App.exec();
 }
+*/
 
-/*
 int main(int argc, char *args[]){
     sf::RenderWindow window(sf::VideoMode(800,600),"Hello");
 
@@ -39,4 +39,4 @@ int main(int argc, char *args[]){
     }
     return 0;
 }
-*/
+
