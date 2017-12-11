@@ -2,7 +2,10 @@
 #include "mycanvas.h"
 #include <QFrame>
 #include <SFML/Graphics.hpp>
+#include "mainwindow.h"
+#include "player.h"
 
+/*
 int main(int argc, char *argv[]){
     QApplication App(argc, argv);
     // Create the main frame
@@ -15,28 +18,11 @@ int main(int argc, char *argv[]){
     SFMLView->show();
     return App.exec();
 }
+*/
 
-/*
 int main(int argc, char *args[]){
-    sf::RenderWindow window(sf::VideoMode(800,600),"Hello");
-
-    sf::RectangleShape rect;
-    rect.setPosition(sf::Vector2f(235,350));
-    rect.setSize(sf::Vector2f(30,30));
-    rect.setFillColor(sf::Color(33,42,231,255));
-
-    while(window.isOpen()){
-        sf::Event e;
-
-        while(window.pollEvent(e)){
-            if(e.type==sf::Event::Closed){
-                window.close();
-            }
-        }
-        window.clear();
-        window.draw(rect);
-        window.display();
-    }
+    Player* p1 = new Player(32, 32, 10, 10, 0.1);
+    MainWindow* w = new MainWindow(p1);
     return 0;
 }
-*/
+

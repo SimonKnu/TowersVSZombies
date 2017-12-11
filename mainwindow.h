@@ -24,12 +24,20 @@ private:
 
 class MainWindow{
 public:
+    MainWindow();
     MainWindow(Player* p);
+    MainWindow(const MainWindow& m);
+
+    ~MainWindow();
+
+    MainWindow& operator=(const MainWindow& m);
+
+    void movePlayer(float x, float y);
+    void rotatePlayer(sf::RenderWindow* window);
+    void start(sf::RenderWindow* window);
 
 private:
-    Player player;
-    void movePlayer();
-    void start();
+    Player* player;
 };
 
 #endif // MAINWINDOW_H
