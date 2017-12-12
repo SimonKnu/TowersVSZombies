@@ -28,7 +28,6 @@ class MainWindow {
     private:
         Player *player = Player::getInstance();
         vector<Enemy *> enemies;
-        sf::Thread runthread;
 };
 
 #endif // MAINWINDOW_H

@@ -19,7 +19,7 @@ using sf::Vector2i;
 
 //CONSTRUCTOR//
 
-MainWindow::MainWindow():runthread(&MainWindow::start,this){
+MainWindow::MainWindow(){
     RenderWindow* wind = new RenderWindow(sf::VideoMode(800,600),"Hello");
     /*sf::RectangleShape rect;
     rect.setPosition(Vector2f(235,350));
