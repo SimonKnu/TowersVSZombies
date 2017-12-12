@@ -1,7 +1,7 @@
 #include "bullet.h"
 #include <SFML/Graphics.hpp>
 
-Bullet::Bullet(float radius): currVelocity(0.f, 0.f), maxSpeed(1.5)
+Bullet::Bullet(float radius): currVelocity(0.f, 0.f), maxSpeed(0.2)
 {
     this->shape.setRadius(radius);
     this->shape.setFillColor(sf::Color::Red);

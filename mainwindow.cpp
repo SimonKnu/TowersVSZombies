@@ -170,19 +170,18 @@ void MainWindow::start(sf::RenderWindow* window){
                     {
                         bullets.erase(bullets.begin() + i);
 
-                    }
-                    else
-                    {
-                        //Enemy collision
-                        /*for (size_t k = 0; k < enemies.size(); k++)
-                        {
-                            if (bullets[i].shape.getGlobalBounds().intersects(enemies[k].getGlobalBounds()))
-                            {
+                    }else if (this->enemies.size()>0){ //Collision zombie
+                        double x = bullets[i]->getShape().getPosition().x;
+                        double y = bullets[i]->getShape().getPosition().y;
+
+                        for (int k=0;k<this->enemies.size();k++){
+                            if ((std::abs(x - this->enemies.at(k)->getPosition().x ) < 16) &&
+                                    (std::abs(y - this->enemies.at(k)->getPosition().y)) < 16){
                                 bullets.erase(bullets.begin() + i);
-                                enemies.erase(enemies.begin() + k);
                                 break;
                             }
-                        }*/
+                        }
+
                     }
                 }
 
