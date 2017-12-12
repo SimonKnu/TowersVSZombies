@@ -76,11 +76,13 @@ int test=0;
 
 
 
-
 void MainWindow::start(sf::RenderWindow* window){
-    int mob = 5;
+    int mob = 0;
     int valx=10;
     int valy=10;
+
+    sf::Clock clock;
+    sf::Time elapsed;
 
     while(window->isOpen()){
         sf::Event e;
@@ -93,6 +95,7 @@ void MainWindow::start(sf::RenderWindow* window){
 
         while(window->pollEvent(e)){
             if(e.type==sf::Event::Closed){
+                //tout détruire fdp
                 window->close();
             }
         }
@@ -138,7 +141,8 @@ void MainWindow::start(sf::RenderWindow* window){
                     bullets.push_back(new Bullet(b1));
                     test++;
             }else{
-                test++;}
+                test++;
+            }
                 }
 
                 for (size_t i = 0; i < bullets.size(); i++)
@@ -168,13 +172,21 @@ void MainWindow::start(sf::RenderWindow* window){
                 }
 
 
-
-
-        if(mob==0){
-            //sf::Thread thread(stopWave());
-            //thread.launch();
+        if(enemies.size()==0){
+            elapsed = clock.getElapsedTime();
+            if(elapsed.asSeconds() <= 15){
+//                        std::cout<<"PAUSE"<<std::endl;
+            }
+            else {
+                          //std::cout<<"SPAWN ZOMBIES"<<std::endl;
+                          int calcul=20;
+                          int localisation=0;
+                          for(int i=0;i<calcul;i++){
+                            localisation+=50;
+                            enemies.push_back(new Enemy(32,32,localisation,localisation+20,0.1,100));
+                          }
+            }
         }
-        mob++;
 
         window->clear();
         window->draw(this->player->getRect());
@@ -185,20 +197,8 @@ void MainWindow::start(sf::RenderWindow* window){
 
         for (size_t j = 0; j < enemies.size(); j++)
         {
-            //std::cout<<j<<" test"<<std::endl;
             window->draw(this->enemies.at(j)->getRect());
         }
         window->display();
     }
-}
-
-void MainWindow::stopWave(){
-    sf::Clock clock;
-    sf::Time elapsed = clock.getElapsedTime();
-    std::cout<<"DEBUT"<<std::endl;
-    while(elapsed.asSeconds() != 30){
-
-        elapsed = clock.getElapsedTime();
-    }
-    std::cout<<"FIN"<<std::endl;
 }
