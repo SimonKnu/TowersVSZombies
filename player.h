@@ -23,11 +23,14 @@ class Player {
 
         void move(float x, float y);
         void rotate(float r);
+        void setPosition (int x, int y);
+
 
         float getSpeed();
         sf::Vector2f getOrigin();
         sf::RectangleShape getRect();
         sf::Vector2f getPosition();
+
 };
 
 #endif // PLAYER_H

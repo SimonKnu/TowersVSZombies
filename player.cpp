@@ -47,7 +47,7 @@ Player &Player::operator=(const Player &p)
 //OTHERS//
 Player* Player::getInstance(){
     if(instance==0){
-        instance = new Player(32,32,10,10,0.5);
+        instance = new Player(32,32,10,10,0.1);
     }
     return instance;
 }
@@ -65,6 +65,10 @@ void Player::rotate(float r)
 float Player::getSpeed()
 {
     return speed;
+}
+
+void Player::setPosition(int x, int y){
+    rect.setPosition(sf::Vector2f(x,y));
 }
 
 sf::Vector2f Player::getOrigin()

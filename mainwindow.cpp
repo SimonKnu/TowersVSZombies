@@ -52,7 +52,7 @@ MainWindow &MainWindow::operator=(const MainWindow &m){
 
 //OTHERS//
 void MainWindow::movePlayer(float x, float y){
-    this->player->move(x, y);
+        this->player->move(x, y);
 }
 
 void MainWindow::rotatePlayer(sf::RenderWindow* window)
@@ -80,6 +80,7 @@ void MainWindow::start(sf::RenderWindow* window){
     int mob = 0;
     int valx=10;
     int valy=10;
+    Vector2f previous;
 
     sf::Clock clock;
     sf::Time elapsed;
@@ -100,11 +101,14 @@ void MainWindow::start(sf::RenderWindow* window){
             }
         }
 
+       previous.x = this->player->getPosition().x;
+       previous.y = this->player->getPosition().y;
+
         if(Keyboard::isKeyPressed(Keyboard::Z)){
             this->movePlayer(0, -this->player->getSpeed());
         }
         if(Keyboard::isKeyPressed(Keyboard::S)){
-            this->movePlayer(0, this->player->getSpeed());
+            this->movePlayer(0, this->player->getSpeed()); 
         }
         if(Keyboard::isKeyPressed(Keyboard::Q)){
             this->movePlayer(-this->player->getSpeed(), 0);
@@ -113,11 +117,15 @@ void MainWindow::start(sf::RenderWindow* window){
             this->movePlayer(this->player->getSpeed(), 0);
         }
 
-
-
-
-
-
+        double valX = this->player->getPosition().x ;
+        double valY = this->player->getPosition().y ;
+        for (int i=0;i<this->enemies.size();i++){
+            if ((std::abs(valX - this->enemies.at(i)->getPosition().x ) < 32) &&
+                    (std::abs(valY - this->enemies.at(i)->getPosition().y)) < 32)
+            {
+                this->player->setPosition(previous.x, previous.y);
+            }
+        }
 
         a = Mouse::getPosition(*window).x - player->getPosition().x;
         b = Mouse::getPosition(*window).y - player->getPosition().y;
