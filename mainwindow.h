@@ -3,25 +3,32 @@
 
 #include <QMainWindow>
 #include "player.h"
-
+#include <vector>
+#include "enemy.h"
 #include <SFML/Graphics.hpp>
 
-class MainWindow{
-public:
-    MainWindow();
-    MainWindow(Player* p);
-    MainWindow(const MainWindow& m);
 
-    ~MainWindow();
+using std::vector;
 
-    MainWindow& operator=(const MainWindow& m);
+class MainWindow {
 
-    void movePlayer(float x, float y);
-    void rotatePlayer(sf::RenderWindow* window);
-    void start(sf::RenderWindow* window);
+    public:
+        MainWindow();
+        MainWindow(const MainWindow& m);
 
-private:
-    Player* player;
+        ~MainWindow();
+
+        MainWindow& operator=(const MainWindow& m);
+
+        void movePlayer(float x, float y);
+        void rotatePlayer(sf::RenderWindow* window);
+        void start(sf::RenderWindow* window);
+        void stopWave();
+
+    private:
+        Player *player = Player::getInstance();
+        vector<Enemy *> enemies;
+        sf::Thread runthread;
 };
 
 #endif // MAINWINDOW_H

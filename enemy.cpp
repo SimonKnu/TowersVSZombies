@@ -1,87 +1,78 @@
-//INCLUDES//
-#include "player.h"
-
-//-----------------------------//
-
-Player* Player::instance = 0;
+#include "enemy.h"
 
 //CONSTRUCTOR//
+Enemy::Enemy()
+{
 
-Player::Player(int sizeX, int sizeY, int posX, int posY, float speed){
+}
+
+Enemy::Enemy(int sizeX, int sizeY, int posX, int posY, float speed, float health){
     rect = sf::RectangleShape(sf::Vector2f(sizeX, sizeY));
     rect.setPosition(sf::Vector2f(posX,posY));
     rect.setOrigin(sf::Vector2f(sizeX/2, sizeY/2));
-    rect.setFillColor(sf::Color(33,42,231,255));
+    rect.setFillColor(sf::Color(70,125,20,255));
     this->speed=speed;
+    this->health=health;
 }
 
-Player::Player(const Player &p)
+Enemy::Enemy(const Enemy &p)
 {
     this->sizeX = p.sizeX;
     this->sizeY = p.sizeY;
     this->speed = p.speed;
     this->rect = p.rect;
+    this->health=p.health;
 }
 //--------------------------------//
 
 //DESTRUCTOR//
-Player::~Player()
+Enemy::~Enemy()
 {
 
 }
 //-------------------------//
 
 //OPERATOR//
-Player &Player::operator=(const Player &p)
+Enemy& Enemy::operator=(const Enemy &p)
 {
     if(&p != this){
         this->sizeX = p.sizeX;
         this->sizeY = p.sizeY;
         this->speed = p.speed;
         this->rect = p.rect;
+        this->health=p.health;
     }
     return *this;
 }
 //------------------------//
 
 //OTHERS//
-Player* Player::getInstance(){
-    if(instance==0){
-        instance = new Player(32,32,10,10,0.1);
-    }
-    return instance;
-}
-
-void Player::move(float x, float y)
+void Enemy::move(float x, float y)
 {
     rect.move(x, y);
 }
 
-void Player::rotate(float r)
+void Enemy::rotate(float r)
 {
     rect.setRotation(r);
 }
 
-float Player::getSpeed()
+float Enemy::getSpeed()
 {
     return speed;
 }
 
-sf::Vector2f Player::getOrigin()
+sf::Vector2f Enemy::getOrigin()
 {
     return rect.getOrigin();
 }
 
-sf::RectangleShape Player::getRect()
+sf::RectangleShape Enemy::getRect()
 {
     return rect;
 }
 
-sf::Vector2f Player::getPosition()
+sf::Vector2f Enemy::getPosition()
 {
     return rect.getPosition();
 }
-
-
-
-

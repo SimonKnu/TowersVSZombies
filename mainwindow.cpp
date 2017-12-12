@@ -8,6 +8,7 @@
 #include <vector>
 #include<math.h>
 #include<cstdlib>
+#include "player.h"
 
 using sf::RenderWindow;
 using sf::Keyboard;
@@ -17,13 +18,8 @@ using sf::Vector2i;
 //--------------------------------//
 
 //CONSTRUCTOR//
-MainWindow::MainWindow(){
 
-}
-
-MainWindow::MainWindow(Player *p){
-    player=p;
-
+MainWindow::MainWindow():runthread(&MainWindow::start,this){
     RenderWindow* wind = new RenderWindow(sf::VideoMode(800,600),"Hello");
     /*sf::RectangleShape rect;
     rect.setPosition(Vector2f(235,350));
@@ -35,7 +31,7 @@ MainWindow::MainWindow(Player *p){
 }
 
 MainWindow::MainWindow(const MainWindow &m){
-    this->player = m.player;
+    this->player = Player::getInstance();
 }
 //--------------------------------//
 
@@ -47,7 +43,10 @@ MainWindow::~MainWindow(){
 
 //OPERATOR//
 MainWindow &MainWindow::operator=(const MainWindow &m){
-    this->player = m.player;
+    if(&m != this){
+        this->player = Player::getInstance();
+    }
+    return *this;
 }
 //--------------------------------//
 
@@ -70,9 +69,18 @@ void MainWindow::rotatePlayer(sf::RenderWindow* window)
     angle = -atan2( a , b) * 180 / 3.14;
     this->player->rotate(angle);
 }
+
 Bullet b1;
-std::vector<Bullet> bullets;
+std::vector<Bullet *> bullets;
+
+
+
+
 void MainWindow::start(sf::RenderWindow* window){
+    int mob = 5;
+    int valx=10;
+    int valy=10;
+
     while(window->isOpen()){
         sf::Event e;
         double a, b;
@@ -103,6 +111,10 @@ void MainWindow::start(sf::RenderWindow* window){
 
 
 
+
+
+
+
         a = Mouse::getPosition(*window).x - player->getPosition().x;
         b = Mouse::getPosition(*window).y - player->getPosition().y;
 
@@ -118,16 +130,16 @@ void MainWindow::start(sf::RenderWindow* window){
                     b1.setShapePosition(player->getPosition());
                     b1.setCurrVelocity(aimDirNorm*b1.getMaxSpeed());
 
-                    bullets.push_back(Bullet(b1));
+                    bullets.push_back(new Bullet(b1));
                 }
 
                 for (size_t i = 0; i < bullets.size(); i++)
                 {
-                    bullets[i].moveShape();
+                    bullets[i]->moveShape();
 
                     //Out of bounds
-                    if (bullets[i].getShape().getPosition().x < 0 || bullets[i].getShape().getPosition().x > window->getSize().x
-                        || bullets[i].getShape().getPosition().y < 0 || bullets[i].getShape().getPosition().y > window->getSize().y)
+                    if (bullets[i]->getShape().getPosition().x < 0 || bullets[i]->getShape().getPosition().x > window->getSize().x
+                        || bullets[i]->getShape().getPosition().y < 0 || bullets[i]->getShape().getPosition().y > window->getSize().y)
                     {
                         bullets.erase(bullets.begin() + i);
 
@@ -147,12 +159,38 @@ void MainWindow::start(sf::RenderWindow* window){
                     }
                 }
 
+
+
+
+        if(mob==0){
+            // sf::Thread thread(stopWave());
+             //thread.launch();
+        }
+        mob++;
+
         window->clear();
         window->draw(this->player->getRect());
         for (size_t i = 0; i < bullets.size(); i++)
         {
-            window->draw(bullets[i].getShape());
+            window->draw(bullets.at(i)->getShape());
+        }
+
+        for (size_t j = 0; j < enemies.size(); j++)
+        {
+            //std::cout<<j<<" test"<<std::endl;
+            window->draw(this->enemies.at(j)->getRect());
         }
         window->display();
     }
+}
+
+void MainWindow::stopWave(){
+    sf::Clock clock;
+    sf::Time elapsed = clock.getElapsedTime();
+    std::cout<<"DEBUT"<<std::endl;
+    while(elapsed.asSeconds() != 30){
+
+        elapsed = clock.getElapsedTime();
+    }
+    std::cout<<"FIN"<<std::endl;
 }

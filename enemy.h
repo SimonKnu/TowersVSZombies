@@ -1,25 +1,23 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef ENEMY_H
+#define ENEMY_H
 #include <SFMl/Graphics.hpp>
 
-
-class Player {
+class Enemy {
 
     private:
         int sizeX, sizeY;
         float speed;
+        float health;
         sf::RectangleShape rect;
 
-
-        static Player* instance;
-        Player(int sizeX, int sizeY, int posX, int posY, float speed);
-
     public:
-        ~Player();
-        Player &operator=(const Player& p);
-        Player(const Player &p);
+        Enemy();
+        Enemy(int sizeX, int sizeY, int posX, int posY, float speed, float health);
+        Enemy(const Enemy &p);
 
-        static Player* getInstance();
+        ~Enemy();
+
+        Enemy &operator=(const Enemy& p);
 
         void move(float x, float y);
         void rotate(float r);
@@ -30,4 +28,4 @@ class Player {
         sf::Vector2f getPosition();
 };
 
-#endif // PLAYER_H
+#endif // ENEMY_H

@@ -3,22 +3,22 @@
 #include <SFML/Graphics.hpp>
 
 
-class Bullet
-{
-public:
-    Bullet(float radius = 5.f);
-    sf::CircleShape getShape();
-    sf::Vector2f getCurrVelocity();
-    float getMaxSpeed();
+class Bullet {
 
-    void setCurrVelocity(sf::Vector2f newVelocity);
-    void setShapePosition(sf::Vector2f vect);
-    void moveShape();
+    public:
+        Bullet(float radius = 5.f);
+        sf::CircleShape getShape();
+        sf::Vector2f getCurrVelocity();
+        float getMaxSpeed();
 
-private:
-    sf::CircleShape shape;
-    sf::Vector2f currVelocity;
-    float maxSpeed;
+        void setCurrVelocity(sf::Vector2f newVelocity);
+        void setShapePosition(sf::Vector2f vect);
+        void moveShape();
+
+    private:
+        sf::CircleShape shape;
+        sf::Vector2f currVelocity;
+        float maxSpeed;
 
 
 };

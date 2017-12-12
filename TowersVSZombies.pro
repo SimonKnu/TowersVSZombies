@@ -32,15 +32,13 @@ DEPENDPATH += C:/SFML/SFML-2.4.2/include
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    qsfmlcanvas.cpp \
-    mycanvas.cpp \
     player.cpp \
-    bullet.cpp
+    bullet.cpp \
+    enemy.cpp
 
 HEADERS  += mainwindow.h \
-    qsfmlcanvas.h \
-    mycanvas.h \
     player.h \
-    bullet.h
+    bullet.h \
+    enemy.h
 
 FORMS    += mainwindow.ui
