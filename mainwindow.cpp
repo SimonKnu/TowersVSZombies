@@ -101,8 +101,9 @@ void MainWindow::start(sf::RenderWindow* window){
             }
         }
 
-       previous.x = this->player->getPosition().x;
-       previous.y = this->player->getPosition().y;
+        //Sauvegarde de la position avant déplacement
+        previous.x = this->player->getPosition().x;
+        previous.y = this->player->getPosition().y;
 
         if(Keyboard::isKeyPressed(Keyboard::Z)){
             this->movePlayer(0, -this->player->getSpeed());
@@ -117,6 +118,7 @@ void MainWindow::start(sf::RenderWindow* window){
             this->movePlayer(this->player->getSpeed(), 0);
         }
 
+        //Collision zombie
         double valX = this->player->getPosition().x ;
         double valY = this->player->getPosition().y ;
         for (int i=0;i<this->enemies.size();i++){
@@ -125,6 +127,11 @@ void MainWindow::start(sf::RenderWindow* window){
             {
                 this->player->setPosition(previous.x, previous.y);
             }
+        }
+
+        //Collision bord
+        if ((this->player->getPosition().x-16)<0 || (this->player->getPosition().y-16)<0 || (this->player->getPosition().x+16) > 800 || (this->player->getPosition().y+16) >600){
+            this->player->setPosition(previous.x, previous.y);
         }
 
         a = Mouse::getPosition(*window).x - player->getPosition().x;
