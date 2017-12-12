@@ -72,6 +72,7 @@ void MainWindow::rotatePlayer(sf::RenderWindow* window)
 
 Bullet b1;
 std::vector<Bullet *> bullets;
+int test=0;
 
 
 
@@ -124,13 +125,20 @@ void MainWindow::start(sf::RenderWindow* window){
 
         angle = -atan2( a , b) * 180 / 3.14;
         this->player->rotate(angle);
+        if(Mouse::isButtonPressed(Mouse::Left)==false){
+            test=0;
+        }
 
         if (Mouse::isButtonPressed(Mouse::Left))
                 {
+            if(test%200==0){
                     b1.setShapePosition(player->getPosition());
                     b1.setCurrVelocity(aimDirNorm*b1.getMaxSpeed());
 
                     bullets.push_back(new Bullet(b1));
+                    test++;
+            }else{
+                test++;}
                 }
 
                 for (size_t i = 0; i < bullets.size(); i++)
@@ -163,8 +171,8 @@ void MainWindow::start(sf::RenderWindow* window){
 
 
         if(mob==0){
-            // sf::Thread thread(stopWave());
-             //thread.launch();
+            //sf::Thread thread(stopWave());
+            //thread.launch();
         }
         mob++;
 

@@ -47,7 +47,7 @@ Player &Player::operator=(const Player &p)
 //OTHERS//
 Player* Player::getInstance(){
     if(instance==0){
-        instance = new Player(32,32,10,10,0.1);
+        instance = new Player(32,32,10,10,0.5);
     }
     return instance;
 }
