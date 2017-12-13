@@ -87,6 +87,7 @@ void MainWindow::start(sf::RenderWindow* window){
     bool changementManche=true;
 
     Vector2f previous;
+    Vector2f previousZombie;
 
     sf::Clock clock;
     sf::Time elapsed;
@@ -134,23 +135,30 @@ void MainWindow::start(sf::RenderWindow* window){
 
         //Collision zombie
         for (int i=0;i<this->enemies.size();i++){
-            if ((std::abs(previous.x - this->enemies.at(i)->getPosition().x ) < 32) && (std::abs(previous.y  - this->enemies.at(i)->getPosition().y)) < 32){
+            if ((std::abs(this->player->getPosition().x - this->enemies.at(i)->getPosition().x -16) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(i)->getPosition().y -16) < 32)){
                 this->player->setPosition(previous.x, previous.y);
             }
-            else {
-                //IA qui suit le joueur
-                float dx = player->getPosition().x - enemies.at(i)->getPosition().x;
-                float dy = player->getPosition().y - enemies.at(i)->getPosition().y;
-                float length = sqrt( dx*dx + dy*dy );
-                dx /= length;
-                dy /= length; // normalize (make it 1 unit length) ---> Source : https://mike.newgrounds.com/news/post/265836 ---> PS : Il ressemble à Mr.Colmant
 
+            previousZombie.x = enemies.at(i)->getPosition().x;
+            previousZombie.y = enemies.at(i)->getPosition().y;
 
-                dx *= 0.01; //0.1 = vitesse des zombies
-                dy *= 0.01; //scale to our desired speed
-                enemies.at(i)->move(dx,dy);
+            //IA qui suit le joueur
+            float dx = player->getPosition().x - enemies.at(i)->getPosition().x;
+            float dy = player->getPosition().y - enemies.at(i)->getPosition().y;
+            float length = sqrt( dx*dx + dy*dy );
+            dx /= length;
+            dy /= length; // normalize (make it 1 unit length) ---> Source : https://mike.newgrounds.com/news/post/265836 ---> PS : Il ressemble à Mr.Colmant
+            dx *= 0.01; //0.1 = vitesse des zombies
+            dy *= 0.01; //scale to our desired speed
+            enemies.at(i)->move(dx,dy);
+
+            if ((std::abs(this->player->getPosition().x - this->enemies.at(i)->getPosition().x -16) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(i)->getPosition().y -16) < 32)){
+                enemies.at(i)->setPosition(previousZombie.x, previousZombie.y);
             }
         }
+
+
+
 
 
 

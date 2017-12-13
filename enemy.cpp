@@ -68,6 +68,10 @@ float Enemy::getSpeed()
     return speed;
 }
 
+void Enemy::setPosition(int x, int y){
+    sprite.setPosition(sf::Vector2f(x,y));
+}
+
 sf::Vector2f Enemy::getOrigin()
 {
     return sprite.getOrigin();
