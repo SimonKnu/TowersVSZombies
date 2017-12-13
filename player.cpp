@@ -11,7 +11,7 @@ Player::Player(int sizeX, int sizeY, int posX, int posY, float speed, float heal
     /*rect = sf::RectangleShape(sf::Vector2f(sizeX, sizeY));
     rect.setFillColor(sf::Color(33,42,231,255));*/
 
-    if(!texture.loadFromFile("player.png")){
+    if(!texture.loadFromFile("player_static.png")){
         std::cout<< "erreur de chargement du sprite!" << std::endl;
     }else{
         sprite.setTexture(texture);
@@ -82,6 +82,16 @@ float Player::getSpeed()
 sf::Vector2f Player::getPosition()
 {
     return sprite.getPosition();
+}
+
+void Player::setTexture(int i)
+{
+    switch(i){
+        case 0: texture.loadFromFile("player_static.png");break;
+        case 1: texture.loadFromFile("player.png");break;
+        case 2: texture.loadFromFile("player_bis.png");break;
+    }
+    sprite.setTexture(texture);
 }
 void Player::setPosition(int x, int y){
     sprite.setPosition(sf::Vector2f(x,y));
