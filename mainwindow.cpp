@@ -78,6 +78,8 @@ void MainWindow::rotatePlayer(sf::RenderWindow* window)
 Bullet b1;
 std::vector<Bullet *> bullets;
 int test=0;
+int test2=0;
+bool moving=false;
 
 
 
@@ -113,18 +115,39 @@ void MainWindow::start(sf::RenderWindow* window){
         previous.x = this->player->getPosition().x;
         previous.y = this->player->getPosition().y;
 
+        moving=false;
+
         //Permet de bouger le personnage à gauche/droite/bas/haut
         if(Keyboard::isKeyPressed(Keyboard::Z)){
             this->player->move(0, -this->player->getSpeed());
+            moving=true;
         }
         if(Keyboard::isKeyPressed(Keyboard::S)){
             this->player->move(0, this->player->getSpeed());
+            moving=true;
         }
         if(Keyboard::isKeyPressed(Keyboard::Q)){
             this->player->move(-this->player->getSpeed(), 0);
+            moving=true;
         }
         if(Keyboard::isKeyPressed(Keyboard::D)){
             this->player->move(this->player->getSpeed(), 0);
+            moving=true;
+        }
+
+        if(moving){
+            if(test2<500){
+                player->setTexture(1);
+                test2++;
+            }else if(test2<1000){
+                player->setTexture(2);
+                test2++;
+            }else{
+                test2=0;
+            }
+        }else{
+            player->setTexture(0);
+            test2=0;
         }
 
 

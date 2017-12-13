@@ -32,6 +32,7 @@ class Player {
         sf::Vector2f getOrigin();
         sf::Sprite getRect();
         sf::Vector2f getPosition();
+        void setTexture(int i);
 
 };
 
