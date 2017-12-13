@@ -11,6 +11,9 @@ class Player {
         float health;
         int money;
 
+        sf::Texture texture;
+        sf::Sprite sprite;
+
         static Player* instance;
         Player(int sizeX, int sizeY, int posX, int posY, float speed, float health, int money);
 
@@ -27,7 +30,7 @@ class Player {
 
         float getSpeed();
         sf::Vector2f getOrigin();
-        sf::RectangleShape getRect();
+        sf::Sprite getRect();
         sf::Vector2f getPosition();
 
 };

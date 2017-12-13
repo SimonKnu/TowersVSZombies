@@ -1,5 +1,6 @@
         //INCLUDES//
 #include "player.h"
+#include <iostream>
 
 //-----------------------------//
 Player* Player::instance = 0;
@@ -7,10 +8,16 @@ Player* Player::instance = 0;
         //CONSTRUCTOR//
 
 Player::Player(int sizeX, int sizeY, int posX, int posY, float speed, float health, int money){
-    rect = sf::RectangleShape(sf::Vector2f(sizeX, sizeY));
-    rect.setPosition(sf::Vector2f(posX,posY));
-    rect.setOrigin(sf::Vector2f(sizeX/2, sizeY/2));
-    rect.setFillColor(sf::Color(33,42,231,255));
+    /*rect = sf::RectangleShape(sf::Vector2f(sizeX, sizeY));
+    rect.setFillColor(sf::Color(33,42,231,255));*/
+
+    if(!texture.loadFromFile("player.png")){
+        std::cout<< "erreur de chargement du sprite!" << std::endl;
+    }else{
+        sprite.setTexture(texture);
+        sprite.setPosition(sf::Vector2f(posX,posY));
+        sprite.setOrigin(sf::Vector2f(sizeX/2, sizeY/2));
+    }
 
     this->money = money;
     this->health = health;
@@ -49,7 +56,7 @@ Player& Player::operator=(const Player &p)
         //OTHERS//
 Player* Player::getInstance(){
     if(instance==0){
-        instance = new Player(32,32,16,16,0.1,100,0);
+        instance = new Player(64,64,50,50,0.1,100,0);
     }
     return instance;
 }
@@ -58,12 +65,12 @@ Player* Player::getInstance(){
 
 void Player::move(float x, float y)
 {
-    rect.move(x, y);
+    sprite.move(x, y);
 }
 
 void Player::rotate(float r)
 {
-    rect.setRotation(r);
+    sprite.setRotation(r);
 }
 
 float Player::getSpeed()
@@ -74,20 +81,20 @@ float Player::getSpeed()
 
 sf::Vector2f Player::getPosition()
 {
-    return rect.getPosition();
+    return sprite.getPosition();
 }
 void Player::setPosition(int x, int y){
-    rect.setPosition(sf::Vector2f(x,y));
+    sprite.setPosition(sf::Vector2f(x,y));
 }
 
 sf::Vector2f Player::getOrigin()
 {
-    return rect.getOrigin();
+    return sprite.getOrigin();
 }
 
-sf::RectangleShape Player::getRect()
+sf::Sprite Player::getRect()
 {
-    return rect;
+    return sprite;
 }
 
 

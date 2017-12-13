@@ -236,7 +236,7 @@ void MainWindow::start(sf::RenderWindow* window){
 
                 for(int i=0;i<mob;i++){
                     localisation+=40;
-                    enemies.push_back(new Enemy(32,32,localisation+20,localisation+30,0.1,100));
+                    enemies.push_back(new Enemy(64,64,localisation+20,localisation+30,0.1,100));
                 }
                 changementManche=true;
             }

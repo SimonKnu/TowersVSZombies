@@ -7,7 +7,9 @@ class Enemy {
     private:
         float speed;
         float health;
-        sf::RectangleShape rect;
+
+        sf::Texture texture;
+        sf::Sprite sprite;
 
     public:
         Enemy();
@@ -23,7 +25,7 @@ class Enemy {
 
         float getSpeed();
         sf::Vector2f getOrigin();
-        sf::RectangleShape getRect();
+        sf::Sprite getRect();
         sf::Vector2f getPosition();
 
         void setHealth(const float damage);
