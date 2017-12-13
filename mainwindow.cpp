@@ -152,13 +152,13 @@ void MainWindow::start(sf::RenderWindow* window){
 
 
         //Collision bord
-        if ((this->player->getPosition().x-16)<0 || (this->player->getPosition().y-16)<0 || (this->player->getPosition().x+16) > 800 || (this->player->getPosition().y+16) >600){
+        if ((this->player->getPosition().x-32)<0 || (this->player->getPosition().y-32)<0 || (this->player->getPosition().x+32) > 800 || (this->player->getPosition().y+32) >600){
             this->player->setPosition(previous.x, previous.y);
         }
 
         //Collision zombie
         for (int i=0;i<this->enemies.size();i++){
-            if ((std::abs(this->player->getPosition().x - this->enemies.at(i)->getPosition().x -16) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(i)->getPosition().y -16) < 32)){
+            if ((std::abs(this->player->getPosition().x - this->enemies.at(i)->getPosition().x ) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(i)->getPosition().y ) < 32)){
                 this->player->setPosition(previous.x, previous.y);
             }
 
@@ -175,7 +175,7 @@ void MainWindow::start(sf::RenderWindow* window){
             dy *= 0.01; //scale to our desired speed
             enemies.at(i)->move(dx,dy);
 
-            if ((std::abs(this->player->getPosition().x - this->enemies.at(i)->getPosition().x -16) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(i)->getPosition().y -16) < 32)){
+            if ((std::abs(this->player->getPosition().x - this->enemies.at(i)->getPosition().x ) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(i)->getPosition().y ) < 32)){
                 enemies.at(i)->setPosition(previousZombie.x, previousZombie.y);
             }
         }
