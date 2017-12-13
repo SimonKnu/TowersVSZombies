@@ -229,7 +229,7 @@ void MainWindow::start(sf::RenderWindow* window){
                         double y = bullets[i]->getShape().getPosition().y;
 
                         for (int k=0;k<this->enemies.size();k++){
-                            if ((std::abs(x - this->enemies.at(k)->getPosition().x ) < 16) &&(std::abs(y - this->enemies.at(k)->getPosition().y)) < 16){
+                            if ((std::abs(x - this->enemies.at(k)->getPosition().x ) < 32) &&(std::abs(y - this->enemies.at(k)->getPosition().y)) < 32){
                                 bullets.erase(bullets.begin() + i);
 
                                 this->enemies.at(k)->setHealth(25);//Dommage causé par la balle
