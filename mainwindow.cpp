@@ -1,14 +1,13 @@
 //INCLUDES//
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "SFML/Graphics.hpp"
+
 #include <iostream>
-#include <cmath>
+#include <math.h>
+#include <cstdlib>
+
+#include "SFML/Graphics.hpp"
+
 #include "bullet.h"
-#include <vector>
-#include<math.h>
-#include<cstdlib>
-#include "player.h"
 
 using sf::RenderWindow;
 using sf::Keyboard;
@@ -17,44 +16,47 @@ using sf::Vector2f;
 using sf::Vector2i;
 //--------------------------------//
 
-//CONSTRUCTOR//
-
+        //CONSTRUCTOR//
 MainWindow::MainWindow(){
-    RenderWindow* wind = new RenderWindow(sf::VideoMode(800,600),"Hello");
-    /*sf::RectangleShape rect;
-    rect.setPosition(Vector2f(235,350));
-    rect.setSize(Vector2f(30,30));
-    rect.setFillColor(sf::Color(33,42,231,255));
-    rect.setOrigin(Vector2f(15, 15));*/
+    RenderWindow* wind = new RenderWindow(sf::VideoMode(800,600),"TowersVSZombies");
 
     this->start(wind);
 }
 
 MainWindow::MainWindow(const MainWindow &m){
-    this->player = Player::getInstance();
+    this->player = m.player;
+    for(int i=0;i<m.enemies.size();i++){
+        enemies.push_back(new Enemy(*m.enemies.at(i)));
+    }
 }
 //--------------------------------//
 
-//DESTRUCTOR//
+        //DESTRUCTOR//
 MainWindow::~MainWindow(){
+    delete player;
+    player=0;
 
+    for(int i=0;i<enemies.size();i++){
+        delete enemies.at(i);
+        enemies.at(i)=0;
+    }
+    enemies.clear();
 }
 //--------------------------------//
 
-//OPERATOR//
-MainWindow &MainWindow::operator=(const MainWindow &m){
+            //OPERATOR//
+MainWindow& MainWindow::operator=(const MainWindow &m){
     if(&m != this){
-        this->player = Player::getInstance();
+        this->player = m.player;
+        for(int i=0;i<m.enemies.size();i++){
+            enemies.push_back(new Enemy(*m.enemies.at(i)));
+        }
     }
     return *this;
 }
 //--------------------------------//
 
-//OTHERS//
-void MainWindow::movePlayer(float x, float y){
-        this->player->move(x, y);
-}
-
+            //OTHERS//
 void MainWindow::rotatePlayer(sf::RenderWindow* window)
 {
     double a, b;
@@ -70,6 +72,9 @@ void MainWindow::rotatePlayer(sf::RenderWindow* window)
     this->player->rotate(angle);
 }
 
+
+
+
 Bullet b1;
 std::vector<Bullet *> bullets;
 int test=0;
@@ -77,9 +82,10 @@ int test=0;
 
 
 void MainWindow::start(sf::RenderWindow* window){
-    int mob = 0;
-    int valx=10;
-    int valy=10;
+    int manche=0;
+    int mob=5;
+    bool changementManche=true;
+
     Vector2f previous;
 
     sf::Clock clock;
@@ -92,11 +98,12 @@ void MainWindow::start(sf::RenderWindow* window){
 
         Vector2f aimDir;
         Vector2f aimDirNorm;
-        Vector2f playerCenter;
+
+
 
         while(window->pollEvent(e)){
             if(e.type==sf::Event::Closed){
-                //tout détruire fdp
+                //tout détruire
                 window->close();
             }
         }
@@ -105,35 +112,50 @@ void MainWindow::start(sf::RenderWindow* window){
         previous.x = this->player->getPosition().x;
         previous.y = this->player->getPosition().y;
 
+        //Permet de bouger le personnage à gauche/droite/bas/haut
         if(Keyboard::isKeyPressed(Keyboard::Z)){
-            this->movePlayer(0, -this->player->getSpeed());
+            this->player->move(0, -this->player->getSpeed());
         }
         if(Keyboard::isKeyPressed(Keyboard::S)){
-            this->movePlayer(0, this->player->getSpeed()); 
+            this->player->move(0, this->player->getSpeed());
         }
         if(Keyboard::isKeyPressed(Keyboard::Q)){
-            this->movePlayer(-this->player->getSpeed(), 0);
+            this->player->move(-this->player->getSpeed(), 0);
         }
         if(Keyboard::isKeyPressed(Keyboard::D)){
-            this->movePlayer(this->player->getSpeed(), 0);
+            this->player->move(this->player->getSpeed(), 0);
         }
 
-        //Collision zombie
-        double valX = this->player->getPosition().x ;
-        double valY = this->player->getPosition().y ;
-        for (int i=0;i<this->enemies.size();i++){
-            if ((std::abs(valX - this->enemies.at(i)->getPosition().x ) < 32) &&
-                    (std::abs(valY - this->enemies.at(i)->getPosition().y)) < 32)
-            {
-                this->player->setPosition(previous.x, previous.y);
-            }
-        }
 
         //Collision bord
         if ((this->player->getPosition().x-16)<0 || (this->player->getPosition().y-16)<0 || (this->player->getPosition().x+16) > 800 || (this->player->getPosition().y+16) >600){
             this->player->setPosition(previous.x, previous.y);
         }
 
+        //Collision zombie
+        for (int i=0;i<this->enemies.size();i++){
+            if ((std::abs(previous.x - this->enemies.at(i)->getPosition().x ) < 32) && (std::abs(previous.y  - this->enemies.at(i)->getPosition().y)) < 32){
+                this->player->setPosition(previous.x, previous.y);
+            }
+            else {
+                //IA qui suit le joueur
+                float dx = player->getPosition().x - enemies.at(i)->getPosition().x;
+                float dy = player->getPosition().y - enemies.at(i)->getPosition().y;
+                float length = sqrt( dx*dx + dy*dy );
+                dx /= length;
+                dy /= length; // normalize (make it 1 unit length) ---> Source : https://mike.newgrounds.com/news/post/265836 ---> PS : Il ressemble à Mr.Colmant
+
+
+                dx *= 0.01; //0.1 = vitesse des zombies
+                dy *= 0.01; //scale to our desired speed
+                enemies.at(i)->move(dx,dy);
+            }
+        }
+
+
+
+
+        /*REVOIR LE CODE POUR L'OPTIMISER VICTOR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  (En dessous)*/
         a = Mouse::getPosition(*window).x - player->getPosition().x;
         b = Mouse::getPosition(*window).y - player->getPosition().y;
 
@@ -170,14 +192,24 @@ void MainWindow::start(sf::RenderWindow* window){
                     {
                         bullets.erase(bullets.begin() + i);
 
-                    }else if (this->enemies.size()>0){ //Collision zombie
+                    }
+                    else if (this->enemies.size()>0){ //Collision zombie
                         double x = bullets[i]->getShape().getPosition().x;
                         double y = bullets[i]->getShape().getPosition().y;
 
                         for (int k=0;k<this->enemies.size();k++){
-                            if ((std::abs(x - this->enemies.at(k)->getPosition().x ) < 16) &&
-                                    (std::abs(y - this->enemies.at(k)->getPosition().y)) < 16){
+                            if ((std::abs(x - this->enemies.at(k)->getPosition().x ) < 16) &&(std::abs(y - this->enemies.at(k)->getPosition().y)) < 16){
                                 bullets.erase(bullets.begin() + i);
+
+                                this->enemies.at(k)->setHealth(25);//Dommage causé par la balle
+
+                                if(this->enemies.at(k)->getHealth()<=0){
+                                    this->enemies.erase(enemies.begin()+k);
+
+                                    if(enemies.size()==0){
+                                         clock.restart();           //On redémarre une manche
+                                    }
+                                }
                                 break;
                             }
                         }
@@ -185,23 +217,33 @@ void MainWindow::start(sf::RenderWindow* window){
                     }
                 }
 
+   /*REVOIR LE CODE POUR L'OPTIMISER VICTOR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (Au dessus)*/
 
+
+        //Système de manche avec un délai entre chaque manche
         if(enemies.size()==0){
             elapsed = clock.getElapsedTime();
-            if(elapsed.asSeconds() <= 15){
-//                        std::cout<<"PAUSE"<<std::endl;
+            if(elapsed.asSeconds() <= 10){   //10 secondes de pause entre chaque manche
+                if(changementManche){
+                    manche+=1;               //On passe à la manche suivante -> Difficulté augmente
+                    changementManche=false;
+                }
             }
             else {
-                          //std::cout<<"SPAWN ZOMBIES"<<std::endl;
-                          int calcul=20;
-                          int localisation=0;
-                          for(int i=0;i<calcul;i++){
-                            localisation+=50;
-                            enemies.push_back(new Enemy(32,32,localisation,localisation+20,0.1,100));
-                          }
+                mob += manche/2;            //On augmente le nombre mob en fonction de la manche, plus la manche est élevée, plus il y a des monstres
+
+                int localisation=0; //A changer avec des spawner
+
+                for(int i=0;i<mob;i++){
+                    localisation+=40;
+                    enemies.push_back(new Enemy(32,32,localisation+20,localisation+30,0.1,100));
+                }
+                changementManche=true;
             }
         }
 
+
+        //Update de l'affichage de tous les élèments dans la fenetre
         window->clear();
         window->draw(this->player->getRect());
         for (size_t i = 0; i < bullets.size(); i++)

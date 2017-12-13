@@ -1,6 +1,6 @@
 #include "enemy.h"
 
-//CONSTRUCTOR//
+        //CONSTRUCTOR//
 Enemy::Enemy()
 {
 
@@ -11,33 +11,30 @@ Enemy::Enemy(int sizeX, int sizeY, int posX, int posY, float speed, float health
     rect.setPosition(sf::Vector2f(posX,posY));
     rect.setOrigin(sf::Vector2f(sizeX/2, sizeY/2));
     rect.setFillColor(sf::Color(70,125,20,255));
+
     this->speed=speed;
     this->health=health;
 }
 
 Enemy::Enemy(const Enemy &p)
 {
-    this->sizeX = p.sizeX;
-    this->sizeY = p.sizeY;
     this->speed = p.speed;
     this->rect = p.rect;
-    this->health=p.health;
+    this->health = p.health;
 }
 //--------------------------------//
 
-//DESTRUCTOR//
+        //DESTRUCTOR//
 Enemy::~Enemy()
 {
 
 }
 //-------------------------//
 
-//OPERATOR//
+        //OPERATOR//
 Enemy& Enemy::operator=(const Enemy &p)
 {
     if(&p != this){
-        this->sizeX = p.sizeX;
-        this->sizeY = p.sizeY;
         this->speed = p.speed;
         this->rect = p.rect;
         this->health=p.health;
@@ -46,7 +43,7 @@ Enemy& Enemy::operator=(const Enemy &p)
 }
 //------------------------//
 
-//OTHERS//
+        //OTHERS//
 void Enemy::move(float x, float y)
 {
     rect.move(x, y);
@@ -75,4 +72,12 @@ sf::RectangleShape Enemy::getRect()
 sf::Vector2f Enemy::getPosition()
 {
     return rect.getPosition();
+}
+
+void Enemy::setHealth(const float damage){
+    this->health-=damage;
+}
+
+float Enemy::getHealth() const{
+    return this->health;
 }

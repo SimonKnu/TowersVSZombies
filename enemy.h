@@ -5,7 +5,6 @@
 class Enemy {
 
     private:
-        int sizeX, sizeY;
         float speed;
         float health;
         sf::RectangleShape rect;
@@ -17,7 +16,7 @@ class Enemy {
 
         ~Enemy();
 
-        Enemy &operator=(const Enemy& p);
+        Enemy& operator=(const Enemy& p);
 
         void move(float x, float y);
         void rotate(float r);
@@ -26,6 +25,9 @@ class Enemy {
         sf::Vector2f getOrigin();
         sf::RectangleShape getRect();
         sf::Vector2f getPosition();
+
+        void setHealth(const float damage);
+        float getHealth() const;
 };
 
 #endif // ENEMY_H

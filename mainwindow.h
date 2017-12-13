@@ -1,10 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include "player.h"
-#include <vector>
 #include "enemy.h"
+#include <vector>
 #include <SFML/Graphics.hpp>
 
 
@@ -20,10 +19,8 @@ class MainWindow {
 
         MainWindow& operator=(const MainWindow& m);
 
-        void movePlayer(float x, float y);
         void rotatePlayer(sf::RenderWindow* window);
         void start(sf::RenderWindow* window);
-        void stopWave();
 
     private:
         Player *player = Player::getInstance();
