@@ -1,10 +1,13 @@
 #include "bullet.h"
 
-Bullet::Bullet(float radius): currVelocity(0.f, 0.f), maxSpeed(0.2)
-{
+//-----------------------------------------------------------------------//
+                        //FORME CANONIQUE//
+
+Bullet::Bullet(float radius): currVelocity(0.f, 0.f), maxSpeed(0.5){
     this->shape.setRadius(radius);
     this->shape.setFillColor(sf::Color::Red);
 }
+
 Bullet::Bullet(const Bullet &b){
     this->currVelocity = b.currVelocity;
     this->maxSpeed = b.maxSpeed;
@@ -26,7 +29,7 @@ Bullet& Bullet::operator=(const Bullet& b){
 
 
 
-
+//-----------------------------------------------------------------------//
 
 
 
