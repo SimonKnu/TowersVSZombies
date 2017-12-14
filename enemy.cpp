@@ -8,7 +8,7 @@ Enemy::Enemy(){
 
 }
 
-Enemy::Enemy(int sizeX, int sizeY, int posX, int posY, float speed, float health){
+Enemy::Enemy(int sizeX, int sizeY, int posX, int posY, float speed, float health, float damage){
     if(!texture.loadFromFile("zombie.png")){
         std::cout<< "erreur de chargement du sprite du zombie!" << std::endl;
     }
@@ -20,12 +20,14 @@ Enemy::Enemy(int sizeX, int sizeY, int posX, int posY, float speed, float health
 
     this->speed=speed;
     this->health=health;
+    this->damage=damage;
 }
 
 Enemy::Enemy(const Enemy &p){
     this->speed = p.speed;
     this->sprite = p.sprite;
     this->health = p.health;
+    this->damage = p.damage;
 }
 
 Enemy::~Enemy(){
@@ -37,6 +39,7 @@ Enemy& Enemy::operator=(const Enemy &p){
         this->speed = p.speed;
         this->sprite = p.sprite;
         this->health=p.health;
+        this->damage = p.damage;
     }
     return *this;
 }
@@ -62,6 +65,10 @@ void Enemy::rotate(float r)
 float Enemy::getSpeed()
 {
     return speed;
+}
+
+float Enemy::getDamage(){
+    return damage;
 }
 
 void Enemy::setPosition(int x, int y){

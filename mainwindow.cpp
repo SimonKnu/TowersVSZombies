@@ -112,11 +112,10 @@ void MainWindow::start(sf::RenderWindow* window){
     int compteurMenu=0;
     this->menus.at(compteurMenu)->changeColor(sf::Color::White);
 
-    sf::RectangleShape rectangle(sf::Vector2f(150, 10));
-    rectangle.setFillColor(sf::Color::Red);
-    rectangle.setPosition(625,575);
-
-
+    sf::RectangleShape lifeBar(sf::Vector2f(150, 10));
+    lifeBar.setFillColor(sf::Color::Red);
+    lifeBar.setPosition(625,575);
+    int damageTime = 2; //temps(seconde) entre les degats
 
 
 
@@ -286,8 +285,8 @@ void MainWindow::start(sf::RenderWindow* window){
                 if ((std::abs(this->player->getPosition().x - this->enemies.at(i)->getPosition().x ) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(i)->getPosition().y ) < 32)){
                     enemies.at(i)->setPosition(previousZombie.x, previousZombie.y);
 
-                    if (elapsedDamage.asSeconds() > 2){
-                        this->player->setHealth(this->player->getHealth()-10);
+                    if (elapsedDamage.asSeconds() > damageTime){
+                        this->player->setHealth(this->player->getHealth()-enemies.at(i)->getDamage());
                         elapsedDamage = clock.restart();
                     }
                 }
@@ -391,11 +390,11 @@ void MainWindow::start(sf::RenderWindow* window){
                     for(int i=0;i<mob;i++){
                         pos = std::rand()%5;    //On crée des "spawneur" ou les montres peuvent apparaitre
                         switch(pos){
-                            case 0 : enemies.push_back(new Enemy(64,64,spawn,0,0.1,100));break;
-                            case 1 : enemies.push_back(new Enemy(64,64,spawn-16,150,0.1,100));break;
-                            case 2 : enemies.push_back(new Enemy(64,64,spawn-32,300,0.1,100));break;
-                            case 3 : enemies.push_back(new Enemy(64,64,spawn-16,450,0.1,100));break;
-                            case 4 : enemies.push_back(new Enemy(64,64,spawn,600,0.1,100));break;
+                            case 0 : enemies.push_back(new Enemy(64,64,spawn,0,0.1,100,10));break;
+                            case 1 : enemies.push_back(new Enemy(64,64,spawn-16,150,0.1,100,10));break;
+                            case 2 : enemies.push_back(new Enemy(64,64,spawn-32,300,0.1,100,10));break;
+                            case 3 : enemies.push_back(new Enemy(64,64,spawn-16,450,0.1,100,10));break;
+                            case 4 : enemies.push_back(new Enemy(64,64,spawn,600,0.1,100,10));break;
                         }
                         spawn -= 32;            //On décrémente le spawn pour pas que les zombies spawn en étant collés
                     }
@@ -418,9 +417,9 @@ void MainWindow::start(sf::RenderWindow* window){
             window->draw(this->player->getRect());
 
             //Bar de vie
-            rectangle.setSize(sf::Vector2f(((this->player->getHealth() /100) *150),10));
+            lifeBar.setSize(sf::Vector2f(((this->player->getHealth() /100) *150),10));
 
-            window->draw(rectangle);
+            window->draw(lifeBar);
 
             for (size_t i = 0; i < bullets.size(); i++)
             {
