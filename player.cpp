@@ -1,19 +1,18 @@
-        //INCLUDES//
 #include "player.h"
 #include <iostream>
 
-//-----------------------------//
 Player* Player::instance = 0;
 
-        //CONSTRUCTOR//
+
+
+//-----------------------------------------------------------------------//
+                        //FORME CANONIQUE//
 
 Player::Player(int sizeX, int sizeY, int posX, int posY, float speed, float health, int money){
-    /*rect = sf::RectangleShape(sf::Vector2f(sizeX, sizeY));
-    rect.setFillColor(sf::Color(33,42,231,255));*/
-
     if(!texture.loadFromFile("player_static.png")){
         std::cout<< "erreur de chargement du sprite!" << std::endl;
-    }else{
+    }
+    else{
         sprite.setTexture(texture);
         sprite.setPosition(sf::Vector2f(posX,posY));
         sprite.setOrigin(sf::Vector2f(sizeX/2, sizeY/2));
@@ -24,42 +23,37 @@ Player::Player(int sizeX, int sizeY, int posX, int posY, float speed, float heal
     this->speed=speed;
 }
 
-Player::Player(const Player &p)
-{
+Player::Player(const Player &p){
     this->money = p.money;
     this->health = p.health;
     this->speed = p.speed;
-    this->rect = p.rect;
+    this->sprite = p.sprite;
 }
-//--------------------------------//
 
-        //DESTRUCTOR//
-Player::~Player()
-{
+Player::~Player(){
 
 }
-//-------------------------//
 
-        //OPERATOR//
-Player& Player::operator=(const Player &p)
-{
+Player& Player::operator=(const Player &p){
     if(&p != this){
         this->money = p.money;
         this->health = p.health;
         this->speed = p.speed;
-        this->rect = p.rect;
+        this->sprite = p.sprite;
     }
     return *this;
 }
-//------------------------//
 
-        //OTHERS//
 Player* Player::getInstance(){
     if(instance==0){
         instance = new Player(64,64,50,50,0.1,100,0);
     }
     return instance;
 }
+
+
+
+//-----------------------------------------------------------------------//
 
 
 

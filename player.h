@@ -7,10 +7,8 @@ class Player {
 
     private:
         float speed;
-        sf::RectangleShape rect;
         float health;
         int money;
-
         sf::Texture texture;
         sf::Sprite sprite;
 
@@ -21,13 +19,11 @@ class Player {
         ~Player();
         Player& operator=(const Player& p);
         Player(const Player &p);
-
         static Player* getInstance();
+
         void move(float x, float y);
         void rotate(float r);
         void setPosition (int x, int y);
-
-
         float getSpeed();
         sf::Vector2f getOrigin();
         sf::Sprite getRect();

@@ -1,22 +1,19 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <vector>
+
 #include "player.h"
 #include "enemy.h"
-#include <vector>
+#include "menu.h"
 #include <SFML/Graphics.hpp>
-
-
-using std::vector;
 
 class MainWindow {
 
     public:
         MainWindow();
         MainWindow(const MainWindow& m);
-
         ~MainWindow();
-
         MainWindow& operator=(const MainWindow& m);
 
         void rotatePlayer(sf::RenderWindow* window);
@@ -24,7 +21,8 @@ class MainWindow {
 
     private:
         Player *player = Player::getInstance();
-        vector<Enemy *> enemies;
+        std::vector<Enemy *> enemies;
+        std::vector<Menu *> menus;
 };
 
 #endif // MAINWINDOW_H
