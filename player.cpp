@@ -72,6 +72,21 @@ float Player::getSpeed()
     return speed;
 }
 
+int Player::getMoney(){
+    return money;
+}
+
+float Player::getHealth(){
+    return health;
+}
+
+void Player::setHealth(float health){
+    this->health = health;
+}
+
+void Player::setMoney(int money){
+    this->money = money;
+}
 
 sf::Vector2f Player::getPosition()
 {

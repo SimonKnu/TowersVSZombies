@@ -105,6 +105,7 @@ void MainWindow::start(sf::RenderWindow* window){
 
     //Pour les manches
     Menu menuManche("",400,300);
+    Menu menuMoney("",750,25);
 
     bool launchGame = true;
     int compteurMenu=0;
@@ -127,6 +128,7 @@ void MainWindow::start(sf::RenderWindow* window){
                 //tout détruire
                 window->close();
             }
+
 
             //A AMELIORER, PAS BIEN CODER
             if(true == launchGame){
@@ -183,6 +185,7 @@ void MainWindow::start(sf::RenderWindow* window){
         }
 
         else {
+
             //Sauvegarde de la position avant déplacement
             previous.x = this->player->getPosition().x;
             previous.y = this->player->getPosition().y;
@@ -328,7 +331,8 @@ void MainWindow::start(sf::RenderWindow* window){
                             this->enemies.at(k)->setHealth(25);//Dommage causé par la balle
 
                             if(this->enemies.at(k)->getHealth()<=0){
-                                this->enemies.erase(enemies.begin()+k);
+                                this->enemies.erase(enemies.begin()+k); //Suppression du zombie
+                                this->player->setMoney(this->player->getMoney()+5); //Ajout du gain
 
                                 if(enemies.size()==0){
                                     clock.restart();           //On redémarre une manche
@@ -388,6 +392,13 @@ void MainWindow::start(sf::RenderWindow* window){
             if(changementManche){
                 window->clear();
             }
+
+            //Affichage argent
+            std::stringstream ss;
+            ss<<this->player->getMoney()<<"$";
+            menuMoney.changerText(ss.str());
+            window->draw(menuMoney.getText());
+
             window->draw(this->player->getRect());
 
             for (size_t i = 0; i < bullets.size(); i++)

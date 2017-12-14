@@ -23,8 +23,15 @@ class Player {
 
         void move(float x, float y);
         void rotate(float r);
+
         void setPosition (int x, int y);
+        void setHealth(float health);
+        void setMoney(int money);
+
         float getSpeed();
+        int getMoney();
+        float getHealth();
+
         sf::Vector2f getOrigin();
         sf::Sprite getRect();
         sf::Vector2f getPosition();
