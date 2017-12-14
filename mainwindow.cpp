@@ -101,15 +101,20 @@ void MainWindow::start(sf::RenderWindow* window){
 
     sf::Clock clock;
     sf::Time elapsed;
+    sf::Time elapsedDamage;
     std::srand(std::time(0));
 
     //Pour les manches
     Menu menuManche("",400,300);
-    Menu menuMoney("",750,25);
+    Menu menuMoney("",50,575);;
 
     bool launchGame = true;
     int compteurMenu=0;
     this->menus.at(compteurMenu)->changeColor(sf::Color::White);
+
+    sf::RectangleShape rectangle(sf::Vector2f(150, 10));
+    rectangle.setFillColor(sf::Color::Red);
+    rectangle.setPosition(625,575);
 
 
 
@@ -238,8 +243,11 @@ void MainWindow::start(sf::RenderWindow* window){
                 this->player->setPosition(previous.x, previous.y);
             }
 
+            elapsedDamage = clock.getElapsedTime();
+
             //Collision zombie
             for (int i=0;i<this->enemies.size();i++){
+
                 if ((std::abs(this->player->getPosition().x - this->enemies.at(i)->getPosition().x ) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(i)->getPosition().y ) < 32)){
                     this->player->setPosition(previous.x, previous.y);
                 }
@@ -277,8 +285,14 @@ void MainWindow::start(sf::RenderWindow* window){
 
                 if ((std::abs(this->player->getPosition().x - this->enemies.at(i)->getPosition().x ) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(i)->getPosition().y ) < 32)){
                     enemies.at(i)->setPosition(previousZombie.x, previousZombie.y);
+
+                    if (elapsedDamage.asSeconds() > 2){
+                        this->player->setHealth(this->player->getHealth()-10);
+                        elapsedDamage = clock.restart();
+                    }
                 }
             }
+
 
 
 
@@ -361,6 +375,8 @@ void MainWindow::start(sf::RenderWindow* window){
                         menuManche.changerText(ss.str());
 
                         changementManche=false;
+
+                        this->player->setHealth(100);
                     }
 
                     //Permet d'afficher l'info sur la manche suivante à l'écran
@@ -400,6 +416,11 @@ void MainWindow::start(sf::RenderWindow* window){
             window->draw(menuMoney.getText());
 
             window->draw(this->player->getRect());
+
+            //Bar de vie
+            rectangle.setSize(sf::Vector2f(((this->player->getHealth() /100) *150),10));
+
+            window->draw(rectangle);
 
             for (size_t i = 0; i < bullets.size(); i++)
             {

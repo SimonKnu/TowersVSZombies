@@ -81,7 +81,11 @@ float Player::getHealth(){
 }
 
 void Player::setHealth(float health){
-    this->health = health;
+    if (health<0){
+        this->health = 0;
+    }else{
+       this->health = health;
+    }
 }
 
 void Player::setMoney(int money){
