@@ -16,7 +16,7 @@ sf::Text Menu::getText() const{
     return this->title;
 }
 
-void Menu::changeColor(const sf::Color col){
+void Menu::changerColor(const sf::Color col){
     title.setFillColor(col);
 }
 

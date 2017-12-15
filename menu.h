@@ -14,7 +14,7 @@ class Menu
         Menu(std::string text, int posX, int posY);
 
         sf::Text getText() const;
-        void changeColor(const sf::Color col);
+        void changerColor(const sf::Color col);
         void changerText(const std::string val);
 
 };
