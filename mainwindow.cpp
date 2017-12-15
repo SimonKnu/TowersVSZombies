@@ -61,6 +61,15 @@ void MainWindow::rotatePlayer(sf::RenderWindow* window)
     this->player->rotate(angle);
 }
 
+//Détection collision
+bool MainWindow::chackCollision(int index){
+    if ((std::abs(this->player->getPosition().x - this->enemies.at(index)->getPosition().x ) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(index)->getPosition().y ) < 32)){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 
 
 //VICTOR BOUGE CA DE LA TU FAIS  CHIER  -> Ta bullet sert a rien en +, just saying
@@ -245,7 +254,7 @@ void MainWindow::start(sf::RenderWindow* window){
                 for (int i=0;i<this->enemies.size();i++){
 
                      //Détection de la collision du joeur
-                    if ((std::abs(this->player->getPosition().x - this->enemies.at(i)->getPosition().x ) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(i)->getPosition().y ) < 32)){
+                    if (chackCollision(i)){
                         //Retour a la posiition precedente
                         this->player->setPosition(previous.x, previous.y);
                     }
@@ -284,7 +293,7 @@ void MainWindow::start(sf::RenderWindow* window){
                     }
 
                     //Détection de la collision d'un zombie
-                    if ((std::abs(this->player->getPosition().x - this->enemies.at(i)->getPosition().x ) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(i)->getPosition().y ) < 32)){
+                    if (chackCollision(i)){
                         //Retour a la posiition precedente
                         enemies.at(i)->setPosition(previousZombie.x, previousZombie.y);
 

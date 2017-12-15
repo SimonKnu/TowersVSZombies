@@ -16,6 +16,7 @@ class MainWindow{
 
         void rotatePlayer(sf::RenderWindow* window);
         void start(sf::RenderWindow* window);
+        bool chackCollision(int index);
 
 
         void dessiner(sf::RenderWindow *window);
