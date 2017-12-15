@@ -8,16 +8,17 @@
 #include "menu.h"
 #include <SFML/Graphics.hpp>
 
-class MainWindow {
+class MainWindow{
 
     public:
         MainWindow();
-        MainWindow(const MainWindow& m);
         ~MainWindow();
-        MainWindow& operator=(const MainWindow& m);
 
         void rotatePlayer(sf::RenderWindow* window);
         void start(sf::RenderWindow* window);
+
+
+        void dessiner(sf::RenderWindow *window);
 
     private:
         Player *player = Player::getInstance();

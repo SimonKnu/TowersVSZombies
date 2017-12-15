@@ -7,6 +7,7 @@
 
 #include "SFML/Graphics.hpp"
 #include "bullet.h"
+#include "menu.h"
 
 using sf::RenderWindow;
 using sf::Keyboard;
@@ -28,13 +29,6 @@ MainWindow::MainWindow(){
     this->start(wind);
 }
 
-MainWindow::MainWindow(const MainWindow &m){
-    this->player = m.player;
-    for(int i=0;i<m.enemies.size();i++){
-        enemies.push_back(new Enemy(*m.enemies.at(i)));
-    }
-}
-
 MainWindow::~MainWindow(){
     delete player;
     player=0;
@@ -44,16 +38,6 @@ MainWindow::~MainWindow(){
         enemies.at(i)=0;
     }
     enemies.clear();
-}
-
-MainWindow& MainWindow::operator=(const MainWindow &m){
-    if(&m != this){
-        this->player = m.player;
-        for(int i=0;i<m.enemies.size();i++){
-            enemies.push_back(new Enemy(*m.enemies.at(i)));
-        }
-    }
-    return *this;
 }
 
 
@@ -110,7 +94,7 @@ void MainWindow::start(sf::RenderWindow* window){
 
     bool launchGame = true;
     int compteurMenu=0;
-    this->menus.at(compteurMenu)->changeColor(sf::Color::White);
+    this->menus.at(compteurMenu)->changerColor(sf::Color::White);
 
     sf::RectangleShape lifeBar(sf::Vector2f(150, 10));
     lifeBar.setFillColor(sf::Color::Red);
@@ -144,10 +128,10 @@ void MainWindow::start(sf::RenderWindow* window){
                         }
                         for(int i=0;i<3;i++){
                             if(i != compteurMenu){
-                                this->menus.at(i)->changeColor(sf::Color::Red);
+                                this->menus.at(i)->changerColor(sf::Color::Red);
                             }
                             else {
-                               this->menus.at(compteurMenu)->changeColor(sf::Color::White);
+                               this->menus.at(compteurMenu)->changerColor(sf::Color::White);
                             }
                         }
                     }
@@ -159,10 +143,10 @@ void MainWindow::start(sf::RenderWindow* window){
 
                         for(int i=0;i<3;i++){
                             if(i != compteurMenu){
-                               this->menus.at(i)->changeColor(sf::Color::Red);
+                               this->menus.at(i)->changerColor(sf::Color::Red);
                             }
                             else {
-                               this->menus.at(compteurMenu)->changeColor(sf::Color::White);
+                               this->menus.at(compteurMenu)->changerColor(sf::Color::White);
                             }
                         }
                     }
@@ -254,6 +238,7 @@ void MainWindow::start(sf::RenderWindow* window){
                 previousZombie.x = enemies.at(i)->getPosition().x;
                 previousZombie.y = enemies.at(i)->getPosition().y;
 
+                // "INTELLIGENCE ARTIFICIELLE" DES ZOMBIES //
                 //IA qui suit le joueur
                 float enemyPlayerX = player->getPosition().x - enemies.at(i)->getPosition().x;
                 float enemyPlayerY = player->getPosition().y - enemies.at(i)->getPosition().y;
@@ -435,3 +420,8 @@ void MainWindow::start(sf::RenderWindow* window){
         }
     }
 }
+
+void MainWindow::dessiner(sf::RenderWindow *window){
+
+}
+

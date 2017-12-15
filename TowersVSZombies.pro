@@ -35,12 +35,18 @@ SOURCES += main.cpp\
     player.cpp \
     bullet.cpp \
     enemy.cpp \
-    menu.cpp
+    menu.cpp \
+    menuwindow.cpp \
+    endwindow.cpp \
+    aboutwindow.cpp
 
 HEADERS  += mainwindow.h \
     player.h \
     bullet.h \
     enemy.h \
-    menu.h
+    menu.h \
+    menuwindow.h \
+    endwindow.h \
+    aboutwindow.h
 
 FORMS    += mainwindow.ui
