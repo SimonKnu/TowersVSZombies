@@ -6,7 +6,6 @@
 #include <sstream>
 
 #include "SFML/Graphics.hpp"
-#include "bullet.h"
 #include "menu.h"
 
 using sf::RenderWindow;
@@ -21,7 +20,10 @@ using sf::Vector2i;
                             //FORME CANONIQUE//
 
 MainWindow::MainWindow(){
-    RenderWindow* wind = new RenderWindow(sf::VideoMode(800,600),"TowersVSZombies");
+    RenderWindow* wind = new RenderWindow(sf::VideoMode(1091,600),"TowersVSZombies");
+    mapTexture.loadFromFile("map 1091x600.png");
+    map.setTexture(mapTexture);
+
     menus.push_back(new Menu("Start",400,100));
     menus.push_back(new Menu("About",400,300));
     menus.push_back(new Menu("Quit",400,500));
@@ -70,18 +72,6 @@ bool MainWindow::chackCollision(int index){
     }
 }
 
-
-
-//VICTOR BOUGE CA DE LA TU FAIS  CHIER  -> Ta bullet sert a rien en +, just saying
-Bullet b1;
-std::vector<Bullet *> bullets;
-int test=0;
-int test2=0;
-bool moving=false;
-
-
-
-
 void MainWindow::start(sf::RenderWindow* window){
     int manche=0;                           //Permet de compter le nombre de manches
     int mob=5;                              //Permet de savoir le nombre de montres à faire apparaitre
@@ -120,15 +110,8 @@ void MainWindow::start(sf::RenderWindow* window){
 
     int damageTime = 1; //temps(seconde) entre les degats
 
-
-
     while(window->isOpen()){
         sf::Event e;
-        double a, b;
-        float angle;
-
-        Vector2f aimDir;
-        Vector2f aimDirNorm;
 
         while(window->pollEvent(e)){
             if(e.type==sf::Event::Closed){
@@ -137,8 +120,7 @@ void MainWindow::start(sf::RenderWindow* window){
             }
 
 
-            //A AMELIORER, PAS BIEN CODER
-            if(true == launchGame){
+            if(launchGame == true){
                 if(e.type==sf::Event::KeyReleased){
                     if(e.key.code == sf::Keyboard::Z){
                         compteurMenu--;
@@ -154,6 +136,7 @@ void MainWindow::start(sf::RenderWindow* window){
                             }
                         }
                     }
+
                     if(e.key.code == sf::Keyboard::S){
                         compteurMenu++;
                         if(compteurMenu>2){
@@ -169,6 +152,7 @@ void MainWindow::start(sf::RenderWindow* window){
                             }
                         }
                     }
+
                     if(e.key.code == sf::Keyboard::Return){
                         switch (compteurMenu) {
                         case 0: launchGame=false;
@@ -183,7 +167,7 @@ void MainWindow::start(sf::RenderWindow* window){
             }
         }
 
-        if(true == launchGame){
+        if(launchGame == true){
             window->clear();
             for(int i=0;i<3;i++){
                 window->draw(menus.at(i)->getText());
@@ -192,8 +176,8 @@ void MainWindow::start(sf::RenderWindow* window){
         }
 
         else {
-
             if (!endGame){
+
 
                 //Sauvegarde de la position du joueur avant déplacement
                 previous.x = this->player->getPosition().x;
@@ -202,31 +186,27 @@ void MainWindow::start(sf::RenderWindow* window){
                 //Compteur de secondes entre 2 dégats
                 elapsedDamage = clock.getElapsedTime();
 
-                moving=false;
+                this->player->setMoving(false);
 
                 //Permet de bouger le personnage à gauche/droite/bas/haut
                 if(Keyboard::isKeyPressed(Keyboard::Z)){
                     this->player->move(0, -this->player->getSpeed());
-                    moving=true;
                 }
                 if(Keyboard::isKeyPressed(Keyboard::S)){
                     this->player->move(0, this->player->getSpeed());
-                    moving=true;
                 }
                 if(Keyboard::isKeyPressed(Keyboard::Q)){
                     this->player->move(-this->player->getSpeed(), 0);
-                    moving=true;
                 }
                 if(Keyboard::isKeyPressed(Keyboard::D)){
                     this->player->move(this->player->getSpeed(), 0);
-                    moving=true;
                 }
                 if(Keyboard::isKeyPressed(Keyboard::Escape)){
                     launchGame=true;
                 }
 
-
-                if(moving){
+                //Permet d'animer le personnage lorsqu'il marche
+                if(player->getMoving()){
                     if(test2<500){
                         player->setTexture(1);
                         test2++;
@@ -306,26 +286,32 @@ void MainWindow::start(sf::RenderWindow* window){
                 }
 
 
+                // "CALCULER LA POSITION DE LA SOURIS" (vers la souris) //
+                //récupération de la position de la souris
+                double a = Mouse::getPosition(*window).x - player->getPosition().x;
+                double b = Mouse::getPosition(*window).y - player->getPosition().y;
+                Vector2f aimDir = Vector2f(a, b);
 
-                a = Mouse::getPosition(*window).x - player->getPosition().x;
-                b = Mouse::getPosition(*window).y - player->getPosition().y;
-
-                aimDir = Vector2f(a, b);
+                //calcule de l'angle de rotation afin de pointer vers la souris
+                Vector2f aimDirNorm;
                 aimDirNorm.x = aimDir.x / sqrt(pow(aimDir.x, 2) + pow(aimDir.y, 2));
                 aimDirNorm.y = aimDir.y / sqrt(pow(aimDir.x, 2) + pow(aimDir.y, 2));
 
-                angle = -atan2( a , b) * 180 / 3.14;
+                float angle = -atan2( a , b) * 180 / 3.14;
+
                 this->player->rotate(angle);
+
+                // "GESTION DES PROJECTILES" /
+
+                //Gestion de la "vitesse d'attaque" du personnage.
                 if(Mouse::isButtonPressed(Mouse::Left)==false){
                     test=0;
                 }
-
 
                 if (Mouse::isButtonPressed(Mouse::Left)){
                     if(test%200==0){
                             b1.setShapePosition(player->getPosition());
                             b1.setCurrVelocity(aimDirNorm*b1.getMaxSpeed());
-
                             bullets.push_back(new Bullet(b1));
                             test++;
                     }
@@ -334,7 +320,7 @@ void MainWindow::start(sf::RenderWindow* window){
                     }
                 }
 
-
+                //Mouvement des projectiles
                 for (size_t i = 0; i < bullets.size(); i++){
                      bullets[i]->moveShape();
 
@@ -399,11 +385,11 @@ void MainWindow::start(sf::RenderWindow* window){
                         for(int i=0;i<mob;i++){
                             pos = std::rand()%5;    //On crée des "spawneur" ou les montres peuvent apparaitre
                             switch(pos){
-                                case 0 : enemies.push_back(new Enemy(64,64,spawn,0,0.1,100,10));break;
-                                case 1 : enemies.push_back(new Enemy(64,64,spawn-16,150,0.1,100,10));break;
-                                case 2 : enemies.push_back(new Enemy(64,64,spawn-32,300,0.1,100,10));break;
-                                case 3 : enemies.push_back(new Enemy(64,64,spawn-16,450,0.1,100,10));break;
-                                case 4 : enemies.push_back(new Enemy(64,64,spawn,600,0.1,100,10));break;
+                                case 0 : enemies.push_back(new Enemy(32,32,spawn,0,0.1,100,10));break;
+                                case 1 : enemies.push_back(new Enemy(32,32,spawn-16,150,0.1,100,10));break;
+                                case 2 : enemies.push_back(new Enemy(32,32,spawn-32,300,0.1,100,10));break;
+                                case 3 : enemies.push_back(new Enemy(32,32,spawn-16,450,0.1,100,10));break;
+                                case 4 : enemies.push_back(new Enemy(32,32,spawn,600,0.1,100,10));break;
                             }
                             spawn -= 32;            //On décrémente le spawn pour pas que les zombies spawn en étant collés
                         }
@@ -416,6 +402,9 @@ void MainWindow::start(sf::RenderWindow* window){
                 if(changementManche){
                     window->clear();
                 }
+
+
+                window->draw(this->map);
 
                 //Affichage argent
                 std::stringstream ss;
@@ -462,10 +451,8 @@ void MainWindow::start(sf::RenderWindow* window){
                 ss.str("");
                 ss<<"Wave "<<manche;
                 menuEndWave.changerText(ss.str());
-
                 lifeBar.setSize(sf::Vector2f(0,10));
                 lifeBar2.setSize(sf::Vector2f(0-150,10));
-
                 window->draw(menuDefeat.getText());
                 window->draw(menuEndMoney.getText());
                 window->draw(menuEndWave.getText());

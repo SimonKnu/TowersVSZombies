@@ -21,6 +21,7 @@ Player::Player(int sizeX, int sizeY, int posX, int posY, float speed, float heal
     this->money = money;
     this->health = health;
     this->speed=speed;
+    this->moving = false;
 }
 
 Player::Player(const Player &p){
@@ -28,6 +29,7 @@ Player::Player(const Player &p){
     this->health = p.health;
     this->speed = p.speed;
     this->sprite = p.sprite;
+    this->moving = p.moving;
 }
 
 Player::~Player(){
@@ -40,13 +42,14 @@ Player& Player::operator=(const Player &p){
         this->health = p.health;
         this->speed = p.speed;
         this->sprite = p.sprite;
+        this->moving = p.moving;
     }
     return *this;
 }
 
 Player* Player::getInstance(){
     if(instance==0){
-        instance = new Player(64,64,50,50,0.1,100,0);
+        instance = new Player(32,32,50,50,0.1,100,0);
     }
     return instance;
 }
@@ -60,6 +63,7 @@ Player* Player::getInstance(){
 void Player::move(float x, float y)
 {
     sprite.move(x, y);
+    this->moving = true;
 }
 
 void Player::rotate(float r)
@@ -106,6 +110,16 @@ void Player::setTexture(int i)
     }
     sprite.setTexture(texture);
 }
+
+void Player::setMoving(bool move)
+{
+    this->moving = move;
+}
+
+bool Player::getMoving()
+{
+    return this->moving;
+}
 void Player::setPosition(int x, int y){
     sprite.setPosition(sf::Vector2f(x,y));
 }
@@ -122,7 +136,7 @@ sf::Sprite Player::getRect()
 
 
 bool Player::checkCollisionBorder(){
-    if ((this->getPosition().x-32)<0 || (this->getPosition().y-32)<0 || (this->getPosition().x+32) > 800 || (this->getPosition().y+32) >600){
+    if ((this->getPosition().x-32)<0 || (this->getPosition().y-32)<0 || (this->getPosition().x+32) > 1091 || (this->getPosition().y+32) >600){
         return true;
     }else{
         return false;

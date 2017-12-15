@@ -11,6 +11,7 @@ class Player {
         int money;
         sf::Texture texture;
         sf::Sprite sprite;
+        bool moving;
 
         static Player* instance;
         Player(int sizeX, int sizeY, int posX, int posY, float speed, float health, int money);
@@ -38,6 +39,8 @@ class Player {
         sf::Sprite getRect();
         sf::Vector2f getPosition();
         void setTexture(int i);
+        void setMoving(bool move);
+        bool getMoving();
 
 };
 
