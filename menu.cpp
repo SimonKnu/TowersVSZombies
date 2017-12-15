@@ -4,7 +4,7 @@
 Menu::Menu(std::string text, int posX, int posY){
     font.loadFromFile("Bloodfeast.ttf");
     title.setFillColor(sf::Color::Red);
-    title.setStyle(sf::Text::Bold);
+    //title.setStyle(sf::Text::Bold);
     title.setFont(font);
 
     title.setString(text);
