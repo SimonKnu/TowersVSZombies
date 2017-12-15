@@ -32,6 +32,8 @@ class Player {
         int getMoney();
         float getHealth();
 
+        bool checkCollisionBorder();
+
         sf::Vector2f getOrigin();
         sf::Sprite getRect();
         sf::Vector2f getPosition();

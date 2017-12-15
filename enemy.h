@@ -28,6 +28,7 @@ class Enemy {
         sf::Vector2f getPosition();
         void setHealth(const float damage);
         float getHealth() const;
+
 };
 
 #endif // ENEMY_H

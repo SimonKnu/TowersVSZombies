@@ -61,7 +61,7 @@ void MainWindow::rotatePlayer(sf::RenderWindow* window)
     this->player->rotate(angle);
 }
 
-//Détection collision
+//Détection collision (joueur / zombie)
 bool MainWindow::chackCollision(int index){
     if ((std::abs(this->player->getPosition().x - this->enemies.at(index)->getPosition().x ) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(index)->getPosition().y ) < 32)){
         return true;
@@ -246,7 +246,7 @@ void MainWindow::start(sf::RenderWindow* window){
 
 
                 //Détection de la collision du joueur avec les bords
-                if ((this->player->getPosition().x-32)<0 || (this->player->getPosition().y-32)<0 || (this->player->getPosition().x+32) > 800 || (this->player->getPosition().y+32) >600){
+                if (player->checkCollisionBorder()){
                     this->player->setPosition(previous.x, previous.y);
                 }
 
@@ -339,8 +339,7 @@ void MainWindow::start(sf::RenderWindow* window){
                      bullets[i]->moveShape();
 
                      //Détection de la collision de la balle avec les bords
-                     if (bullets[i]->getShape().getPosition().x < 0 || bullets[i]->getShape().getPosition().x > window->getSize().x
-                             || bullets[i]->getShape().getPosition().y < 0 || bullets[i]->getShape().getPosition().y > window->getSize().y)
+                     if (bullets[i]->checkCollisionBorder())
                      {
                          bullets.erase(bullets.begin() + i);
                      }
@@ -368,8 +367,6 @@ void MainWindow::start(sf::RenderWindow* window){
                         }
                     }
                 }
-
-
 
 
                 //Système de manche avec un délai entre les différentes manches. Plus les manches augmentent, plus les zombies sont résistants et nombreux.

@@ -97,3 +97,4 @@ void Enemy::setHealth(const float damage){
 float Enemy::getHealth() const{
     return this->health;
 }
+

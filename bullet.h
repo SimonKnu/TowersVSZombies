@@ -17,6 +17,7 @@ class Bullet {
         void setCurrVelocity(sf::Vector2f newVelocity);
         void setShapePosition(sf::Vector2f vect);
         void moveShape();
+        bool checkCollisionBorder();
 
     private:
         sf::CircleShape shape;
