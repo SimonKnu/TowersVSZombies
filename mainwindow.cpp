@@ -90,15 +90,21 @@ void MainWindow::start(sf::RenderWindow* window){
 
     //Pour les manches
     Menu menuManche("",400,300);
+    //Affichage argent
     Menu menuMoney("",50,575);;
 
     bool launchGame = true;
     int compteurMenu=0;
     this->menus.at(compteurMenu)->changerColor(sf::Color::White);
 
+    //Bar de vie
     sf::RectangleShape lifeBar(sf::Vector2f(150, 10));
     lifeBar.setFillColor(sf::Color::Red);
     lifeBar.setPosition(625,575);
+    sf::RectangleShape lifeBar2(sf::Vector2f(0, 10));
+    lifeBar2.setFillColor(sf::Color::White);
+    lifeBar2.setPosition(775,575);
+
     int damageTime = 2; //temps(seconde) entre les degats
 
 
@@ -174,9 +180,12 @@ void MainWindow::start(sf::RenderWindow* window){
 
         else {
 
-            //Sauvegarde de la position avant déplacement
+            //Sauvegarde de la position du joueur avant déplacement
             previous.x = this->player->getPosition().x;
             previous.y = this->player->getPosition().y;
+
+            //Compteur de secondes entre 2 dégats
+            elapsedDamage = clock.getElapsedTime();
 
             moving=false;
 
@@ -221,20 +230,21 @@ void MainWindow::start(sf::RenderWindow* window){
             }
 
 
-            //Collision bord
+            //Détection de la collision du joueur avec les bords
             if ((this->player->getPosition().x-32)<0 || (this->player->getPosition().y-32)<0 || (this->player->getPosition().x+32) > 800 || (this->player->getPosition().y+32) >600){
                 this->player->setPosition(previous.x, previous.y);
             }
 
-            elapsedDamage = clock.getElapsedTime();
-
-            //Collision zombie
+            //Gestion des zombie (déplacment, attaque)
             for (int i=0;i<this->enemies.size();i++){
 
+                 //Détection de la collision du joeur
                 if ((std::abs(this->player->getPosition().x - this->enemies.at(i)->getPosition().x ) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(i)->getPosition().y ) < 32)){
+                    //Retour a la posiition precedente
                     this->player->setPosition(previous.x, previous.y);
                 }
 
+                //Sauvegarde de la position du zombie avant déplacement
                 previousZombie.x = enemies.at(i)->getPosition().x;
                 previousZombie.y = enemies.at(i)->getPosition().y;
 
@@ -267,9 +277,12 @@ void MainWindow::start(sf::RenderWindow* window){
                     enemies.at(i)->move(enemyBaseX,enemyBaseY);
                 }
 
+                //Détection de la collision d'un zombie
                 if ((std::abs(this->player->getPosition().x - this->enemies.at(i)->getPosition().x ) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(i)->getPosition().y ) < 32)){
+                    //Retour a la posiition precedente
                     enemies.at(i)->setPosition(previousZombie.x, previousZombie.y);
 
+                    //Attaque le joueur si un certain temps c'est ecoulé
                     if (elapsedDamage.asSeconds() > damageTime){
                         this->player->setHealth(this->player->getHealth()-enemies.at(i)->getDamage());
                         elapsedDamage = clock.restart();
@@ -312,7 +325,7 @@ void MainWindow::start(sf::RenderWindow* window){
             for (size_t i = 0; i < bullets.size(); i++){
                  bullets[i]->moveShape();
 
-                 //Out of bounds
+                 //Détection de la collision de la balle avec les bords
                  if (bullets[i]->getShape().getPosition().x < 0 || bullets[i]->getShape().getPosition().x > window->getSize().x
                          || bullets[i]->getShape().getPosition().y < 0 || bullets[i]->getShape().getPosition().y > window->getSize().y)
                  {
@@ -323,6 +336,7 @@ void MainWindow::start(sf::RenderWindow* window){
                      double y = bullets[i]->getShape().getPosition().y;
 
                      for (int k=0;k<this->enemies.size();k++){
+                         //Détection de la collision de la balle avec un zombie
                          if ((std::abs(x - this->enemies.at(k)->getPosition().x ) < 32) &&(std::abs(y - this->enemies.at(k)->getPosition().y)) < 32){
                             bullets.erase(bullets.begin() + i);
 
@@ -399,12 +413,16 @@ void MainWindow::start(sf::RenderWindow* window){
             menuMoney.changerText(ss.str());
             window->draw(menuMoney.getText());
 
+            //Affichage bar de vie
+            float lifeBarSize = this->player->getHealth()/100*150; //Calcul pour déterminer la taille de la barre de vie
+            lifeBar.setSize(sf::Vector2f(lifeBarSize,10));
+            window->draw(lifeBar);
+            lifeBar2.setSize(sf::Vector2f(lifeBarSize-150,10));
+            window->draw(lifeBar2);
+
             window->draw(this->player->getRect());
 
-            //Bar de vie
-            lifeBar.setSize(sf::Vector2f(((this->player->getHealth() /100) *150),10));
 
-            window->draw(lifeBar);
 
             for (size_t i = 0; i < bullets.size(); i++)
             {
