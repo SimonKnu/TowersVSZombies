@@ -144,8 +144,8 @@ sf::Sprite Player::getRect()
 }
 
 
-bool Player::checkCollisionBorder(int maxX, int maxY){
-    if ((this->getPosition().x-16)<0 || (this->getPosition().y-16)<0 || (this->getPosition().x+16) > maxX || (this->getPosition().y+16) >maxY){
+bool Player::checkCollisionBorder(){
+    if ((this->getPosition().x-16)<0 || (this->getPosition().y-16)<0 || (this->getPosition().x+16) > 800 || (this->getPosition().y+16) >600){
         return true;
     }else{
         return false;

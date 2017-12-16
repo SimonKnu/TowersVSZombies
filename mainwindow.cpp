@@ -134,7 +134,7 @@ void MainWindow::drawElements(){
 
 
     //Détection de la collision du joueur avec les bords
-    if (player->checkCollisionBorder(this->getWindow()->getSize().x, this->getWindow()->getSize().y)){
+    if (player->checkCollisionBorder()){
         this->player->goBack();
     }
 
@@ -231,7 +231,7 @@ void MainWindow::drawElements(){
         bullets[i]->moveShape();
 
         //Détection de la collision de la balle avec les bords
-        if (bullets[i]->checkCollisionBorder(this->getWindow()->getSize().x, this->getWindow()->getSize().y)){
+        if (bullets[i]->checkCollisionBorder()){
              bullets.erase(bullets.begin() + i);
         }
         else if (this->enemies.size()>0){ //Collision zombie
