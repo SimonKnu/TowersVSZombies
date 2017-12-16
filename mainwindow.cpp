@@ -11,7 +11,7 @@
                             //FORME CANONIQUE//
 
 MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur), menuWave("",sf::VideoMode::getDesktopMode().width/2,sf::VideoMode::getDesktopMode().height/2),menuMoney("",sf::VideoMode::getDesktopMode().width/16,sf::VideoMode::getDesktopMode().height/(600/575)-32){
-    mapTexture.loadFromFile("map 1177x630.png");
+    mapTexture.loadFromFile("map.png");
     map.setTexture(mapTexture);
 
 
@@ -323,8 +323,8 @@ void MainWindow::drawElements(){
     //map.setScale(1.759853345554, 1);
     float tailleX=sf::VideoMode::getDesktopMode().width;
     float tailleY=sf::VideoMode::getDesktopMode().height;
-    float scaleX=tailleX/1177;
-    float scaleY=tailleY/630;
+    float scaleX=tailleX/1920;
+    float scaleY=tailleY/1080;
     map.setScale(scaleX, scaleY);
     Containeur::getWindow()->draw(this->map);
 
