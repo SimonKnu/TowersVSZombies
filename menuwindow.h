@@ -1,22 +1,24 @@
 #ifndef MENUWINDOW_H
 #define MENUWINDOW_H
 
+#include "SFML/Graphics.hpp"
+#include "containeur.h"
 #include "menu.h"
 
-#include "SFML/Graphics.hpp"
+class Containeur;
 
-#include <vector>
-
-class MenuWindow
+class MenuWindow : public Containeur
 {
     private:
         std::vector<Menu*>  menus;
+        int compteur=0;
 
     public:
-        MenuWindow();
+        MenuWindow(sf::RenderWindow * containeur);
         ~MenuWindow();
 
-        void dessiner(sf::RenderWindow *window);
+        void drawElements();
+        int chosenMenu(sf::Event e);
 };
 
 #endif // MENUWINDOW_H

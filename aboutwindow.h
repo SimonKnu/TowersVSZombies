@@ -2,14 +2,21 @@
 #define ABOUTWINDOW_H
 
 #include <SFML/Graphics.hpp>
+#include "containeur.h"
+#include <vector>
+#include "menu.h"
 
-class AboutWindow
+class AboutWindow : public Containeur
 {
-    public:
-    AboutWindow();
-    ~AboutWindow();
+    private:
+        std::vector<Menu *> menus;
 
-    void dessiner(sf::RenderWindow *window);
+    public:
+        AboutWindow(sf::RenderWindow *containeur);
+        ~AboutWindow();
+
+        void drawElements();
+        int chosenMenu(sf::Event e);
 };
 
 #endif // ABOUTWINDOW_H

@@ -38,7 +38,9 @@ SOURCES += main.cpp\
     menu.cpp \
     menuwindow.cpp \
     endwindow.cpp \
-    aboutwindow.cpp
+    aboutwindow.cpp \
+    containeur.cpp \
+    waitwindow.cpp
 
 HEADERS  += mainwindow.h \
     player.h \
@@ -47,6 +49,8 @@ HEADERS  += mainwindow.h \
     menu.h \
     menuwindow.h \
     endwindow.h \
-    aboutwindow.h
+    aboutwindow.h \
+    containeur.h \
+    waitwindow.h
 
 FORMS    += mainwindow.ui

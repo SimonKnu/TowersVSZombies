@@ -2,16 +2,22 @@
 #define ENDWINDOW_H
 
 #include "SFML/Graphics.hpp"
+#include "containeur.h"
+#include "vector"
+#include "menu.h"
 
-class EndWindow
+class EndWindow : public Containeur
 {
     private :
+        std::vector<Menu *> menus;
+        int compteur=0;
 
-    public:
-        EndWindow();
+    public :
+        EndWindow(sf::RenderWindow * containeur);
         ~EndWindow();
 
-        void dessiner(sf::RenderWindow *window);
+        void drawElements();
+        int chosenMenu(sf::Event e);
 };
 
 #endif // ENDWINDOW_H

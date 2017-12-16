@@ -11,6 +11,7 @@ class Menu
         sf::Font font;
 
     public:
+        Menu();
         Menu(std::string text, int posX, int posY);
 
         sf::Text getText() const;
