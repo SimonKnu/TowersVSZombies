@@ -20,7 +20,8 @@ class MainWindow : public Containeur
 
         void rotatePlayer();
         void start();
-        bool chackCollision(int index);
+        bool checkCollisionPlayerZombie(int index);
+        bool checkCollisionBulltetZombie(int indexZ, int indexB);
 
         void drawElements();
         int chosenMenu(sf::Event e);

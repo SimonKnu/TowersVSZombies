@@ -54,8 +54,18 @@ void MainWindow::rotatePlayer()
 }
 
 //Détection collision (joueur / zombie)
-bool MainWindow::chackCollision(int index){
+bool MainWindow::checkCollisionPlayerZombie(int index){
     if ((std::abs(this->player->getPosition().x - this->enemies.at(index)->getPosition().x ) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(index)->getPosition().y ) < 32)){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+//Détection collision (zombie / balle)
+bool MainWindow::checkCollisionBulltetZombie(int indexZ, int indexB){
+    if ((std::abs(bullets[indexB]->getShape().getPosition().x - this->enemies.at(indexZ)->getPosition().x ) < 32) &&(std::abs(bullets[indexB]->getShape().getPosition().y - this->enemies.at(indexZ)->getPosition().y)) < 32){
         return true;
     }
     else{
@@ -136,7 +146,7 @@ void MainWindow::drawElements(){
     for (int i=0;i<this->enemies.size();i++){
 
         //Détection de la collision du joeur
-        if (chackCollision(i)){
+        if (checkCollisionPlayerZombie(i)){
             //Retour a la posiition precedente
             this->player->setPosition(previous.x, previous.y);
         }
@@ -177,7 +187,7 @@ void MainWindow::drawElements(){
 
 
         //Détection de la collision d'un zombie
-        if (chackCollision(i)){
+        if (checkCollisionPlayerZombie(i)){
             //Retour a la posiition precedente
             enemies.at(i)->setPosition(previousZombie.x, previousZombie.y);
 
@@ -232,12 +242,10 @@ void MainWindow::drawElements(){
              bullets.erase(bullets.begin() + i);
         }
         else if (this->enemies.size()>0){ //Collision zombie
-            double x = bullets[i]->getShape().getPosition().x;
-            double y = bullets[i]->getShape().getPosition().y;
 
             for (int k=0;k<this->enemies.size();k++){
                 //Détection de la collision de la balle avec un zombie
-                if ((std::abs(x - this->enemies.at(k)->getPosition().x ) < 32) &&(std::abs(y - this->enemies.at(k)->getPosition().y)) < 32){
+                if (checkCollisionBulltetZombie(k,i)){
                     bullets.erase(bullets.begin() + i);
 
                     this->enemies.at(k)->setHealth(25);//Dommage causé par la balle
