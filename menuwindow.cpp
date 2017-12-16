@@ -2,11 +2,11 @@
 
 MenuWindow::MenuWindow(sf::RenderWindow *containeur):Containeur(containeur)
 {
-    menus.push_back(new Menu("Start",400,100));
+    menus.push_back(new Menu("Start",sf::VideoMode::getDesktopMode().width/2,sf::VideoMode::getDesktopMode().height/6));
     this->menus.at(0)->changerColor(sf::Color::White);
 
-    menus.push_back(new Menu("About TowersVSZombies",400,300));
-    menus.push_back(new Menu("Exit",400,500));
+    menus.push_back(new Menu("About TowersVSZombies",sf::VideoMode::getDesktopMode().width/2,sf::VideoMode::getDesktopMode().height/2));
+    menus.push_back(new Menu("Exit",sf::VideoMode::getDesktopMode().width/2,sf::VideoMode::getDesktopMode().height/1.2));
 
 }
 

@@ -10,18 +10,18 @@
 //-----------------------------------------------------------------------//
                             //FORME CANONIQUE//
 
-MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur), menuWave("",400,300),menuMoney("",50,575){
+MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur), menuWave("",sf::VideoMode::getDesktopMode().width/2,sf::VideoMode::getDesktopMode().height/2),menuMoney("",sf::VideoMode::getDesktopMode().width/16,sf::VideoMode::getDesktopMode().height/(600/575)-32){
     //mapTexture.loadFromFile("map 1091x600.png");
     //map.setTexture(mapTexture);
 
 
-    lifeBar =sf::RectangleShape(sf::Vector2f(150, 10));
+    lifeBar =sf::RectangleShape(sf::Vector2f(sf::VideoMode::getDesktopMode().width/(80/15), sf::VideoMode::getDesktopMode().height/60));
     lifeBar.setFillColor(sf::Color::Red);
-    lifeBar.setPosition(625,575);
+    lifeBar.setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width/6*5,sf::VideoMode::getDesktopMode().height/(600/575)-32));
 
-    lifeBar2 =sf::RectangleShape(sf::Vector2f(0, 10));
+    lifeBar2 =sf::RectangleShape(sf::Vector2f(0, sf::VideoMode::getDesktopMode().height/60));
     lifeBar2.setFillColor(sf::Color::White);
-    lifeBar2.setPosition(775,575);
+    lifeBar2.setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width/6*5+150,sf::VideoMode::getDesktopMode().height/(600/575)-32));
 }
 
 MainWindow::~MainWindow(){
@@ -78,16 +78,20 @@ bool MainWindow::checkCollisionBulltetZombie(int indexZ, int indexB){
 void MainWindow::drawElements(){
     int moving=0;
 
+    sf::Vector2f previous;
+    sf::Vector2f previousZombie;
+
     sf::Time elapsed;
     sf::Time elapsedDamage;
-
+    sf::Time elapsedEnd;
     std::srand(std::time(0));
 
     int damageTime = 1; //temps(seconde) entre les degats
 
 
     //Sauvegarde de la position du joueur avant déplacement
-    this->player->setPreviousPosition();
+    previous.x = this->player->getPosition().x;
+    previous.y = this->player->getPosition().y;
 
 
     //Compteur de secondes entre 2 dégats
@@ -135,7 +139,7 @@ void MainWindow::drawElements(){
 
     //Détection de la collision du joueur avec les bords
     if (player->checkCollisionBorder()){
-        this->player->goBack();
+        this->player->setPosition(previous.x, previous.y);
     }
 
     //Gestion des zombie (déplacment, attaque)
@@ -144,11 +148,12 @@ void MainWindow::drawElements(){
         //Détection de la collision du joeur
         if (checkCollisionPlayerZombie(i)){
             //Retour a la posiition precedente
-            this->player->goBack();
+            this->player->setPosition(previous.x, previous.y);
         }
 
         //Sauvegarde de la position du zombie avant déplacement
-        enemies.at(i)->setPreviousPosition();
+        previousZombie.x = enemies.at(i)->getPosition().x;
+        previousZombie.y = enemies.at(i)->getPosition().y;
 
         // "INTELLIGENCE ARTIFICIELLE" DES ZOMBIES //
         //IA qui suit le joueur
@@ -156,8 +161,8 @@ void MainWindow::drawElements(){
         float enemyPlayerY = player->getPosition().y - enemies.at(i)->getPosition().y;
 
         //IA qui vise la base
-        float enemyBaseX = 800 - enemies.at(i)->getPosition().x;
-        float enemyBaseY = 300 - enemies.at(i)->getPosition().y;
+        float enemyBaseX = sf::VideoMode::getDesktopMode().width - enemies.at(i)->getPosition().x;
+        float enemyBaseY = sf::VideoMode::getDesktopMode().height/2 - enemies.at(i)->getPosition().y;
 
         //On calcul la distance pour savoir qui le zombie préfère viser (le plus pres en l'occurence)
         float lengthEnemyPlayer = sqrt( enemyPlayerX*enemyPlayerX + enemyPlayerY*enemyPlayerY );
@@ -179,10 +184,12 @@ void MainWindow::drawElements(){
             enemies.at(i)->move(enemyBaseX,enemyBaseY);
         }
 
+
+
         //Détection de la collision d'un zombie
         if (checkCollisionPlayerZombie(i)){
             //Retour a la posiition precedente
-            enemies.at(i)->goBack();
+            enemies.at(i)->setPosition(previousZombie.x, previousZombie.y);
 
             //Attaque le joueur si un certain temps c'est ecoulé
             if (elapsedDamage.asSeconds() > damageTime){
@@ -245,7 +252,7 @@ void MainWindow::drawElements(){
 
                     if(this->enemies.at(k)->getHealth()<=0){
                         this->enemies.erase(enemies.begin()+k); //Suppression du zombie
-                        this->player->setMoney(5); //Ajout du gain
+                        this->player->setMoney(this->player->getMoney()+5); //Ajout du gain
 
                         if(enemies.size()==0){
                             clock.restart();           //On redémarre une manche
@@ -283,11 +290,11 @@ void MainWindow::drawElements(){
             for(int i=0;i<mob;i++){
                 posSpawn = std::rand()%5;    //On crée des "spawneur" ou les montres peuvent apparaitre
                 switch(posSpawn){
-                    case 0 : enemies.push_back(new Enemy(64,64,spawn,0,0.2,100,10));break;
-                    case 1 : enemies.push_back(new Enemy(64,64,spawn-16,150,0.2,100,10));break;
-                    case 2 : enemies.push_back(new Enemy(64,64,spawn-32,300,0.2,100,10));break;
-                    case 3 : enemies.push_back(new Enemy(64,64,spawn-16,450,0.2,100,10));break;
-                    case 4 : enemies.push_back(new Enemy(64,64,spawn,600,0.2,100,10));break;
+                    case 0 : enemies.push_back(new Enemy(32,32,spawn,0,0.1,100,10));break;
+                    case 1 : enemies.push_back(new Enemy(32,32,spawn-16,150,0.1,100,10));break;
+                    case 2 : enemies.push_back(new Enemy(32,32,spawn-32,300,0.1,100,10));break;
+                    case 3 : enemies.push_back(new Enemy(32,32,spawn-16,450,0.1,100,10));break;
+                    case 4 : enemies.push_back(new Enemy(32,32,spawn,600,0.1,100,10));break;
                 }
                 spawn -= 32;            //On décrémente le spawn pour pas que les zombies spawn en étant collés
             }
@@ -311,7 +318,7 @@ void MainWindow::drawElements(){
     //Affichage bar de vie
     float lifeBarSize = this->player->getHealth()/100*150; //Calcul pour déterminer la taille de la barre de vie
 
-    lifeBar.setSize(sf::Vector2f(lifeBarSize,10));
+    lifeBar.setSize(sf::Vector2f(lifeBarSize, 10));
     Containeur::getWindow()->draw(lifeBar);
 
     lifeBar2.setSize(sf::Vector2f(lifeBarSize-150,10));

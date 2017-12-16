@@ -10,7 +10,7 @@
 
 int main(){
 
-    sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode(800,600),"TowersVSZombies");
+    sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode(sf::VideoMode::getDesktopMode().width,sf::VideoMode::getDesktopMode().height),"TowersVSZombies");
     int countWindow = 0;
     int newWindow;
 
