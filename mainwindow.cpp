@@ -138,7 +138,7 @@ void MainWindow::drawElements(){
 
 
     //Détection de la collision du joueur avec les bords
-    if (player->checkCollisionBorder()){
+    if (player->checkCollisionBorder(this->getWindow()->getSize().x, this->getWindow()->getSize().y)){
         this->player->setPosition(previous.x, previous.y);
     }
 
@@ -238,7 +238,7 @@ void MainWindow::drawElements(){
         bullets[i]->moveShape();
 
         //Détection de la collision de la balle avec les bords
-        if (bullets[i]->checkCollisionBorder()){
+        if (bullets[i]->checkCollisionBorder(this->getWindow()->getSize().x, this->getWindow()->getSize().y)){
              bullets.erase(bullets.begin() + i);
         }
         else if (this->enemies.size()>0){ //Collision zombie
@@ -290,11 +290,11 @@ void MainWindow::drawElements(){
             for(int i=0;i<mob;i++){
                 posSpawn = std::rand()%5;    //On crée des "spawneur" ou les montres peuvent apparaitre
                 switch(posSpawn){
-                    case 0 : enemies.push_back(new Enemy(32,32,spawn,0,0.1,100,10));break;
-                    case 1 : enemies.push_back(new Enemy(32,32,spawn-16,150,0.1,100,10));break;
-                    case 2 : enemies.push_back(new Enemy(32,32,spawn-32,300,0.1,100,10));break;
-                    case 3 : enemies.push_back(new Enemy(32,32,spawn-16,450,0.1,100,10));break;
-                    case 4 : enemies.push_back(new Enemy(32,32,spawn,600,0.1,100,10));break;
+                    case 0 : enemies.push_back(new Enemy(64,64,spawn,0,0.1,100,10));break;
+                    case 1 : enemies.push_back(new Enemy(64,64,spawn-16,150,0.1,100,10));break;
+                    case 2 : enemies.push_back(new Enemy(64,64,spawn-32,300,0.1,100,10));break;
+                    case 3 : enemies.push_back(new Enemy(64,64,spawn-16,450,0.1,100,10));break;
+                    case 4 : enemies.push_back(new Enemy(64,64,spawn,600,0.1,100,10));break;
                 }
                 spawn -= 32;            //On décrémente le spawn pour pas que les zombies spawn en étant collés
             }

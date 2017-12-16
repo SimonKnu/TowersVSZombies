@@ -39,7 +39,7 @@ class Player {
         float getHealth();
         int getFinalWave();
 
-        bool checkCollisionBorder();
+        bool checkCollisionBorder(int maxX, int maxY);
 
         sf::Vector2f getOrigin();
         sf::Sprite getRect();

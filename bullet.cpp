@@ -31,9 +31,9 @@ Bullet& Bullet::operator=(const Bullet& b){
 
 //-----------------------------------------------------------------------//
 
-bool Bullet::checkCollisionBorder(){
-    if (this->getShape().getPosition().x < 0 ||this->getShape().getPosition().x >800
-            ||this->getShape().getPosition().y < 0 || this->getShape().getPosition().y > 600)
+bool Bullet::checkCollisionBorder(int maxX, int maxY){
+    if (this->getShape().getPosition().x < 0 ||this->getShape().getPosition().x >maxX
+            ||this->getShape().getPosition().y < 0 || this->getShape().getPosition().y > maxY)
     {
         return true;
     }else{
