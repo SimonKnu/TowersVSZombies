@@ -11,8 +11,8 @@
                             //FORME CANONIQUE//
 
 MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur), menuWave("",sf::VideoMode::getDesktopMode().width/2,sf::VideoMode::getDesktopMode().height/2),menuMoney("",sf::VideoMode::getDesktopMode().width/16,sf::VideoMode::getDesktopMode().height/(600/575)-32){
-    //mapTexture.loadFromFile("map 1091x600.png");
-    //map.setTexture(mapTexture);
+    mapTexture.loadFromFile("map 1177x630.png");
+    map.setTexture(mapTexture);
 
 
     lifeBar =sf::RectangleShape(sf::Vector2f(sf::VideoMode::getDesktopMode().width/(80/15), sf::VideoMode::getDesktopMode().height/60));
@@ -114,8 +114,6 @@ void MainWindow::drawElements(){
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
         this->player->move(this->player->getSpeed(), 0);
     }
-
-
 
     //Permet d'animer le personnage lorsqu'il marche
     if(player->getMoving()){
@@ -320,7 +318,15 @@ void MainWindow::drawElements(){
     if(changeWave){
         Containeur::getWindow()->clear();
     }
-    //Containeur::getWindow()->draw(this->map);
+    //map.setTexture(mapTexture);
+    //map.setScale(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
+    //map.setScale(1.759853345554, 1);
+    float tailleX=sf::VideoMode::getDesktopMode().width;
+    float tailleY=sf::VideoMode::getDesktopMode().height;
+    float scaleX=tailleX/1177;
+    float scaleY=tailleY/630;
+    map.setScale(scaleX, scaleY);
+    Containeur::getWindow()->draw(this->map);
 
     //Affichage argent
     std::stringstream ss;
