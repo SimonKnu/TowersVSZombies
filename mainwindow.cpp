@@ -290,16 +290,29 @@ void MainWindow::drawElements(){
             for(int i=0;i<mob;i++){
                 posSpawn = std::rand()%5;    //On crée des "spawneur" ou les montres peuvent apparaitre
                 switch(posSpawn){
-                    case 0 : enemies.push_back(new Enemy(32,32,spawn,0,0.1,100,10));break;
-                    case 1 : enemies.push_back(new Enemy(32,32,spawn-16,150,0.1,100,10));break;
-                    case 2 : enemies.push_back(new Enemy(32,32,spawn-32,300,0.1,100,10));break;
-                    case 3 : enemies.push_back(new Enemy(32,32,spawn-16,450,0.1,100,10));break;
-                    case 4 : enemies.push_back(new Enemy(32,32,spawn,600,0.1,100,10));break;
+                    case 0 : enemies.push_back(new Enemy(64,64,spawn,0,0.1,100,10));break;
+                    case 1 : enemies.push_back(new Enemy(64,64,spawn-16,150,0.1,100,10));break;
+                    case 2 : enemies.push_back(new Enemy(64,64,spawn-32,300,0.1,100,10));break;
+                    case 3 : enemies.push_back(new Enemy(64,64,spawn-16,450,0.1,100,10));break;
+                    case 4 : enemies.push_back(new Enemy(64,64,spawn,600,0.1,100,10));break;
                 }
                 spawn -= 32;            //On décrémente le spawn pour pas que les zombies spawn en étant collés
             }
             changeWave=true;
         }
+    }
+    for(int i=0;i<enemies.size();i++){
+        a = player->getPosition().x - enemies.at(i)->getPosition().x;
+        b = player->getPosition().y - enemies.at(i)->getPosition().y;
+        sf::Vector2f aimDir = sf::Vector2f(a, b);
+
+        //calcule de l'angle de rotation afin de pointer vers la souris
+        sf::Vector2f aimDirNorm;
+        aimDirNorm.x = aimDir.x / sqrt(pow(aimDir.x, 2) + pow(aimDir.y, 2));
+        aimDirNorm.y = aimDir.y / sqrt(pow(aimDir.x, 2) + pow(aimDir.y, 2));
+
+        float angle = -atan2( a , b) * 180 / 3.14;
+        enemies.at(i)->rotate(angle);
     }
 
 

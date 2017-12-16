@@ -49,7 +49,7 @@ Player& Player::operator=(const Player &p){
 
 Player* Player::getInstance(){
     if(instance==0){
-        instance = new Player(32,32,400,400,0.1,100,0);
+        instance = new Player(64,64,sf::VideoMode::getDesktopMode().width/2,sf::VideoMode::getDesktopMode().height/2,0.25,100,0);
     }
     return instance;
 }
@@ -148,7 +148,7 @@ sf::Sprite Player::getRect()
 
 
 bool Player::checkCollisionBorder(){
-    if ((this->getPosition().x-16)<0 || (this->getPosition().y-16)<0 || (this->getPosition().x+16) > 800 || (this->getPosition().y+16) >600){
+    if ((this->getPosition().x-16)<0 || (this->getPosition().y-16)<0 || (this->getPosition().x+16) > sf::VideoMode::getDesktopMode().width || (this->getPosition().y+16) >sf::VideoMode::getDesktopMode().height){
         return true;
     }else{
         return false;
