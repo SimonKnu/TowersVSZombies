@@ -78,9 +78,6 @@ bool MainWindow::checkCollisionBulltetZombie(int indexZ, int indexB){
 void MainWindow::drawElements(){
     int moving=0;
 
-    sf::Vector2f previous;
-    sf::Vector2f previousZombie;
-
     sf::Time elapsed;
     sf::Time elapsedDamage;
     sf::Time elapsedEnd;
@@ -90,8 +87,7 @@ void MainWindow::drawElements(){
 
 
     //Sauvegarde de la position du joueur avant déplacement
-    previous.x = this->player->getPosition().x;
-    previous.y = this->player->getPosition().y;
+    this->player->setPreviousPosition();
 
 
     //Compteur de secondes entre 2 dégats
@@ -139,7 +135,7 @@ void MainWindow::drawElements(){
 
     //Détection de la collision du joueur avec les bords
     if (player->checkCollisionBorder(this->getWindow()->getSize().x, this->getWindow()->getSize().y)){
-        this->player->setPosition(previous.x, previous.y);
+        this->player->goBack();
     }
 
     //Gestion des zombie (déplacment, attaque)
@@ -148,12 +144,11 @@ void MainWindow::drawElements(){
         //Détection de la collision du joeur
         if (checkCollisionPlayerZombie(i)){
             //Retour a la posiition precedente
-            this->player->setPosition(previous.x, previous.y);
+            this->player->goBack();
         }
 
         //Sauvegarde de la position du zombie avant déplacement
-        previousZombie.x = enemies.at(i)->getPosition().x;
-        previousZombie.y = enemies.at(i)->getPosition().y;
+        enemies.at(i)->setPreviousPosition();
 
         // "INTELLIGENCE ARTIFICIELLE" DES ZOMBIES //
         //IA qui suit le joueur
@@ -189,7 +184,7 @@ void MainWindow::drawElements(){
         //Détection de la collision d'un zombie
         if (checkCollisionPlayerZombie(i)){
             //Retour a la posiition precedente
-            enemies.at(i)->setPosition(previousZombie.x, previousZombie.y);
+            enemies.at(i)->goBack();
 
             //Attaque le joueur si un certain temps c'est ecoulé
             if (elapsedDamage.asSeconds() > damageTime){

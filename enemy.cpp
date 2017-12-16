@@ -50,7 +50,14 @@ Enemy& Enemy::operator=(const Enemy &p){
 //-----------------------------------------------------------------------//
 
 
+void Enemy::goBack(){
+    this->setPosition(previousPosition.x, previousPosition.y);
+}
 
+void Enemy::setPreviousPosition(){
+    previousPosition.x = this->getPosition().x;
+    previousPosition.y = this->getPosition().y;
+}
 
 void Enemy::move(float x, float y)
 {

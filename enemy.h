@@ -11,6 +11,7 @@ class Enemy {
         float damage;
         sf::Texture texture;
         sf::Sprite sprite;
+        sf::Vector2f previousPosition;
 
     public:
         Enemy();
@@ -29,6 +30,9 @@ class Enemy {
         sf::Vector2f getPosition();
         void setHealth(const float damage);
         float getHealth() const;
+
+        void setPreviousPosition();
+        void goBack();
 
 };
 

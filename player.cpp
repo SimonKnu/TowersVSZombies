@@ -96,6 +96,15 @@ void Player::setMoney(int money){
     this->money = money;
 }
 
+void Player::goBack(){
+    this->setPosition(previousPosition.x, previousPosition.y);
+}
+
+void Player::setPreviousPosition(){
+    previousPosition.x = this->getPosition().x;
+    previousPosition.y = this->getPosition().y;
+}
+
 sf::Vector2f Player::getPosition()
 {
     return sprite.getPosition();

@@ -13,6 +13,7 @@ class Player {
         int finalWave;
         sf::Texture texture;
         sf::Sprite sprite;
+        sf::Vector2f previousPosition;
         bool moving;
 
         static Player* instance;
@@ -33,6 +34,8 @@ class Player {
         void setHealth(float health);
         void setMoney(int money);
         void setFinalWave(int wave);
+        void setPreviousPosition();
+        void goBack();
 
         float getSpeed();
         int getMoney();
