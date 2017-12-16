@@ -93,7 +93,10 @@ void Player::setHealth(float health){
 }
 
 void Player::setMoney(int money){
-    this->money = money;
+    int tmp = this->money + money;
+    if (tmp>=0){
+        this->money += money;
+    }
 }
 
 void Player::goBack(){
