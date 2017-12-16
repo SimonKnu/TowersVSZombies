@@ -250,7 +250,7 @@ void MainWindow::drawElements(){
 
                     if(this->enemies.at(k)->getHealth()<=0){
                         this->enemies.erase(enemies.begin()+k); //Suppression du zombie
-                        this->player->setMoney(this->player->getMoney()+5); //Ajout du gain
+                        this->player->setMoney(5); //Ajout du gain
 
                         if(enemies.size()==0){
                             clock.restart();           //On redémarre une manche
