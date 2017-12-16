@@ -1,12 +1,12 @@
 #include "MenuWindow.h"
-#include <SFML/Graphics.hpp>
 
-
-MenuWindow::MenuWindow()
+MenuWindow::MenuWindow(sf::RenderWindow *containeur):Containeur(containeur)
 {
     menus.push_back(new Menu("Start",400,100));
-    menus.push_back(new Menu("About",400,300));
-    menus.push_back(new Menu("Quit",400,500));
+    this->menus.at(0)->changerColor(sf::Color::White);
+
+    menus.push_back(new Menu("About TowersVSZombies",400,300));
+    menus.push_back(new Menu("Exit",400,500));
 
 }
 
@@ -14,9 +14,62 @@ MenuWindow::~MenuWindow(){
 
 }
 
-void MenuWindow::dessiner(sf::RenderWindow *window){
-  /*  for(int i=0;i<menus.size();i++){
-        window->draw(menus.at(i));
-    }*/
+void MenuWindow::drawElements(){
+    for(int i=0;i<menus.size();i++){
+        Containeur::getWindow()->draw(menus.at(i)->getText());
+    }
 }
 
+int MenuWindow::chosenMenu(sf::Event e){
+        if(e.key.code == sf::Keyboard::Z){
+            compteur--;
+            if(compteur<0){
+                compteur = 2;
+            }
+
+            for(int i=0;i<menus.size();i++){
+                if(i != compteur){
+                    this->menus.at(i)->changerColor(sf::Color::Red);
+                }
+                else {
+                   this->menus.at(i)->changerColor(sf::Color::White);
+                }
+            }
+            return 0;
+        }
+
+        if(e.key.code == sf::Keyboard::S){
+            compteur++;
+            if(compteur>2){
+                compteur = 0;
+            }
+
+            for(int i=0;i<menus.size();i++){
+                if(i != compteur){
+                   this->menus.at(i)->changerColor(sf::Color::Red);
+                }
+                else {
+                   this->menus.at(i)->changerColor(sf::Color::White);
+                }
+            }
+            return 0;
+        }
+
+        if(e.key.code == sf::Keyboard::Return){
+            switch (compteur) {
+                case 0:
+                    return 1;                           //Lancer le jeu
+                break;
+
+                case 1:
+                    return 2;                           //Lancer le "about"
+                break;
+
+                case 2:
+                    Containeur::getWindow()->close();   //Fermer totalement le programmme
+                break;
+            }
+        }
+        return 0;
+
+}

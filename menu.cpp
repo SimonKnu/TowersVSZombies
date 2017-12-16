@@ -1,10 +1,15 @@
 #include "menu.h"
+#include <iostream>
 
+Menu::Menu(){
+
+}
 
 Menu::Menu(std::string text, int posX, int posY){
-    font.loadFromFile("Bloodfeast.ttf");
+    if(!font.loadFromFile("bloodgut.ttf")){
+        std::cout<< "Erreur de chargement de la police !" << std::endl;
+    }
     title.setFillColor(sf::Color::Red);
-    //title.setStyle(sf::Text::Bold);
     title.setFont(font);
 
     title.setString(text);

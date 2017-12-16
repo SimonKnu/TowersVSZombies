@@ -49,7 +49,7 @@ Player& Player::operator=(const Player &p){
 
 Player* Player::getInstance(){
     if(instance==0){
-        instance = new Player(32,32,50,50,0.1,100,0);
+        instance = new Player(32,32,400,400,0.1,100,0);
     }
     return instance;
 }
@@ -136,13 +136,24 @@ sf::Sprite Player::getRect()
 
 
 bool Player::checkCollisionBorder(){
-    if ((this->getPosition().x-32)<0 || (this->getPosition().y-32)<0 || (this->getPosition().x+32) > 1091 || (this->getPosition().y+32) >600){
+    if ((this->getPosition().x-32)<0 || (this->getPosition().y-32)<0 || (this->getPosition().x+32) > 800 || (this->getPosition().y+32) >600){
         return true;
     }else{
         return false;
     }
 }
 
+
+void Player::setFinalWave(int Wave){
+    this->finalWave = Wave;
+}
+int Player::getFinalWave(){
+    return finalWave;
+}
+
+void Player::reset(){
+    instance = 0;
+}
 
 
 
