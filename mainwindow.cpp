@@ -80,7 +80,7 @@ void MainWindow::drawElements(){
 
     sf::Time elapsed;
     sf::Time elapsedDamage;
-    sf::Time elapsedEnd;
+
     std::srand(std::time(0));
 
     int damageTime = 1; //temps(seconde) entre les degats
@@ -178,8 +178,6 @@ void MainWindow::drawElements(){
             enemyBaseY *= 0.01;
             enemies.at(i)->move(enemyBaseX,enemyBaseY);
         }
-
-
 
         //Détection de la collision d'un zombie
         if (checkCollisionPlayerZombie(i)){
