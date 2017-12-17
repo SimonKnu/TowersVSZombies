@@ -5,6 +5,7 @@
 #include "containeur.h"
 #include "waitwindow.h"
 #include "mainwindow.h"
+#include "tutowindow.h"
 #include "iostream"
 #include <vector>
 
@@ -20,6 +21,7 @@ int main(){
     containeur.push_back(new AboutWindow(window));
     containeur.push_back(new WaitWindow(window));
     containeur.push_back(new EndWindow(window));
+    containeur.push_back(new TutoWindow(window));
 
     while(window->isOpen()){
         sf::Event e;
@@ -31,11 +33,11 @@ int main(){
             }
             if(e.type==sf::Event::KeyReleased){
                 newWindow = containeur.at(countWindow)->chosenMenu(e);
-                if(newWindow==5 || newWindow==6){
+                if(newWindow==6 || newWindow==7){
                     Player::getInstance()->reset();
                     containeur.at(1)=new MainWindow(window);
 
-                    if(newWindow==5){
+                    if(newWindow==6){
                         countWindow = 1;
                     }
                     else {

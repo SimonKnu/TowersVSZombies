@@ -1,9 +1,7 @@
 #include "menu.h"
 #include <iostream>
 
-Menu::Menu(){
-
-}
+//--------------------------------------------------------------------//
 
 Menu::Menu(std::string text, int posX, int posY){
     if(!font.loadFromFile("bloodgut.ttf")){
@@ -16,6 +14,24 @@ Menu::Menu(std::string text, int posX, int posY){
     title.setPosition(sf::Vector2f(posX, posY));
     title.setOrigin(title.getLocalBounds().width/2.0f,title.getLocalBounds().height/2.0f);
 }
+
+Menu::Menu(const Menu &window){
+    title = window.title;
+}
+
+Menu::~Menu(){
+
+}
+
+Menu& Menu::operator=(const Menu& window){
+    if(this!=&window){
+        title = window.title;
+    }
+    return *this;
+}
+
+//--------------------------------------------------------------------//
+
 
 sf::Text Menu::getText() const{
     return this->title;

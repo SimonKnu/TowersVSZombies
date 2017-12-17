@@ -3,10 +3,7 @@
 
 Player* Player::instance = 0;
 
-
-
-//-----------------------------------------------------------------------//
-                        //FORME CANONIQUE//
+//********************************************************************************//
 
 Player::Player(int sizeX, int sizeY, int posX, int posY, float speed, float health, int money){
     if(!texture.loadFromFile("player_static.png")){
@@ -24,27 +21,9 @@ Player::Player(int sizeX, int sizeY, int posX, int posY, float speed, float heal
     this->moving = false;
 }
 
-Player::Player(const Player &p){
-    this->money = p.money;
-    this->health = p.health;
-    this->speed = p.speed;
-    this->sprite = p.sprite;
-    this->moving = p.moving;
-}
-
 Player::~Player(){
-
-}
-
-Player& Player::operator=(const Player &p){
-    if(&p != this){
-        this->money = p.money;
-        this->health = p.health;
-        this->speed = p.speed;
-        this->sprite = p.sprite;
-        this->moving = p.moving;
-    }
-    return *this;
+    delete instance;
+    instance=0;
 }
 
 Player* Player::getInstance(){
@@ -54,11 +33,7 @@ Player* Player::getInstance(){
     return instance;
 }
 
-
-
-//-----------------------------------------------------------------------//
-
-
+//********************************************************************************//
 
 void Player::move(float x, float y)
 {

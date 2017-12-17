@@ -17,7 +17,9 @@ class MainWindow : public Containeur
 
     public:
         MainWindow(sf::RenderWindow* containeur);
+        MainWindow(const MainWindow &window);
         ~MainWindow();
+        MainWindow& operator=(const MainWindow& window);
 
         void rotatePlayer();
         void start();
@@ -36,6 +38,7 @@ class MainWindow : public Containeur
         Menu *menuWave;
         Menu *menuMoney;
         Menu *menuHealth;
+        Menu *menuBase;
 
         sf::RectangleShape *lifeBase;
         sf::RectangleShape *lifeBase2;

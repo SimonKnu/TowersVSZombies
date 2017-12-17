@@ -18,12 +18,10 @@ class Player {
         bool moving;
 
         static Player* instance;
-        Player(int sizeX, int sizeY, int posX, int posY, float speed, float health, int money);
+        Player(int sizeX=64, int sizeY=64, int posX=540, int posY=360, float speed=0.25, float health=100, int money=0);
 
     public:
         ~Player();
-        Player& operator=(const Player& p);
-        Player(const Player &p);
         static Player* getInstance();
 
         void move(float x, float y);

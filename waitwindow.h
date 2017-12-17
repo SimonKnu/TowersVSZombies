@@ -14,7 +14,9 @@ class WaitWindow : public Containeur
 
     public:
         WaitWindow(sf::RenderWindow *containeur);
+        WaitWindow(const WaitWindow &window);
         ~WaitWindow();
+        WaitWindow& operator=(const WaitWindow& window);
 
         void drawElements();
         int chosenMenu(sf::Event e);

@@ -2,8 +2,15 @@
 
 Sound* Sound::instance = 0;
 
+//********************************************************************************//
+
 Sound::Sound(){
 
+}
+
+Sound::~Sound(){
+    delete instance;
+    instance=0;
 }
 
 Sound* Sound::getInstance(){
@@ -12,6 +19,8 @@ Sound* Sound::getInstance(){
     }
     return instance;
 }
+
+//********************************************************************************//
 
 void Sound::addFile(std::string txt){
     sf::SoundBuffer buffer;

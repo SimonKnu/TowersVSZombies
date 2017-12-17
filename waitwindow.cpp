@@ -8,12 +8,31 @@ WaitWindow::WaitWindow(sf::RenderWindow *containeur):Containeur(containeur)
     menus.at(0)->changerColor(sf::Color::White);
 }
 
-WaitWindow::~WaitWindow(){
-
+WaitWindow::WaitWindow(const WaitWindow &window):Containeur(window){
+    for(int i=0; i<menus.size();i++){
+        menus.push_back(new Menu(*window.menus.at(i)));
+    }
 }
 
+WaitWindow::~WaitWindow(){
+    for(int i=0;i<menus.size();i++){
+        delete menus.at(i);
+        menus.at(i)=0;
+    }
+    menus.clear();
+}
 
+WaitWindow& WaitWindow::operator=(const WaitWindow& window){
+    if(this!=&window){
+        Containeur::operator=(window);
+        for(int i=0; i<menus.size();i++){
+            menus.push_back(new Menu(*window.menus.at(i)));
+        }
+    }
+    return *this;
+}
 
+//********************************************************************************//
 
 void WaitWindow::drawElements(){
     for(int i=0;i<menus.size();i++){
@@ -63,7 +82,7 @@ int WaitWindow::chosenMenu(sf::Event e){
             break;
 
             case 1:
-                return 6;                           //Retour au menu principal
+                return 7;                           //Retour au menu principal
             break;
         }
     }

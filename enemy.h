@@ -14,8 +14,7 @@ class Enemy {
         sf::Vector2f previousPosition;
 
     public:
-        Enemy();
-        Enemy(int sizeX, int sizeY, int posX, int posY, float speed, float health, float damage);
+        Enemy(int sizeX=64, int sizeY=64, int posX=0, int posY=0, float speed=0.20, float health=100, float damage=25);
         Enemy(const Enemy &p);
         ~Enemy();
         Enemy& operator=(const Enemy& p);

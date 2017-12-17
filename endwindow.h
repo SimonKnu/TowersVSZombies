@@ -10,11 +10,13 @@ class EndWindow : public Containeur
 {
     private :
         std::vector<Menu *> menus;
-        int compteur=1;
+        int compteur=0;
 
     public :
         EndWindow(sf::RenderWindow * containeur);
+        EndWindow(const EndWindow &window);
         ~EndWindow();
+        EndWindow& operator=(const EndWindow& window);
 
         void drawElements();
         int chosenMenu(sf::Event e);

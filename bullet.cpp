@@ -1,7 +1,6 @@
 #include "bullet.h"
 
-//-----------------------------------------------------------------------//
-                        //FORME CANONIQUE//
+//********************************************************************************//
 
 Bullet::Bullet(float radius): currVelocity(0.f, 0.f), maxSpeed(1){
     this->shape.setRadius(radius);
@@ -18,7 +17,7 @@ Bullet::~Bullet(){
 
 }
 
-Bullet& Bullet::operator=(const Bullet& b){
+Bullet& Bullet::operator=(const Bullet &b){
     if(&b != this){
         this->currVelocity = b.currVelocity;
         this->maxSpeed = b.maxSpeed;
@@ -27,9 +26,7 @@ Bullet& Bullet::operator=(const Bullet& b){
     return *this;
 }
 
-
-
-//-----------------------------------------------------------------------//
+//********************************************************************************//
 
 bool Bullet::checkCollisionBorder(){
     if (this->getShape().getPosition().x < 0 ||this->getShape().getPosition().x >1080

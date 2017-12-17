@@ -12,7 +12,10 @@ class Menu
 
     public:
         Menu();
-        Menu(std::string text, int posX, int posY);
+        Menu(std::string text="", int posX=0, int posY=0);
+        Menu(const Menu &window);
+        ~Menu();
+        Menu& operator=(const Menu& window);
 
         sf::Text getText() const;
         void changerColor(const sf::Color col);
