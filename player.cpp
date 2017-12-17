@@ -155,7 +155,6 @@ bool Player::checkCollisionBorder(){
     }
 }
 
-
 void Player::setFinalWave(int Wave){
     this->finalWave = Wave;
 }

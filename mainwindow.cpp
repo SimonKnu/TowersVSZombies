@@ -161,13 +161,10 @@ void MainWindow::drawElements(){
         moving=0;
     }
 
-
     //Détection de la collision du joueur avec les bords
     if (player->checkCollisionBorder()){
         this->player->goBack();
     }
-
-
 
     float destroyBaseX = sf::VideoMode::getDesktopMode().width -10;
     float destroyBaseY = sf::VideoMode::getDesktopMode().height/2 -10;
