@@ -49,6 +49,7 @@ class Player {
         void setTexture(int i);
         void setMoving(bool move);
         bool getMoving();
+        float getRotate();
 
 };
 

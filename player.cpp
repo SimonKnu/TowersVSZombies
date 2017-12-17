@@ -107,6 +107,11 @@ bool Player::getMoving()
 {
     return this->moving;
 }
+
+float Player::getRotate()
+{
+    return sprite.getRotation();
+}
 void Player::setPosition(int x, int y){
     sprite.setPosition(sf::Vector2f(x,y));
 }

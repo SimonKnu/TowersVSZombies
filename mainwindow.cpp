@@ -109,6 +109,26 @@ void MainWindow::drawElements(){
             sound->play(3);
         }
     }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+            if(pressA==false){
+                if(towers.size()<3 && player->getMoney()>=0){
+                    int orientX;
+                    int orientY;
+
+                    checkOrientPlayer(&orientX, &orientY);
+
+                    int posXTower = player->getPosition().x+orientX;
+                    int posYTower = player->getPosition().y+orientY;
+                    Tower* t1 = new Tower(64, 64, posXTower, posYTower);
+                    if(!checkCollisionPlayerTurret(t1)){
+                        towers.push_back(t1);
+                        numberBulletTower.push_back(0);
+                        player->setMoney(-0);
+                    }
+                    pressA=true;
+                }
+            }
+        }
 
 
     //Permet d'animer le personnage lorsqu'il marche
@@ -208,6 +228,43 @@ void MainWindow::drawElements(){
             }
         }
     }
+
+    //Calcul de visée des tours
+        for(int i=0; i<towers.size(); i++){
+            float dist=999999999*999999999;
+            float distEnemy;
+            int num;
+            float towerEnemyX;
+            float towerEnemyY;
+            for(int j=0; j<enemies.size();j++){
+                towerEnemyX = enemies.at(j)->getPosition().x - towers.at(i)->getPosition().x;
+                towerEnemyY = enemies.at(j)->getPosition().y - towers.at(i)->getPosition().y;
+                distEnemy = sqrt( towerEnemyX*towerEnemyX + towerEnemyY*towerEnemyY );
+                if(distEnemy<dist){
+                    dist=distEnemy;
+                    num=j;
+                }
+            }
+
+            if(dist<=250){
+                towerEnemyX/=dist;
+                towerEnemyY/=dist;
+                sf::Vector2f towerEnemy;
+                towerEnemy.x=towerEnemyX;
+                towerEnemy.y=towerEnemyY;
+
+                float angle = -atan2(towerEnemyX, towerEnemyY)*180/3.14;
+                towers.at(i)->rotate(angle);
+                if(numberBulletTower.at(i)%750==0){
+                    b1.setShapePosition(towers.at(i)->getPosition());
+                    b1.setCurrVelocity(towerEnemy*b1.getMaxSpeed());
+                    bullets.push_back(new Bullet(b1));
+                    numberBulletTower.at(i)++;
+                }else{
+                    numberBulletTower.at(i)++;
+                }
+            }
+        }
 
     //Supprime zombie s'il est dans la base
     if(enemies.empty() == false) {
@@ -411,9 +468,16 @@ void MainWindow::drawElements(){
     for (size_t i = 0; i < bullets.size(); i++){
         Containeur::getWindow()->draw(bullets.at(i)->getShape());
     }
-
     for (size_t j = 0; j < enemies.size(); j++){
         Containeur::getWindow()->draw(this->enemies.at(j)->getRect());
+    }
+    for (size_t k = 0; k < towers.size(); k++){
+        if(turretAnimation==100){
+            towers.at(k)->changeAnimation();
+            turretAnimation=0;
+        }
+        turretAnimation++;
+        Containeur::getWindow()->draw(this->towers.at(k)->getSprite());
     }
 
     //Fin de jeu
@@ -451,6 +515,32 @@ bool MainWindow::checkCollisionPlayerZombie(int index){
     }
     else{
         return false;
+    }
+}
+
+bool MainWindow::checkCollisionPlayerTurret(Tower * t1){
+    for(int i=0; i<towers.size();i++){
+        if ((std::abs(t1->getPosition().x - towers.at(i)->getPosition().x ) < 32) && (std::abs(t1->getPosition().y - towers.at(i)->getPosition().y ) < 32)){
+            return true;
+        }
+    }
+    return false;
+}
+
+void MainWindow::checkOrientPlayer(int *orientX, int *orientY)
+{
+    if(player->getRotate()>=0 && player->getRotate()<45 || player->getRotate()>=315 && player->getRotate()<360){
+        *orientX=0;
+        *orientY=64;
+    }else if(player->getRotate()>=45 && player->getRotate()<135){
+        *orientX=-64;
+        *orientY=0;
+    }else if(player->getRotate()>=135 && player->getRotate()<225){
+        *orientX=0;
+        *orientY=-64;
+    }else{
+        *orientX=64;
+        *orientY=0;
     }
 }
 

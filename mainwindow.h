@@ -9,6 +9,7 @@
 #include "menu.h"
 #include "bullet.h"
 #include "sound.h"
+#include "tower.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -24,8 +25,11 @@ class MainWindow : public Containeur
         void rotatePlayer();
         void start();
         bool checkCollisionPlayerZombie(int index);
+        bool checkCollisionPlayerTurret(Tower *);
         bool checkCollisionBulltetZombie(int indexZ, int indexB);
         bool checkCollisionZombieZombie(int indexA, int indexB);
+
+        void checkOrientPlayer(int* orientX, int* orientY);
 
         void drawElements();
         int chosenMenu(sf::Event e);
@@ -52,6 +56,9 @@ class MainWindow : public Containeur
         int posSpawn;                                //Permet de déterminer la position du spawn des zombies
         int numberBullet=0;                     //Permet de limiter le nombre de balles tirées
         int reload=0;
+        std::vector<int> numberBulletTower;
+        bool pressA=false;
+        int turretAnimation=0;
         float healthBase=100;
 
         sf::Clock clock;                        //Timer
@@ -59,6 +66,7 @@ class MainWindow : public Containeur
 
         std::vector<Enemy *> enemies;
         std::vector<Bullet *> bullets;
+        std::vector<Tower *> towers;
         Bullet b1;
 
         sf::Texture mapTexture;

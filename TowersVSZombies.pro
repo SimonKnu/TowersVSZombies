@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     containeur.cpp \
     waitwindow.cpp \
     sound.cpp \
-    tutowindow.cpp
+    tutowindow.cpp \
+    tower.cpp
 
 HEADERS  += mainwindow.h \
     player.h \
@@ -55,6 +56,7 @@ HEADERS  += mainwindow.h \
     containeur.h \
     waitwindow.h \
     sound.h \
-    tutowindow.h
+    tutowindow.h \
+    tower.h
 
 FORMS    += mainwindow.ui
