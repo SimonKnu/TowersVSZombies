@@ -1,5 +1,5 @@
 #include "sound.h"
-
+/*
 Sound* Sound::instance = 0;
 
 Sound::Sound(){
@@ -30,3 +30,4 @@ void Sound::play(int index){
     sounds.at(index).setBuffer(buffers.at(index));
     sounds.at(index).play();
 }
+*/

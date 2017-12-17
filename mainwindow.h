@@ -30,7 +30,7 @@ class MainWindow : public Containeur
 
     private:
         Player *player = Player::getInstance();
-        Sound *sound = Sound::getInstance();
+       // Sound *sound = Sound::getInstance();
 
         Menu *menuReload;
         Menu *menuWave;
