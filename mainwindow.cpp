@@ -116,7 +116,7 @@ void MainWindow::drawElements(){
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
             if(pressA==false){
                 if(towers.size()<3){
-                    if(player->getMoney()>=0){
+                    if(player->getMoney()>=250){
                         int orientX;
                         int orientY;
 
@@ -129,7 +129,7 @@ void MainWindow::drawElements(){
                             towers.push_back(t1);
                             numberBulletTower.push_back(0);
                             turretAnimation.push_back(0);
-                            player->setMoney(-0);
+                            player->setMoney(-250);
                         }
                         pressA=true;
                     }else{
