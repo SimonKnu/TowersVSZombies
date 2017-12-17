@@ -103,6 +103,7 @@ void MainWindow::drawElements(){
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
         this->player->move(this->player->getSpeed(), 0);
     }
+    //Permet de recharger l'arme du player
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
         if(reload!=0){
             clockReload.restart();
@@ -110,13 +111,17 @@ void MainWindow::drawElements(){
             sound->play(3);
         }
     }
+
+    //Permet de sécurisé l'appel de drone (1 pression = un appel)
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)==false){
             pressA=false;
-        }
+    }
+
+    //Permet d'appeler un drone (maximum 3 drones, 1 drone coute 250$)
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
             if(pressA==false){
                 if(towers.size()<3){
-                    if(player->getMoney()>=0){
+                    if(player->getMoney()>=250){
                         int orientX;
                         int orientY;
 
@@ -129,7 +134,7 @@ void MainWindow::drawElements(){
                             towers.push_back(t1);
                             numberBulletTower.push_back(0);
                             turretAnimation.push_back(0);
-                            player->setMoney(-0);
+                            player->setMoney(-250);
                         }
                         pressA=true;
                     }else{
@@ -141,8 +146,7 @@ void MainWindow::drawElements(){
                     menuTurret->changerText("Too many drones called");
                 }
             }
-        }
-
+    }
     if(elapsedTurret.asSeconds()>3){
         menuTurret->changerText("");
     }
@@ -245,7 +249,7 @@ void MainWindow::drawElements(){
         }
     }
 
-    //Calcul de visée des tours
+    //Calcul de visée des drones (attaque l'ennemie le plus proche dans un rayon de 250px
         for(int i=0; i<towers.size(); i++){
             float dist=999999999*999999999;
             float distEnemy;
