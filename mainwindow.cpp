@@ -36,16 +36,16 @@ MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur)
         lifeBase->setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width/2-175,sf::VideoMode::getDesktopMode().height/4-125));
     lifeBase2 = new sf::RectangleShape(sf::Vector2f(0, sf::VideoMode::getDesktopMode().height/120));
         lifeBase2->setFillColor(sf::Color::Black);
-<<<<<<< HEAD
+
         lifeBase2->setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width/2-175+150,sf::VideoMode::getDesktopMode().height/4-125));
-=======
+
         lifeBase2->setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width-175+150,sf::VideoMode::getDesktopMode().height/2-125));
 
     sound->addFile("hitmarker.wav");
     sound->addFile("damage.wav");
     sound->addFile("shot.wav");
     sound->addFile("reload.wav");
->>>>>>> cc6ec64153fa68f208d2ed2eb22e4dad4f6bb6c2
+
 }
 
 MainWindow::~MainWindow(){
