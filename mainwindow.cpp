@@ -95,6 +95,7 @@ bool MainWindow::checkCollisionBulltetZombie(int indexZ, int indexB){
     }
 }
 
+//Détection collision (zombie / zombie)
 bool MainWindow::checkCollisionZombieZombie(int indexA, int indexB){
     if ((std::abs(this->enemies.at(indexA)->getPosition().x  - this->enemies.at(indexB)->getPosition().x ) < 32) && (std::abs(this->enemies.at(indexA)->getPosition().y   - this->enemies.at(indexB)->getPosition().y ) < 32)){
         return true;
@@ -312,12 +313,6 @@ void MainWindow::drawElements(){
             reload=0;
         }
     }
-
-
-
-
-
-
 
     //Mouvement des projectiles
     for (size_t i = 0; i < bullets.size(); i++){
