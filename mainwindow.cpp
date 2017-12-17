@@ -147,6 +147,8 @@ void MainWindow::drawElements(){
                 }
             }
     }
+
+    //permet de désafficher le message d'erreur en rapport avec les drones aprés 3 secondes
     if(elapsedTurret.asSeconds()>3){
         menuTurret->changerText("");
     }
@@ -249,7 +251,7 @@ void MainWindow::drawElements(){
         }
     }
 
-    //Calcul de visée des drones (attaque l'ennemie le plus proche dans un rayon de 250px
+    //Calcul de la visée (orientation) des drones (attaque l'ennemie le plus proche dans un rayon de 250px)
         for(int i=0; i<towers.size(); i++){
             float dist=999999999*999999999;
             float distEnemy;
@@ -257,15 +259,19 @@ void MainWindow::drawElements(){
             float towerEnemyX;
             float towerEnemyY;
             for(int j=0; j<enemies.size();j++){
+                //on récupére la distance entre la tourelle et le zombie j
                 towerEnemyX = enemies.at(j)->getPosition().x - towers.at(i)->getPosition().x;
                 towerEnemyY = enemies.at(j)->getPosition().y - towers.at(i)->getPosition().y;
                 distEnemy = sqrt( towerEnemyX*towerEnemyX + towerEnemyY*towerEnemyY );
+
+                //si la distance est plus petite que celle sauvegardée, on la remplace
                 if(distEnemy<dist){
                     dist=distEnemy;
                     num=j;
                 }
             }
 
+            //Si le zombie le plus proche est à moins de 250px, on oriente le drone vers celui ci et on commence à faire feu
             if(dist<=250){
                 towerEnemyX/=dist;
                 towerEnemyY/=dist;
@@ -275,6 +281,7 @@ void MainWindow::drawElements(){
 
                 float angle = -atan2(towerEnemyX, towerEnemyY)*180/3.14;
                 towers.at(i)->rotate(angle);
+
                 if(numberBulletTower.at(i)%750==0){
                     b1.setShapePosition(towers.at(i)->getPosition());
                     b1.setCurrVelocity(towerEnemy*b1.getMaxSpeed());
@@ -385,6 +392,7 @@ void MainWindow::drawElements(){
     }
 
 
+    //redimensionnage de la map
     float tailleX=1080;
     float tailleY=720;
     float scaleX=tailleX/1920;
@@ -442,7 +450,7 @@ void MainWindow::drawElements(){
         Containeur::getWindow()->draw(this->map);
     }
 
-
+    //affichage du potentiel message d'erreur concernant les drones
     Containeur::getWindow()->draw(menuTurret->getText());
 
     if(elapsedReload.asSeconds()>3){
@@ -490,6 +498,8 @@ void MainWindow::drawElements(){
     for (size_t i = 0; i < bullets.size(); i++){
         Containeur::getWindow()->draw(bullets.at(i)->getShape());
     }
+
+    //affichage des ennemy et gestion de l'animation de ceux ci
     for (size_t j = 0; j < enemies.size(); j++){
         if(ennemyAnimation.at(j)==250){
             enemies.at(j)->changeAnimation();
@@ -498,6 +508,8 @@ void MainWindow::drawElements(){
         ennemyAnimation.at(j)++;
         Containeur::getWindow()->draw(this->enemies.at(j)->getRect());
     }
+
+    //affichage des drones et gestion de l'animation de ceux ci
     for (size_t k = 0; k < towers.size(); k++){
         if(turretAnimation.at(k)==100){
             towers.at(k)->changeAnimation();
@@ -523,6 +535,7 @@ int MainWindow::chosenMenu(sf::Event e){
 
 //********************************************************************************//
 
+//permet d'orienter le joueur vers la position souris
 void MainWindow::rotatePlayer()
 {
     sf::Vector2i mouse;
@@ -545,6 +558,7 @@ bool MainWindow::checkCollisionPlayerZombie(int index){
     }
 }
 
+//Permet d'empécher le joueur de poser un drone sur un autre (gestion de collision entre drones)
 bool MainWindow::checkCollisionPlayerTurret(Tower * t1){
     for(int i=0; i<towers.size();i++){
         if ((std::abs(t1->getPosition().x - towers.at(i)->getPosition().x ) < 32) && (std::abs(t1->getPosition().y - towers.at(i)->getPosition().y ) < 32)){
@@ -554,6 +568,7 @@ bool MainWindow::checkCollisionPlayerTurret(Tower * t1){
     return false;
 }
 
+//Méthode permetant au joueur de poser correctement les drones en fonction de son orientation (N,S,W,E)
 void MainWindow::checkOrientPlayer(int *orientX, int *orientY)
 {
     if(player->getRotate()>=0 && player->getRotate()<45 || player->getRotate()>=315 && player->getRotate()<360){

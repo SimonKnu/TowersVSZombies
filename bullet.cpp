@@ -28,6 +28,7 @@ Bullet& Bullet::operator=(const Bullet &b){
 
 //********************************************************************************//
 
+//gestion de la collision des balles avec les bords de l'écran
 bool Bullet::checkCollisionBorder(){
     if (this->getShape().getPosition().x < 0 ||this->getShape().getPosition().x >1080
             ||this->getShape().getPosition().y < 0 || this->getShape().getPosition().y > 720)

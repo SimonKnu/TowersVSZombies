@@ -38,6 +38,7 @@ void Tower::rotate(float r)
     sprite.setRotation(r);
 }
 
+//permet d'animer les drones
 void Tower::changeAnimation(){
     animation++;
     if(animation>6){

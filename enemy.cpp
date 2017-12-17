@@ -97,6 +97,7 @@ float Enemy::getHealth() const{
     return this->health;
 }
 
+//permet d'animer les zombies
 void Enemy::changeAnimation()
 {
     if(animated){
