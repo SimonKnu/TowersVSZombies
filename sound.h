@@ -2,12 +2,12 @@
 #define SOUND_H
 
 #include <vector>
-//#include <SFML/Audio.hpp>
+#include <SFML/Audio.hpp>
 #include <string>
 
 class Sound
 {
-   /* private:
+    private:
 
         std::vector< sf::SoundBuffer> buffers;
         std::vector< sf::Sound> sounds;
@@ -19,7 +19,7 @@ class Sound
         static Sound* getInstance();
 
         void addFile(std::string txt);
-        void play(int index);*/
+        void play(int index);
 };
 
 #endif // SOUND_H
