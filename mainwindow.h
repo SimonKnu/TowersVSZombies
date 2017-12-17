@@ -22,6 +22,7 @@ class MainWindow : public Containeur
         void start();
         bool checkCollisionPlayerZombie(int index);
         bool checkCollisionBulltetZombie(int indexZ, int indexB);
+        bool checkCollisionZombieZombie(int indexA, int indexB);
 
         void drawElements();
         int chosenMenu(sf::Event e);

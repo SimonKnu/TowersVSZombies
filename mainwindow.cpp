@@ -87,14 +87,20 @@ bool MainWindow::checkCollisionBulltetZombie(int indexZ, int indexB){
     }
 }
 
+bool MainWindow::checkCollisionZombieZombie(int indexA, int indexB){
+    if ((std::abs(this->enemies.at(indexA)->getPosition().x  - this->enemies.at(indexB)->getPosition().x ) < 32) && (std::abs(this->enemies.at(indexA)->getPosition().y   - this->enemies.at(indexB)->getPosition().y ) < 32)){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 
 
 void MainWindow::drawElements(){
 
     int moving=0;
-
-    sf::Vector2f previous;
-    sf::Vector2f previousZombie;
 
     sf::Time elapsed;
     sf::Time elapsedDamage;
@@ -106,9 +112,7 @@ void MainWindow::drawElements(){
 
 
     //Sauvegarde de la position du joueur avant déplacement
-    previous.x = this->player->getPosition().x;
-    previous.y = this->player->getPosition().y;
-
+    this->player->setPreviousPosition();
 
     //Compteur de secondes entre 2 dégats
     elapsedDamage = clock.getElapsedTime();
@@ -160,7 +164,7 @@ void MainWindow::drawElements(){
 
     //Détection de la collision du joueur avec les bords
     if (player->checkCollisionBorder()){
-        this->player->setPosition(previous.x, previous.y);
+        this->player->goBack();
     }
 
 
@@ -173,12 +177,11 @@ void MainWindow::drawElements(){
         //Détection de la collision du joeur
         if (checkCollisionPlayerZombie(i)){
             //Retour a la posiition precedente
-            this->player->setPosition(previous.x, previous.y);
+            this->player->goBack();
         }
 
         //Sauvegarde de la position du zombie avant déplacement
-        previousZombie.x = enemies.at(i)->getPosition().x;
-        previousZombie.y = enemies.at(i)->getPosition().y;
+        enemies.at(i)->setPreviousPosition();
 
         // "INTELLIGENCE ARTIFICIELLE" DES ZOMBIES //
         //IA qui suit le joueur
@@ -218,12 +221,18 @@ void MainWindow::drawElements(){
             enemies.at(i)->move(enemyBaseX,enemyBaseY);
         }
 
+        for (int z=0;z<this->enemies.size();z++){
+            //Détection de la collision d'un zombie avec un autre zombie
+            if(checkCollisionZombieZombie(i,z) && i != z){
+                //Retour a la posiition precedente
+                enemies.at(i)->goBack();
+            }
+        }
 
-
-        //Détection de la collision d'un zombie
+        //Détection de la collision d'un zombie avec le joueur
         if (checkCollisionPlayerZombie(i)){
             //Retour a la posiition precedente
-            enemies.at(i)->setPosition(previousZombie.x, previousZombie.y);
+            enemies.at(i)->goBack();
 
             //Attaque le joueur si un certain temps c'est ecoulé
             if (elapsedDamage.asSeconds() > damageTime){
@@ -274,14 +283,14 @@ void MainWindow::drawElements(){
     }
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-<<<<<<< HEAD
+
         if(numberBullet%200==0){
 
             b1.setShapePosition(player->getPosition());
             b1.setCurrVelocity(aimDirNorm*b1.getMaxSpeed());
             bullets.push_back(new Bullet(b1));
             numberBullet++;
-=======
+        }
         if(reload<30){
             if(elapsedReload.asSeconds()>3){
                 if(numberBullet%200==0){
@@ -296,7 +305,7 @@ void MainWindow::drawElements(){
                     numberBullet++;
                 }
             }
->>>>>>> 1af65dba0e7c11f1ed98dc623aa3dac80eb23597
+
         }
         else {
             clockReload.restart();
