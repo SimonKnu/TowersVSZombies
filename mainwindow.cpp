@@ -39,6 +39,7 @@ MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur)
     sound->addFile("shot.wav");
     sound->addFile("reload.wav");
     sound->addFile("wave.wav");
+    sound->loop(4);
 }
 
 MainWindow::MainWindow(const MainWindow &window):Containeur(window){
@@ -169,8 +170,8 @@ void MainWindow::drawElements(){
             float angle = -atan2( enemyPlayerX , enemyPlayerY) * 180 / 3.14;
             enemies.at(i)->rotate(angle);
 
-            enemyPlayerX *= 0.25; //0.1 = vitesse des zombies
-            enemyPlayerY *= 0.25; //scale to our desired speed
+            enemyPlayerX *= 0.12; //0.12 = vitesse des zombies
+            enemyPlayerY *= 0.12; //scale to our desired speed
             enemies.at(i)->move(enemyPlayerX,enemyPlayerY);
         }
         else {
@@ -181,8 +182,8 @@ void MainWindow::drawElements(){
             float angle = -atan2( enemyBaseX, enemyBaseY) * 180 / 3.14;
             enemies.at(i)->rotate(angle);
 
-            enemyBaseX *= 0.25;
-            enemyBaseY *= 0.25;
+            enemyBaseX *= 0.12;
+            enemyBaseY *= 0.12;
             enemies.at(i)->move(enemyBaseX,enemyBaseY);
         }
 
@@ -317,6 +318,7 @@ void MainWindow::drawElements(){
 
     //Système de manche avec un délai entre les différentes manches. Plus les manches augmentent, plus les zombies sont résistants et nombreux.
     if(enemies.size()==0){
+        sound->pause(4);
         elapsed = clock.getElapsedTime();//Permet de connaitre le temps écouler depuis le lancement de la clock
 
         if(elapsed.asSeconds() <= 15){   //15 secondes de pause entre chaque manche
@@ -335,6 +337,7 @@ void MainWindow::drawElements(){
             Containeur::getWindow()->draw(menuWave->getText());
         }
         else {
+            sound->play(4);
             mob += wave/2;            //On augmente le nombre de zombies en fonction de la manche, plus la manche est élevée, plus il y a des zombies
 
             int spawn = 0;
@@ -352,6 +355,7 @@ void MainWindow::drawElements(){
             changeWave=true;
         }
     }
+
 
 
     //Update de l'affichage de tous les élèments dans la fenetre

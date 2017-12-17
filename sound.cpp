@@ -40,3 +40,10 @@ void Sound::play(int index){
     sounds.at(index).play();
 }
 
+void Sound::loop(int ind){
+    sounds.at(ind).setLoop(true);
+}
+
+void Sound::pause(int ind){
+    sounds.at(ind).pause();
+}

@@ -18,7 +18,7 @@ class Player {
         bool moving;
 
         static Player* instance;
-        Player(int sizeX=64, int sizeY=64, int posX=540, int posY=360, float speed=0.25, float health=100, int money=0);
+        Player(int sizeX=64, int sizeY=64, int posX=540, int posY=360, float speed=0.14, float health=100, int money=0);
 
     public:
         ~Player();

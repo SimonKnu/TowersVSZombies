@@ -103,11 +103,11 @@ int EndWindow::chosenMenu(sf::Event e){
     if(e.key.code == sf::Keyboard::Return){
         switch (compteur) {
             case 0:
-                return 6;                           //Restart
+                return 7;                           //Restart
             break;
 
             case 1:
-                return 7;                           //Retour au menu principal
+                return 6;                           //Retour au menu principal
             break;
         }
     }

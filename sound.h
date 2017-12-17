@@ -20,6 +20,8 @@ class Sound
 
         void addFile(std::string txt);
         void play(int index);
+        void loop(int play);
+        void pause(int ind);
 };
 
 #endif // SOUND_H
