@@ -388,7 +388,7 @@ void MainWindow::drawElements(){
                     case 3 : enemies.push_back(new Enemy(64,64,spawn-16,450,0.15,100,10));break;
                     case 4 : enemies.push_back(new Enemy(64,64,spawn,600,0.15,100,10));break;
                 }
-                spawn -= 32;            //On décrémente le spawn pour pas que les zombies spawn en étant collés
+                spawn -= 48;            //On décrémente le spawn pour pas que les zombies spawn en étant collés
             }
             changeWave=true;
         }
