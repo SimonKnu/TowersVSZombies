@@ -29,20 +29,27 @@ class MainWindow : public Containeur
     private:
         Player *player = Player::getInstance();
 
-        Menu menuWave;
-        Menu menuMoney;
+        Menu *menuReload;
+        Menu *menuWave;
+        Menu *menuMoney;
+        Menu *menuHealth;
 
-        sf::RectangleShape lifeBar;
-        sf::RectangleShape lifeBar2;
+        sf::RectangleShape *lifeBase;
+        sf::RectangleShape *lifeBase2;
 
-        bool endgame =false;                    //Permet de savoir si la game est terminée (Joueur mort ou base morte)
+        sf::RectangleShape *lifeBar;
+        sf::RectangleShape *lifeBar2;
+
         int wave=0;                           //Permet de compter le nombre de manches
         int mob=5;                              //Permet de savoir le nombre de montres à faire apparaitre
         bool changeWave=true;             //Permet de savoir si on change de manche pour déclancher la pause
         int posSpawn;                                //Permet de déterminer la position du spawn des zombies
         int numberBullet=0;                     //Permet de limiter le nombre de balles tirées
+        int reload=0;
+        float healthBase=100;
 
         sf::Clock clock;                        //Timer
+        sf::Clock clockReload;
 
         std::vector<Enemy *> enemies;
         std::vector<Bullet *> bullets;

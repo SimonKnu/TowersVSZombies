@@ -10,7 +10,7 @@ class EndWindow : public Containeur
 {
     private :
         std::vector<Menu *> menus;
-        int compteur=0;
+        int compteur=1;
 
     public :
         EndWindow(sf::RenderWindow * containeur);

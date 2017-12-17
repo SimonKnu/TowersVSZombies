@@ -10,18 +10,32 @@
 //-----------------------------------------------------------------------//
                             //FORME CANONIQUE//
 
-MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur), menuWave("",sf::VideoMode::getDesktopMode().width/2,sf::VideoMode::getDesktopMode().height/2),menuMoney("",sf::VideoMode::getDesktopMode().width/16,sf::VideoMode::getDesktopMode().height/(600/575)-32){
+MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur)
+{
     mapTexture.loadFromFile("map.png");
     map.setTexture(mapTexture);
 
+    menuWave = new Menu("",sf::VideoMode::getDesktopMode().width/2,sf::VideoMode::getDesktopMode().height/2);
+    menuMoney= new Menu("0 $",sf::VideoMode::getDesktopMode().width/16,sf::VideoMode::getDesktopMode().height/(600/50)-32);
+    menuReload= new Menu("Amo : 30/30",sf::VideoMode::getDesktopMode().width/16,sf::VideoMode::getDesktopMode().height/(600/575)-32);
+    menuHealth= new Menu("Health : ",sf::VideoMode::getDesktopMode().width/6*5+150-50,sf::VideoMode::getDesktopMode().height/(600/50)-35);
 
-    lifeBar =sf::RectangleShape(sf::Vector2f(sf::VideoMode::getDesktopMode().width/(80/15), sf::VideoMode::getDesktopMode().height/60));
-    lifeBar.setFillColor(sf::Color::Red);
-    lifeBar.setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width/6*5,sf::VideoMode::getDesktopMode().height/(600/575)-32));
+    lifeBar = new sf::RectangleShape(sf::Vector2f(sf::VideoMode::getDesktopMode().width/(80/15), sf::VideoMode::getDesktopMode().height/60));
+        lifeBar->setFillColor(sf::Color::Red);
+        lifeBar->setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width/6*5+150,sf::VideoMode::getDesktopMode().height/(600/50)-32));
+    lifeBar2 = new sf::RectangleShape(sf::Vector2f(0, sf::VideoMode::getDesktopMode().height/60));
+        lifeBar2->setFillColor(sf::Color::Black);
+        lifeBar2->setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width/6*5+150+150,sf::VideoMode::getDesktopMode().height/(600/50)-32));
 
-    lifeBar2 =sf::RectangleShape(sf::Vector2f(0, sf::VideoMode::getDesktopMode().height/60));
-    lifeBar2.setFillColor(sf::Color::White);
-    lifeBar2.setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width/6*5+150,sf::VideoMode::getDesktopMode().height/(600/575)-32));
+
+
+
+    lifeBase = new sf::RectangleShape(sf::Vector2f(sf::VideoMode::getDesktopMode().width/(80/15), sf::VideoMode::getDesktopMode().height/60));
+        lifeBase->setFillColor(sf::Color::Red);
+        lifeBase->setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width-175,sf::VideoMode::getDesktopMode().height/2-125));
+    lifeBase2 = new sf::RectangleShape(sf::Vector2f(0, sf::VideoMode::getDesktopMode().height/60));
+        lifeBase2->setFillColor(sf::Color::Black);
+        lifeBase2->setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width-175+150,sf::VideoMode::getDesktopMode().height/2-125));
 }
 
 MainWindow::~MainWindow(){
@@ -76,6 +90,7 @@ bool MainWindow::checkCollisionBulltetZombie(int indexZ, int indexB){
 
 
 void MainWindow::drawElements(){
+
     int moving=0;
 
     sf::Vector2f previous;
@@ -83,7 +98,8 @@ void MainWindow::drawElements(){
 
     sf::Time elapsed;
     sf::Time elapsedDamage;
-    sf::Time elapsedEnd;
+    sf::Time elapsedReload;
+
     std::srand(std::time(0));
 
     int damageTime = 1; //temps(seconde) entre les degats
@@ -96,7 +112,7 @@ void MainWindow::drawElements(){
 
     //Compteur de secondes entre 2 dégats
     elapsedDamage = clock.getElapsedTime();
-
+    elapsedReload = clockReload.getElapsedTime();
 
 
     this->player->setMoving(false);
@@ -114,6 +130,13 @@ void MainWindow::drawElements(){
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
         this->player->move(this->player->getSpeed(), 0);
     }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
+        if(reload!=0){
+            clockReload.restart();
+            reload=0;
+        }
+    }
+
 
     //Permet d'animer le personnage lorsqu'il marche
     if(player->getMoving()){
@@ -140,6 +163,10 @@ void MainWindow::drawElements(){
         this->player->setPosition(previous.x, previous.y);
     }
 
+
+
+    float destroyBaseX = sf::VideoMode::getDesktopMode().width -10;
+    float destroyBaseY = sf::VideoMode::getDesktopMode().height/2 -10;
     //Gestion des zombie (déplacment, attaque)
     for (int i=0;i<this->enemies.size();i++){
 
@@ -170,15 +197,24 @@ void MainWindow::drawElements(){
         if(lengthEnemyBase>lengthEnemyPlayer){
             enemyPlayerX /= lengthEnemyPlayer;
             enemyPlayerY /= lengthEnemyPlayer; // normalize (make it 1 unit length) ---> Source : https://mike.newgrounds.com/news/post/265836 ---> PS : Il ressemble à Mr.Colmant
-            enemyPlayerX *= 0.01; //0.1 = vitesse des zombies
-            enemyPlayerY *= 0.01; //scale to our desired speed
+
+            float angle = -atan2( enemyPlayerX , enemyPlayerY) * 180 / 3.14;
+            enemies.at(i)->rotate(angle);
+
+            enemyPlayerX *= 0.25; //0.1 = vitesse des zombies
+            enemyPlayerY *= 0.25; //scale to our desired speed
             enemies.at(i)->move(enemyPlayerX,enemyPlayerY);
         }
         else {
+
             enemyBaseX /= lengthEnemyBase;
             enemyBaseY /= lengthEnemyBase;
-            enemyBaseX *= 0.01;
-            enemyBaseY *= 0.01;
+
+            float angle = -atan2( enemyBaseX, enemyBaseY) * 180 / 3.14;
+            enemies.at(i)->rotate(angle);
+
+            enemyBaseX *= 0.25;
+            enemyBaseY *= 0.25;
             enemies.at(i)->move(enemyBaseX,enemyBaseY);
         }
 
@@ -197,6 +233,24 @@ void MainWindow::drawElements(){
         }
     }
 
+    //Supprime zombie s'il est dans la base
+    if(enemies.empty() == false) {
+        for(int k = enemies.size() - 1; k >= 0; k--) {
+            if(enemies.at(k)->getPosition().x >= destroyBaseX   &&   enemies.at(k)->getPosition().y >= destroyBaseY){
+                enemies.erase( enemies.begin() + k );
+
+                healthBase-=10;
+
+                if(healthBase<=0){
+                    player->setHealth(0);
+                }
+
+                if(enemies.size()==0){
+                    clock.restart();
+                }
+            }
+        }
+    }
 
     // "CALCULER LA POSITION DE LA SOURIS" (vers la souris) //
     //récupération de la position de la souris
@@ -220,16 +274,28 @@ void MainWindow::drawElements(){
     }
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-        if(numberBullet%200==0){
-            b1.setShapePosition(player->getPosition());
-            b1.setCurrVelocity(aimDirNorm*b1.getMaxSpeed());
-            bullets.push_back(new Bullet(b1));
-            numberBullet++;
+        if(reload<30){
+            if(elapsedReload.asSeconds()>3){
+                if(numberBullet%200==0){
+                    reload+=1;
+
+                    b1.setShapePosition(player->getPosition());
+                    b1.setCurrVelocity(aimDirNorm*b1.getMaxSpeed());
+                    bullets.push_back(new Bullet(b1));
+                    numberBullet++;
+                }
+                else{
+                    numberBullet++;
+                }
+            }
         }
-        else{
-            numberBullet++;
+        else {
+            clockReload.restart();
+            reload=0;
         }
     }
+
+
 
     //Mouvement des projectiles
     for (size_t i = 0; i < bullets.size(); i++){
@@ -263,6 +329,14 @@ void MainWindow::drawElements(){
     }
 
 
+    float tailleX=sf::VideoMode::getDesktopMode().width;
+    float tailleY=sf::VideoMode::getDesktopMode().height;
+    float scaleX=tailleX/1920;
+    float scaleY=tailleY/1080;
+    map.setScale(scaleX, scaleY);
+    Containeur::getWindow()->draw(this->map);
+
+
     //Système de manche avec un délai entre les différentes manches. Plus les manches augmentent, plus les zombies sont résistants et nombreux.
     if(enemies.size()==0){
         elapsed = clock.getElapsedTime();//Permet de connaitre le temps écouler depuis le lancement de la clock
@@ -273,13 +347,14 @@ void MainWindow::drawElements(){
 
                 std::stringstream ss;    //Permet de set le menu permettant d'afficher le nombre de manche à l'écran
                 ss<<"Wave "<<wave;
-                menuWave.changerText(ss.str());
+                menuWave->changerText(ss.str());
 
                 changeWave=false;
             }
             //Permet d'afficher l'info sur la manche suivante à l'écran
             Containeur::getWindow()->clear();
-            Containeur::getWindow()->draw(menuWave.getText());
+            Containeur::getWindow()->draw(this->map);
+            Containeur::getWindow()->draw(menuWave->getText());
         }
         else {
             mob += wave/2;            //On augmente le nombre de zombies en fonction de la manche, plus la manche est élevée, plus il y a des zombies
@@ -288,60 +363,65 @@ void MainWindow::drawElements(){
             for(int i=0;i<mob;i++){
                 posSpawn = std::rand()%5;    //On crée des "spawneur" ou les montres peuvent apparaitre
                 switch(posSpawn){
-                    case 0 : enemies.push_back(new Enemy(64,64,spawn,0,0.1,100,10));break;
-                    case 1 : enemies.push_back(new Enemy(64,64,spawn-16,150,0.1,100,10));break;
-                    case 2 : enemies.push_back(new Enemy(64,64,spawn-32,300,0.1,100,10));break;
-                    case 3 : enemies.push_back(new Enemy(64,64,spawn-16,450,0.1,100,10));break;
-                    case 4 : enemies.push_back(new Enemy(64,64,spawn,600,0.1,100,10));break;
+                    case 0 : enemies.push_back(new Enemy(64,64,spawn,0,0.15,100,10));break;
+                    case 1 : enemies.push_back(new Enemy(64,64,spawn-16,150,0.15,100,10));break;
+                    case 2 : enemies.push_back(new Enemy(64,64,spawn-32,300,0.15,100,10));break;
+                    case 3 : enemies.push_back(new Enemy(64,64,spawn-16,450,0.15,100,10));break;
+                    case 4 : enemies.push_back(new Enemy(64,64,spawn,600,0.15,100,10));break;
                 }
                 spawn -= 32;            //On décrémente le spawn pour pas que les zombies spawn en étant collés
             }
             changeWave=true;
         }
     }
-    for(int i=0;i<enemies.size();i++){
-        a = player->getPosition().x - enemies.at(i)->getPosition().x;
-        b = player->getPosition().y - enemies.at(i)->getPosition().y;
-        sf::Vector2f aimDir = sf::Vector2f(a, b);
-
-        //calcule de l'angle de rotation afin de pointer vers la souris
-        sf::Vector2f aimDirNorm;
-        aimDirNorm.x = aimDir.x / sqrt(pow(aimDir.x, 2) + pow(aimDir.y, 2));
-        aimDirNorm.y = aimDir.y / sqrt(pow(aimDir.x, 2) + pow(aimDir.y, 2));
-
-        float angle = -atan2( a , b) * 180 / 3.14;
-        enemies.at(i)->rotate(angle);
-    }
 
 
     //Update de l'affichage de tous les élèments dans la fenetre
     if(changeWave){
         Containeur::getWindow()->clear();
+        Containeur::getWindow()->draw(this->map);
     }
-    //map.setTexture(mapTexture);
-    //map.setScale(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
-    //map.setScale(1.759853345554, 1);
-    float tailleX=sf::VideoMode::getDesktopMode().width;
-    float tailleY=sf::VideoMode::getDesktopMode().height;
-    float scaleX=tailleX/1920;
-    float scaleY=tailleY/1080;
-    map.setScale(scaleX, scaleY);
-    Containeur::getWindow()->draw(this->map);
+
+
+
+    if(elapsedReload.asSeconds()>3){
+        std::stringstream ss;
+        ss<<"Amo : "<<30-reload<<"/30";
+        menuReload->changerText(ss.str());
+    }
+    else {
+        menuReload->changerText("Amo : Reloading...");
+    }
+
 
     //Affichage argent
     std::stringstream ss;
     ss<<this->player->getMoney()<<" $";
-    menuMoney.changerText(ss.str());
-    Containeur::getWindow()->draw(menuMoney.getText());
+    menuMoney->changerText(ss.str());
+    Containeur::getWindow()->draw(menuMoney->getText());
+
+    ss.str();
+
+
+    Containeur::getWindow()->draw(menuReload->getText());
+
 
     //Affichage bar de vie
+    Containeur::getWindow()->draw(menuHealth->getText());
     float lifeBarSize = this->player->getHealth()/100*150; //Calcul pour déterminer la taille de la barre de vie
+    lifeBar->setSize(sf::Vector2f(lifeBarSize, 10));
+    lifeBar2->setSize(sf::Vector2f(lifeBarSize-150,10));
 
-    lifeBar.setSize(sf::Vector2f(lifeBarSize, 10));
-    Containeur::getWindow()->draw(lifeBar);
+    Containeur::getWindow()->draw(*lifeBar);
+    Containeur::getWindow()->draw(*lifeBar2);
 
-    lifeBar2.setSize(sf::Vector2f(lifeBarSize-150,10));
-    Containeur::getWindow()->draw(lifeBar2);
+
+    float lifeBarBase = healthBase/100*150; //Calcul pour déterminer la taille de la barre de vie
+    lifeBase->setSize(sf::Vector2f(lifeBarBase, 10));
+    lifeBase2->setSize(sf::Vector2f(lifeBarBase-150,10));
+    Containeur::getWindow()->draw(*lifeBase);
+    Containeur::getWindow()->draw(*lifeBase2);
+
 
     Containeur::getWindow()->draw(this->player->getRect());
 
@@ -356,7 +436,6 @@ void MainWindow::drawElements(){
     //Fin de jeu
     if(this->player->getHealth()<=0){
         this->player->setFinalWave(wave);
-        endgame=true;
     }
 
 }
@@ -366,11 +445,5 @@ int MainWindow::chosenMenu(sf::Event e){
     if(e.key.code == sf::Keyboard::Escape){
         return 3;
     }
-    if(endgame){
-        return 4;
-    }
     return 1;
 }
-
-
-
