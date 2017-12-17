@@ -12,11 +12,12 @@ MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur)
     mapTexture.loadFromFile("map.png");
     map.setTexture(mapTexture);
 
-    menuWave = new Menu("",1080/2,720/2);
+    menuWave = new Menu("",1080/2,720/(600/50)-32);
     menuMoney= new Menu("0 $",1080/16,720/(600/50)-32);
     menuReload= new Menu("Amo : 30/30",1080/8,720/(600/575)-32);
     menuHealth= new Menu("Health : ",1080/8*5+150-50,720/(600/50)-32);
     menuBase= new Menu("Base : ",1080/8*5+150-50,720/(600/575)-32);
+    menuTurret= new Menu("",540,360);
 
 
     lifeBar = new sf::RectangleShape(sf::Vector2f(1080/(80/15), 720/60));
@@ -71,6 +72,7 @@ void MainWindow::drawElements(){
     sf::Time elapsed;
     sf::Time elapsedDamage;
     sf::Time elapsedReload;
+    sf::Time elapsedTurret;
 
     std::srand(std::time(0));
 
@@ -82,6 +84,7 @@ void MainWindow::drawElements(){
     //Compteur de secondes entre 2 dégats
     elapsedDamage = clock.getElapsedTime();
     elapsedReload = clockReload.getElapsedTime();
+    elapsedTurret = clockTurret.getElapsedTime();
 
 
     this->player->setMoving(false);
@@ -112,26 +115,37 @@ void MainWindow::drawElements(){
         }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
             if(pressA==false){
-                //if(towers.size()<3 && player->getMoney()>=0){
-                    int orientX;
-                    int orientY;
+                if(towers.size()<3){
+                    if(player->getMoney()>=0){
+                        int orientX;
+                        int orientY;
 
-                    checkOrientPlayer(&orientX, &orientY);
+                        checkOrientPlayer(&orientX, &orientY);
 
-                    int posXTower = player->getPosition().x+orientX;
-                    int posYTower = player->getPosition().y+orientY;
-                    Tower* t1 = new Tower(64, 64, posXTower, posYTower);
-                    if(!checkCollisionPlayerTurret(t1)){
-                        towers.push_back(t1);
-                        numberBulletTower.push_back(0);
-                        turretAnimation.push_back(0);
-                        player->setMoney(-0);
+                        int posXTower = player->getPosition().x+orientX;
+                        int posYTower = player->getPosition().y+orientY;
+                        Tower* t1 = new Tower(64, 64, posXTower, posYTower);
+                        if(!checkCollisionPlayerTurret(t1)){
+                            towers.push_back(t1);
+                            numberBulletTower.push_back(0);
+                            turretAnimation.push_back(0);
+                            player->setMoney(-0);
+                        }
+                        pressA=true;
+                    }else{
+                        clockTurret.restart();
+                        menuTurret->changerText("No enough money to call a drone");
                     }
-                    pressA=true;
-                //}
+                }else{
+                    clockTurret.restart();
+                    menuTurret->changerText("Too many drones called");
+                }
             }
         }
 
+    if(elapsedTurret.asSeconds()>3){
+        menuTurret->changerText("");
+    }
 
     //Permet d'animer le personnage lorsqu'il marche
     if(player->getMoving()){
@@ -425,6 +439,7 @@ void MainWindow::drawElements(){
     }
 
 
+    Containeur::getWindow()->draw(menuTurret->getText());
 
     if(elapsedReload.asSeconds()>3){
         std::stringstream ss;

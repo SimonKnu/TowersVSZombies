@@ -43,6 +43,7 @@ class MainWindow : public Containeur
         Menu *menuMoney;
         Menu *menuHealth;
         Menu *menuBase;
+        Menu *menuTurret;
 
         sf::RectangleShape *lifeBase;
         sf::RectangleShape *lifeBase2;
@@ -65,6 +66,7 @@ class MainWindow : public Containeur
 
         sf::Clock clock;                        //Timer
         sf::Clock clockReload;
+        sf::Clock clockTurret;
 
         std::vector<Enemy *> enemies;
         std::vector<Bullet *> bullets;
