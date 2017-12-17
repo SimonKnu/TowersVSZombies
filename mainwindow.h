@@ -58,7 +58,9 @@ class MainWindow : public Containeur
         int reload=0;
         std::vector<int> numberBulletTower;
         bool pressA=false;
-        int turretAnimation=0;
+        std::vector<int> turretAnimation;
+        std::vector<int> ennemyAnimation;
+        int movingAnimation=0;
         float healthBase=100;
 
         sf::Clock clock;                        //Timer

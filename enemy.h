@@ -9,6 +9,7 @@ class Enemy {
         float speed;
         float health;
         float damage;
+        bool animated;
         sf::Texture texture;
         sf::Sprite sprite;
         sf::Vector2f previousPosition;
@@ -29,6 +30,7 @@ class Enemy {
         sf::Vector2f getPosition();
         void setHealth(const float damage);
         float getHealth() const;
+        void changeAnimation();
 
         void setPreviousPosition();
         void goBack();

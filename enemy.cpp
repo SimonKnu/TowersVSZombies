@@ -16,6 +16,7 @@ Enemy::Enemy(int sizeX, int sizeY, int posX, int posY, float speed, float health
     this->speed=speed;
     this->health=health;
     this->damage=damage;
+    this->animated=false;
 }
 
 Enemy::Enemy(const Enemy &p){
@@ -94,6 +95,25 @@ void Enemy::setHealth(const float damage){
 
 float Enemy::getHealth() const{
     return this->health;
+}
+
+void Enemy::changeAnimation()
+{
+    if(animated){
+        if(!texture.loadFromFile("zombie.png")){
+            std::cout<< "erreur de chargement du sprite!" << std::endl;
+        }else{
+            sprite.setTexture(texture);
+        }
+        animated=false;
+    }else{
+        if(!texture.loadFromFile("zombie_bis.png")){
+            std::cout<< "erreur de chargement du sprite!" << std::endl;
+        }else{
+            sprite.setTexture(texture);
+        }
+        animated=true;
+    }
 }
 
 

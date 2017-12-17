@@ -68,8 +68,6 @@ MainWindow& MainWindow::operator=(const MainWindow& window){
 //********************************************************************************//
 
 void MainWindow::drawElements(){
-    int moving=0;
-
     sf::Time elapsed;
     sf::Time elapsedDamage;
     sf::Time elapsedReload;
@@ -109,9 +107,12 @@ void MainWindow::drawElements(){
             sound->play(3);
         }
     }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)==false){
+            pressA=false;
+        }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
             if(pressA==false){
-                if(towers.size()<3 && player->getMoney()>=0){
+                //if(towers.size()<3 && player->getMoney()>=0){
                     int orientX;
                     int orientY;
 
@@ -123,31 +124,32 @@ void MainWindow::drawElements(){
                     if(!checkCollisionPlayerTurret(t1)){
                         towers.push_back(t1);
                         numberBulletTower.push_back(0);
+                        turretAnimation.push_back(0);
                         player->setMoney(-0);
                     }
                     pressA=true;
-                }
+                //}
             }
         }
 
 
     //Permet d'animer le personnage lorsqu'il marche
     if(player->getMoving()){
-        if(moving<500){
+        if(movingAnimation<250){
             player->setTexture(1);
-            moving++;
+            movingAnimation++;
         }
-        else if(moving<1000){
+        else if(movingAnimation<500){
             player->setTexture(2);
-            moving++;
+            movingAnimation++;
         }
         else{
-            moving=0;
+            movingAnimation=0;
         }
     }
     else{
         player->setTexture(0);
-        moving=0;
+        movingAnimation=0;
     }
 
     //Détection de la collision du joueur avec les bords
@@ -407,6 +409,7 @@ void MainWindow::drawElements(){
                     case 3 : enemies.push_back(new Enemy(64,64,spawn-16,450,0.15,100,10));break;
                     case 4 : enemies.push_back(new Enemy(64,64,spawn,600,0.15,100,10));break;
                 }
+                ennemyAnimation.push_back(0);
                 spawn -= 48;            //On décrémente le spawn pour pas que les zombies spawn en étant collés
             }
             changeWave=true;
@@ -469,14 +472,19 @@ void MainWindow::drawElements(){
         Containeur::getWindow()->draw(bullets.at(i)->getShape());
     }
     for (size_t j = 0; j < enemies.size(); j++){
+        if(ennemyAnimation.at(j)==250){
+            enemies.at(j)->changeAnimation();
+            ennemyAnimation.at(j)=0;
+        }
+        ennemyAnimation.at(j)++;
         Containeur::getWindow()->draw(this->enemies.at(j)->getRect());
     }
     for (size_t k = 0; k < towers.size(); k++){
-        if(turretAnimation==100){
+        if(turretAnimation.at(k)==100){
             towers.at(k)->changeAnimation();
-            turretAnimation=0;
+            turretAnimation.at(k)=0;
         }
-        turretAnimation++;
+        turretAnimation.at(k)++;
         Containeur::getWindow()->draw(this->towers.at(k)->getSprite());
     }
 
