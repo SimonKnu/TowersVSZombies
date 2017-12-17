@@ -117,10 +117,10 @@ void MainWindow::drawElements(){
             pressA=false;
     }
 
-    //Permet d'appeler un drone (maximum 3 drones, 1 drone coute 250$)
+    //Permet d'appeler un drone (maximum 10 drones, 1 drone coute 250$)
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
             if(pressA==false){
-                if(towers.size()<3){
+                if(towers.size()<10){
                     if(player->getMoney()>=250){
                         int orientX;
                         int orientY;
