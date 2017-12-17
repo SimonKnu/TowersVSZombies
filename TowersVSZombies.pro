@@ -40,7 +40,8 @@ SOURCES += main.cpp\
     endwindow.cpp \
     aboutwindow.cpp \
     containeur.cpp \
-    waitwindow.cpp
+    waitwindow.cpp \
+    sound.cpp
 
 HEADERS  += mainwindow.h \
     player.h \
@@ -51,6 +52,7 @@ HEADERS  += mainwindow.h \
     endwindow.h \
     aboutwindow.h \
     containeur.h \
-    waitwindow.h
+    waitwindow.h \
+    sound.h
 
 FORMS    += mainwindow.ui

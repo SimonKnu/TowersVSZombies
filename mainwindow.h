@@ -8,8 +8,10 @@
 #include "enemy.h"
 #include "menu.h"
 #include "bullet.h"
+#include "sound.h"
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 class MainWindow : public Containeur
 {
@@ -29,6 +31,7 @@ class MainWindow : public Containeur
 
     private:
         Player *player = Player::getInstance();
+        Sound *sound = Sound::getInstance();
 
         Menu *menuReload;
         Menu *menuWave;
@@ -58,6 +61,9 @@ class MainWindow : public Containeur
 
         sf::Texture mapTexture;
         sf::Sprite map;
+
+        sf::SoundBuffer buffer;
+        std::vector< sf::Sound> sounds;
 
 };
 
