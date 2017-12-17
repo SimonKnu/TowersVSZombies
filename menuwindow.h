@@ -15,7 +15,9 @@ class MenuWindow : public Containeur
 
     public:
         MenuWindow(sf::RenderWindow * containeur);
+        MenuWindow(const MenuWindow &window);
         ~MenuWindow();
+        MenuWindow& operator=(const MenuWindow& window);
 
         void drawElements();
         int chosenMenu(sf::Event e);

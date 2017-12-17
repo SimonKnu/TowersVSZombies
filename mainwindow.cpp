@@ -5,11 +5,7 @@
 #include <cstdlib>
 #include <sstream>
 
-
-
-
-//-----------------------------------------------------------------------//
-                            //FORME CANONIQUE//
+//********************************************************************************//
 
 MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur)
 {
@@ -20,6 +16,8 @@ MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur)
     menuMoney= new Menu("0 $",1080/16,720/(600/50)-32);
     menuReload= new Menu("Amo : 30/30",1080/8,720/(600/575)-32);
     menuHealth= new Menu("Health : ",1080/8*5+150-50,720/(600/50)-32);
+    menuBase= new Menu("Base : ",1080/8*5+150-50,720/(600/575)-32);
+
 
     lifeBar = new sf::RectangleShape(sf::Vector2f(1080/(80/15), 720/60));
         lifeBar->setFillColor(sf::Color::Red);
@@ -29,22 +27,24 @@ MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur)
         lifeBar2->setPosition(sf::Vector2f(1080/8*5+150+150,720/(600/50)-32));
 
 
-
-
     lifeBase = new sf::RectangleShape(sf::Vector2f(1080/(80/15), 720/60));
         lifeBase->setFillColor(sf::Color::Red);
-        lifeBase->setPosition(sf::Vector2f(1080-175,720/2-125));
+        lifeBase->setPosition(sf::Vector2f(1080/8*5+150,720/(600/575)-32));
     lifeBase2 = new sf::RectangleShape(sf::Vector2f(0, 720/60));
         lifeBase2->setFillColor(sf::Color::Black);
-
-        lifeBase2->setPosition(sf::Vector2f(1080-175+150,720/2-125));
+        lifeBase2->setPosition(sf::Vector2f(1080/8*5+150+150,720/(600/575)-32));
 
     sound->addFile("hitmarker.wav");
     sound->addFile("damage.wav");
     sound->addFile("shot.wav");
     sound->addFile("reload.wav");
+    sound->addFile("wave.wav");
+}
+
+MainWindow::MainWindow(const MainWindow &window):Containeur(window){
 
 }
+
 
 MainWindow::~MainWindow(){
     delete player;
@@ -57,58 +57,16 @@ MainWindow::~MainWindow(){
     enemies.clear();
 }
 
-
-
-//-----------------------------------------------------------------------//
-
-
-
-void MainWindow::rotatePlayer()
-{
-    sf::Vector2i mouse;
-
-    double a = mouse.x - player->getOrigin().x;
-    double b = mouse.y - player->getOrigin().y;
-
-    mouse = sf::Mouse::getPosition(*Containeur::getWindow());
-    float angle = -atan2( a , b) * 180 / 3.14;
-    this->player->rotate(angle);
+MainWindow& MainWindow::operator=(const MainWindow& window){
+    if(this!=&window){
+        Containeur::operator=(window);
+    }
+    return *this;
 }
 
-//Détection collision (joueur / zombie)
-bool MainWindow::checkCollisionPlayerZombie(int index){
-    if ((std::abs(this->player->getPosition().x - this->enemies.at(index)->getPosition().x ) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(index)->getPosition().y ) < 32)){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
-
-//Détection collision (zombie / balle)
-bool MainWindow::checkCollisionBulltetZombie(int indexZ, int indexB){
-    if ((std::abs(bullets[indexB]->getShape().getPosition().x - this->enemies.at(indexZ)->getPosition().x ) < 32) &&(std::abs(bullets[indexB]->getShape().getPosition().y - this->enemies.at(indexZ)->getPosition().y)) < 32){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
-
-//Détection collision (zombie / zombie)
-bool MainWindow::checkCollisionZombieZombie(int indexA, int indexB){
-    if ((std::abs(this->enemies.at(indexA)->getPosition().x  - this->enemies.at(indexB)->getPosition().x ) < 32) && (std::abs(this->enemies.at(indexA)->getPosition().y   - this->enemies.at(indexB)->getPosition().y ) < 32)){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
-
-
+//********************************************************************************//
 
 void MainWindow::drawElements(){
-
     int moving=0;
 
     sf::Time elapsed;
@@ -119,7 +77,6 @@ void MainWindow::drawElements(){
 
     int damageTime = 1; //temps(seconde) entre les degats
 
-
     //Sauvegarde de la position du joueur avant déplacement
     this->player->setPreviousPosition();
 
@@ -129,6 +86,7 @@ void MainWindow::drawElements(){
 
 
     this->player->setMoving(false);
+
 
     //Permet de bouger le personnage à gauche/droite/bas/haut
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z)){
@@ -147,6 +105,7 @@ void MainWindow::drawElements(){
         if(reload!=0){
             clockReload.restart();
             reload=0;
+            sound->play(3);
         }
     }
 
@@ -408,7 +367,7 @@ void MainWindow::drawElements(){
         ss<<"Amo : "<<30-reload<<"/30";
         menuReload->changerText(ss.str());
     }
-    else { 
+    else {
         menuReload->changerText("Amo : Reloading...");
     }
 
@@ -435,7 +394,8 @@ void MainWindow::drawElements(){
     Containeur::getWindow()->draw(*lifeBar2);
 
 
-    float lifeBarBase = healthBase/100*150; //Calcul pour déterminer la taille de la barre de vie
+    float lifeBarBase = healthBase/100*150; //Calcul pour déterminer la taille de la barre de vie de la base
+    Containeur::getWindow()->draw(menuBase->getText());
     lifeBase->setSize(sf::Vector2f(lifeBarBase, 10));
     lifeBase2->setSize(sf::Vector2f(lifeBarBase-150,10));
     Containeur::getWindow()->draw(*lifeBase);
@@ -459,10 +419,53 @@ void MainWindow::drawElements(){
 
 }
 
-
 int MainWindow::chosenMenu(sf::Event e){
     if(e.key.code == sf::Keyboard::Escape){
         return 3;
     }
     return 1;
+}
+
+//********************************************************************************//
+
+void MainWindow::rotatePlayer()
+{
+    sf::Vector2i mouse;
+
+    double a = mouse.x - player->getOrigin().x;
+    double b = mouse.y - player->getOrigin().y;
+
+    mouse = sf::Mouse::getPosition(*Containeur::getWindow());
+    float angle = -atan2( a , b) * 180 / 3.14;
+    this->player->rotate(angle);
+}
+
+//Détection collision (joueur / zombie)
+bool MainWindow::checkCollisionPlayerZombie(int index){
+    if ((std::abs(this->player->getPosition().x - this->enemies.at(index)->getPosition().x ) < 32) && (std::abs(this->player->getPosition().y  - this->enemies.at(index)->getPosition().y ) < 32)){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+//Détection collision (zombie / balle)
+bool MainWindow::checkCollisionBulltetZombie(int indexZ, int indexB){
+    if ((std::abs(bullets[indexB]->getShape().getPosition().x - this->enemies.at(indexZ)->getPosition().x ) < 32) &&(std::abs(bullets[indexB]->getShape().getPosition().y - this->enemies.at(indexZ)->getPosition().y)) < 32){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+//Détection collision (zombie / zombie)
+bool MainWindow::checkCollisionZombieZombie(int indexA, int indexB){
+    if ((std::abs(this->enemies.at(indexA)->getPosition().x  - this->enemies.at(indexB)->getPosition().x ) < 32) && (std::abs(this->enemies.at(indexA)->getPosition().y   - this->enemies.at(indexB)->getPosition().y ) < 32)){
+        return true;
+    }
+    else{
+        return false;
+    }
 }

@@ -2,24 +2,45 @@
 #include "player.h"
 #include <sstream>
 
+//********************************************************************************//
+
 EndWindow::EndWindow(sf::RenderWindow *containeur):Containeur(containeur)
 {
-    menus.push_back(new Menu("Restart",1080/1.6,720/1.2));
-    menus.push_back(new Menu("Quit",1080/(8/3),720/1.2));
-
+    menus.push_back(new Menu("Quit",680,720/1.2));
+    menus.push_back(new Menu("Restart",400,720/1.2));
 
     menus.push_back(new Menu("Game over !",1080/2,720/6));
     menus.push_back(new Menu("",1080/2,720/2));
     menus.push_back(new Menu("",1080/2,720/3));
 
-    menus.at(1)->changerColor(sf::Color::White);
+    menus.at(0)->changerColor(sf::Color::White);
+}
+
+EndWindow::EndWindow(const EndWindow &window):Containeur(window){
+    for(int i=0; i<menus.size();i++){
+        menus.push_back(new Menu(*window.menus.at(i)));
+    }
 }
 
 EndWindow::~EndWindow(){
+    for(int i=0;i<menus.size();i++){
+        delete menus.at(i);
+        menus.at(i)=0;
+    }
+    menus.clear();
 }
 
+EndWindow& EndWindow::operator=(const EndWindow& window){
+    if(this!=&window){
+        Containeur::operator=(window);
+        for(int i=0; i<menus.size();i++){
+            menus.push_back(new Menu(*window.menus.at(i)));
+        }
+    }
+    return *this;
+}
 
-
+//********************************************************************************//
 
 void EndWindow::drawElements(){
     std::stringstream ss;
@@ -82,11 +103,11 @@ int EndWindow::chosenMenu(sf::Event e){
     if(e.key.code == sf::Keyboard::Return){
         switch (compteur) {
             case 0:
-                return 5;                           //Restart
+                return 6;                           //Restart
             break;
 
             case 1:
-                return 6;                           //Retour au menu principal
+                return 7;                           //Retour au menu principal
             break;
         }
     }

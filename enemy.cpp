@@ -1,16 +1,11 @@
 #include "enemy.h"
 #include <iostream>
 
-//-----------------------------------------------------------------------//
-                        //FORME CANONIQUE//
-
-Enemy::Enemy(){
-
-}
+//********************************************************************************//
 
 Enemy::Enemy(int sizeX, int sizeY, int posX, int posY, float speed, float health, float damage){
     if(!texture.loadFromFile("zombie.png")){
-        std::cout<< "erreur de chargement du sprite du zombie!" << std::endl;
+        std::cout<< "Erreur lors du chargement du sprite du zombie !" << std::endl;
     }
     else{
         sprite.setTexture(texture);
@@ -44,11 +39,7 @@ Enemy& Enemy::operator=(const Enemy &p){
     return *this;
 }
 
-
-
-
-//-----------------------------------------------------------------------//
-
+//********************************************************************************//
 
 void Enemy::goBack(){
     this->setPosition(previousPosition.x, previousPosition.y);

@@ -13,7 +13,9 @@ class AboutWindow : public Containeur
 
     public:
         AboutWindow(sf::RenderWindow *containeur);
+        AboutWindow(const AboutWindow &window);
         ~AboutWindow();
+        AboutWindow& operator=(const AboutWindow& window);
 
         void drawElements();
         int chosenMenu(sf::Event e);
