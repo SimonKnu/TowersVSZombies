@@ -84,11 +84,11 @@ int MenuWindow::chosenMenu(sf::Event e){
             break;
 
             case 1:
-                return 5;                           //Lancer le "about"
+                return 5;                           //Lancer le "tutorial"
             break;
 
             case 2:
-                return 2;                           //Lancer le "tutorial"
+                return 2;                           //Lancer le "about"
             break;
 
             case 3:
