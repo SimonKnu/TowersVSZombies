@@ -221,6 +221,7 @@ void MainWindow::drawElements(){
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
         if(numberBullet%200==0){
+
             b1.setShapePosition(player->getPosition());
             b1.setCurrVelocity(aimDirNorm*b1.getMaxSpeed());
             bullets.push_back(new Bullet(b1));
