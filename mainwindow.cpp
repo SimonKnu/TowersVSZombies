@@ -38,11 +38,11 @@ MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur)
         lifeBase2->setFillColor(sf::Color::Black);
 
         lifeBase2->setPosition(sf::Vector2f(1080-175+150,720/2-125));
-/*
+
     sound->addFile("hitmarker.wav");
     sound->addFile("damage.wav");
     sound->addFile("shot.wav");
-    sound->addFile("reload.wav");*/
+    sound->addFile("reload.wav");
 
 }
 
@@ -242,7 +242,7 @@ void MainWindow::drawElements(){
 
             //Attaque le joueur si un certain temps c'est ecoulé
             if (elapsedDamage.asSeconds() > damageTime){
-                 //sound->play(1);
+                 sound->play(1);
                  this->player->setHealth(this->player->getHealth()-enemies.at(i)->getDamage());
                  elapsedDamage = clock.restart();
             }
@@ -294,7 +294,7 @@ void MainWindow::drawElements(){
             if(elapsedReload.asSeconds()>3){
                 if(numberBullet%200==0){
                     reload+=1;
-                    //sound->play(2);
+                    sound->play(2);
 
                     b1.setShapePosition(player->getPosition());
                     b1.setCurrVelocity(aimDirNorm*b1.getMaxSpeed());
@@ -308,7 +308,7 @@ void MainWindow::drawElements(){
 
         }
         else {
-            //sound->play(3);
+            sound->play(3);
             clockReload.restart();
             reload=0;
         }
@@ -328,7 +328,7 @@ void MainWindow::drawElements(){
                 //Détection de la collision de la balle avec un zombie
                 if (checkCollisionBulltetZombie(k,i)){
                     bullets.erase(bullets.begin() + i);
-                    //sound->play(0);
+                    sound->play(0);
 
 
                     this->enemies.at(k)->setHealth(25);//Dommage causé par la balle
