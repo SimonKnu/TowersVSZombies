@@ -5,7 +5,7 @@
 #include "containeur.h"
 #include "waitwindow.h"
 #include "mainwindow.h"
-
+#include "iostream"
 #include <vector>
 
 int main(){
@@ -21,10 +21,9 @@ int main(){
     containeur.push_back(new WaitWindow(window));
     containeur.push_back(new EndWindow(window));
 
-
-
     while(window->isOpen()){
         sf::Event e;
+
 
         while(window->pollEvent(e)){
             if(e.type==sf::Event::Closed){
@@ -47,6 +46,10 @@ int main(){
                     countWindow = newWindow;
                }
             }
+        }
+
+        if(Player::getInstance()->getHealth()<=0){
+            countWindow = 4;
         }
 
 

@@ -9,8 +9,9 @@ class Player {
     private:
         float speed;
         float health;
-        int money;
+        int money=0;
         int finalWave;
+
         sf::Texture texture;
         sf::Sprite sprite;
         sf::Vector2f previousPosition;
