@@ -4,13 +4,13 @@
 
 EndWindow::EndWindow(sf::RenderWindow *containeur):Containeur(containeur)
 {
-    menus.push_back(new Menu("Restart",sf::VideoMode::getDesktopMode().width/3.2,sf::VideoMode::getDesktopMode().height/2.4));
-    menus.push_back(new Menu("Quit",sf::VideoMode::getDesktopMode().width/(8/3)/2,sf::VideoMode::getDesktopMode().height/2.4));
+    menus.push_back(new Menu("Restart",1080/1.6,720/1.2));
+    menus.push_back(new Menu("Quit",1080/(8/3),720/1.2));
 
 
-    menus.push_back(new Menu("Game over !",sf::VideoMode::getDesktopMode().width/4,sf::VideoMode::getDesktopMode().height/12));
-    menus.push_back(new Menu("",sf::VideoMode::getDesktopMode().width/4,sf::VideoMode::getDesktopMode().height/4));
-    menus.push_back(new Menu("",sf::VideoMode::getDesktopMode().width/4,sf::VideoMode::getDesktopMode().height/6));
+    menus.push_back(new Menu("Game over !",1080/2,720/6));
+    menus.push_back(new Menu("",1080/2,720/2));
+    menus.push_back(new Menu("",1080/2,720/3));
 
     menus.at(1)->changerColor(sf::Color::White);
 }

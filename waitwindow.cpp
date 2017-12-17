@@ -2,9 +2,9 @@
 
 WaitWindow::WaitWindow(sf::RenderWindow *containeur):Containeur(containeur)
 {
-    menus.push_back(new Menu("Continue",400,200));
+    menus.push_back(new Menu("Continue",540,240));
 
-    menus.push_back(new Menu("Give up",400,400));
+    menus.push_back(new Menu("Give up",540,480));
     menus.at(0)->changerColor(sf::Color::White);
 }
 

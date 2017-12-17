@@ -16,28 +16,28 @@ MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur)
     mapTexture.loadFromFile("map.png");
     map.setTexture(mapTexture);
 
-    menuWave = new Menu("",sf::VideoMode::getDesktopMode().width/4,sf::VideoMode::getDesktopMode().height/4);
-    menuMoney= new Menu("0 $",sf::VideoMode::getDesktopMode().width/32,sf::VideoMode::getDesktopMode().height/(600/50)/2-32);
-    menuReload= new Menu("Amo : 30/30",sf::VideoMode::getDesktopMode().width/16,sf::VideoMode::getDesktopMode().height/(600/575)/2-32);
-    menuHealth= new Menu("Health : ",sf::VideoMode::getDesktopMode().width/16*5+150-50,sf::VideoMode::getDesktopMode().height/(600/50)/2-35);
+    menuWave = new Menu("",1080/2,720/2);
+    menuMoney= new Menu("0 $",1080/16,720/(600/50)-32);
+    menuReload= new Menu("Amo : 30/30",1080/8,720/(600/575)-32);
+    menuHealth= new Menu("Health : ",1080/8*5+150-50,720/(600/50)-32);
 
-    lifeBar = new sf::RectangleShape(sf::Vector2f(sf::VideoMode::getDesktopMode().width/(80/15)/2, sf::VideoMode::getDesktopMode().height/120));
+    lifeBar = new sf::RectangleShape(sf::Vector2f(1080/(80/15), 720/60));
         lifeBar->setFillColor(sf::Color::Red);
-        lifeBar->setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width/16*5+150,sf::VideoMode::getDesktopMode().height/(600/50)/2-32));
-    lifeBar2 = new sf::RectangleShape(sf::Vector2f(0, sf::VideoMode::getDesktopMode().height/120));
+        lifeBar->setPosition(sf::Vector2f(1080/8*5+150,720/(600/50)-32));
+    lifeBar2 = new sf::RectangleShape(sf::Vector2f(0, 720/60));
         lifeBar2->setFillColor(sf::Color::Black);
-        lifeBar2->setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width/16*5+150+150,sf::VideoMode::getDesktopMode().height/(600/50)/2-32));
+        lifeBar2->setPosition(sf::Vector2f(1080/8*5+150+150,720/(600/50)-32));
 
 
 
 
-    lifeBase = new sf::RectangleShape(sf::Vector2f(sf::VideoMode::getDesktopMode().width/(80/15)/2, sf::VideoMode::getDesktopMode().height/120));
+    lifeBase = new sf::RectangleShape(sf::Vector2f(1080/(80/15), 720/60));
         lifeBase->setFillColor(sf::Color::Red);
-        lifeBase->setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width/2-175,sf::VideoMode::getDesktopMode().height/4-125));
-    lifeBase2 = new sf::RectangleShape(sf::Vector2f(0, sf::VideoMode::getDesktopMode().height/120));
+        lifeBase->setPosition(sf::Vector2f(1080-175,720/2-125));
+    lifeBase2 = new sf::RectangleShape(sf::Vector2f(0, 720/60));
         lifeBase2->setFillColor(sf::Color::Black);
 
-        lifeBase2->setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width/2-175+150,sf::VideoMode::getDesktopMode().height/4-125));
+        lifeBase2->setPosition(sf::Vector2f(1080-175+150,720/2-125));
 /*
     sound->addFile("hitmarker.wav");
     sound->addFile("damage.wav");
@@ -175,8 +175,8 @@ void MainWindow::drawElements(){
         this->player->goBack();
     }
 
-    float destroyBaseX = sf::VideoMode::getDesktopMode().width/2 -10;
-    float destroyBaseY = sf::VideoMode::getDesktopMode().height/4 -10;
+    float destroyBaseX = 1080 -10;
+    float destroyBaseY = 720/2 -10;
     //Gestion des zombie (déplacment, attaque)
     for (int i=0;i<this->enemies.size();i++){
 
@@ -195,8 +195,8 @@ void MainWindow::drawElements(){
         float enemyPlayerY = player->getPosition().y - enemies.at(i)->getPosition().y;
 
         //IA qui vise la base
-        float enemyBaseX = sf::VideoMode::getDesktopMode().width - enemies.at(i)->getPosition().x;
-        float enemyBaseY = sf::VideoMode::getDesktopMode().height/2 - enemies.at(i)->getPosition().y;
+        float enemyBaseX = 1080 - enemies.at(i)->getPosition().x;
+        float enemyBaseY = 720/2 - enemies.at(i)->getPosition().y;
 
         //On calcul la distance pour savoir qui le zombie préfère viser (le plus pres en l'occurence)
         float lengthEnemyPlayer = sqrt( enemyPlayerX*enemyPlayerX + enemyPlayerY*enemyPlayerY );
@@ -348,8 +348,8 @@ void MainWindow::drawElements(){
     }
 
 
-    float tailleX=sf::VideoMode::getDesktopMode().width/2;
-    float tailleY=sf::VideoMode::getDesktopMode().height/2;
+    float tailleX=1080;
+    float tailleY=720;
     float scaleX=tailleX/1920;
     float scaleY=tailleY/1080;
     map.setScale(scaleX, scaleY);
