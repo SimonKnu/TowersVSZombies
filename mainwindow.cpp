@@ -39,8 +39,6 @@ MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur)
 
         lifeBase2->setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width/2-175+150,sf::VideoMode::getDesktopMode().height/4-125));
 
-        lifeBase2->setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width-175+150,sf::VideoMode::getDesktopMode().height/2-125));
-
     sound->addFile("hitmarker.wav");
     sound->addFile("damage.wav");
     sound->addFile("shot.wav");
@@ -423,6 +421,7 @@ void MainWindow::drawElements(){
         menuReload->changerText(ss.str());
     }
     else {
+        sound->play(3);
         menuReload->changerText("Amo : Reloading...");
     }
 

@@ -11,7 +11,6 @@
 #include "sound.h"
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
 
 class MainWindow : public Containeur
 {
@@ -61,10 +60,6 @@ class MainWindow : public Containeur
 
         sf::Texture mapTexture;
         sf::Sprite map;
-
-        sf::SoundBuffer buffer;
-        std::vector< sf::Sound> sounds;
-
 };
 
 #endif // MAINWINDOW_H
