@@ -32,8 +32,8 @@ Bullet& Bullet::operator=(const Bullet& b){
 //-----------------------------------------------------------------------//
 
 bool Bullet::checkCollisionBorder(){
-    if (this->getShape().getPosition().x < 0 ||this->getShape().getPosition().x >sf::VideoMode::getDesktopMode().width
-            ||this->getShape().getPosition().y < 0 || this->getShape().getPosition().y > sf::VideoMode::getDesktopMode().height)
+    if (this->getShape().getPosition().x < 0 ||this->getShape().getPosition().x >sf::VideoMode::getDesktopMode().width/2
+            ||this->getShape().getPosition().y < 0 || this->getShape().getPosition().y > sf::VideoMode::getDesktopMode().height/2)
     {
         return true;
     }else{

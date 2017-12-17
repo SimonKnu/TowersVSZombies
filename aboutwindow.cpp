@@ -2,11 +2,11 @@
 
 AboutWindow::AboutWindow(sf::RenderWindow *containeur):Containeur(containeur)
 {
-    menus.push_back(new Menu("Game realized by Cannuyer, Lepape & Papleux",sf::VideoMode::getDesktopMode().width/2, sf::VideoMode::getDesktopMode().height/6));
-    menus.push_back(new Menu("students from HELHa of Mons",sf::VideoMode::getDesktopMode().width/2, sf::VideoMode::getDesktopMode().height/3));
-    menus.push_back(new Menu("as part of the course of Mr. V. Altares.",sf::VideoMode::getDesktopMode().width/2, sf::VideoMode::getDesktopMode().height/2));
+    menus.push_back(new Menu("Game realized by Cannuyer, Lepape & Papleux",sf::VideoMode::getDesktopMode().width/4, sf::VideoMode::getDesktopMode().height/12));
+    menus.push_back(new Menu("students from HELHa of Mons",sf::VideoMode::getDesktopMode().width/4, sf::VideoMode::getDesktopMode().height/6));
+    menus.push_back(new Menu("as part of the course of Mr. V. Altares.",sf::VideoMode::getDesktopMode().width/4, sf::VideoMode::getDesktopMode().height/4));
 
-    menus.push_back(new Menu("Back",sf::VideoMode::getDesktopMode().width/2, sf::VideoMode::getDesktopMode().height/1.2));
+    menus.push_back(new Menu("Back",sf::VideoMode::getDesktopMode().width/4, sf::VideoMode::getDesktopMode().height/2.4));
     menus.at(3)->changerColor(sf::Color::White);
 }
 
