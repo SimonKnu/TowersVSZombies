@@ -7,6 +7,7 @@
 
 
 
+
 //-----------------------------------------------------------------------//
                             //FORME CANONIQUE//
 
@@ -36,6 +37,11 @@ MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur)
     lifeBase2 = new sf::RectangleShape(sf::Vector2f(0, sf::VideoMode::getDesktopMode().height/60));
         lifeBase2->setFillColor(sf::Color::Black);
         lifeBase2->setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width-175+150,sf::VideoMode::getDesktopMode().height/2-125));
+
+    sound->addFile("hitmarker.wav");
+    sound->addFile("damage.wav");
+    sound->addFile("shot.wav");
+    sound->addFile("reload.wav");
 }
 
 MainWindow::~MainWindow(){
@@ -233,6 +239,7 @@ void MainWindow::drawElements(){
 
             //Attaque le joueur si un certain temps c'est ecoulé
             if (elapsedDamage.asSeconds() > damageTime){
+                 sound->play(1);
                  this->player->setHealth(this->player->getHealth()-enemies.at(i)->getDamage());
                  elapsedDamage = clock.restart();
             }
@@ -282,6 +289,7 @@ void MainWindow::drawElements(){
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
 
         if(numberBullet%200==0){
+            sound->play(2);
 
             b1.setShapePosition(player->getPosition());
             b1.setCurrVelocity(aimDirNorm*b1.getMaxSpeed());
@@ -312,6 +320,10 @@ void MainWindow::drawElements(){
 
 
 
+
+
+
+
     //Mouvement des projectiles
     for (size_t i = 0; i < bullets.size(); i++){
         bullets[i]->moveShape();
@@ -326,6 +338,8 @@ void MainWindow::drawElements(){
                 //Détection de la collision de la balle avec un zombie
                 if (checkCollisionBulltetZombie(k,i)){
                     bullets.erase(bullets.begin() + i);
+                    sound->play(0);
+
 
                     this->enemies.at(k)->setHealth(25);//Dommage causé par la balle
 
