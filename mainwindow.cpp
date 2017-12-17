@@ -289,19 +289,11 @@ void MainWindow::drawElements(){
     }
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-
-        if(numberBullet%200==0){
-            sound->play(2);
-
-            b1.setShapePosition(player->getPosition());
-            b1.setCurrVelocity(aimDirNorm*b1.getMaxSpeed());
-            bullets.push_back(new Bullet(b1));
-            numberBullet++;
-        }
         if(reload<30){
             if(elapsedReload.asSeconds()>3){
                 if(numberBullet%200==0){
                     reload+=1;
+                    sound->play(2);
 
                     b1.setShapePosition(player->getPosition());
                     b1.setCurrVelocity(aimDirNorm*b1.getMaxSpeed());
@@ -315,6 +307,7 @@ void MainWindow::drawElements(){
 
         }
         else {
+            sound->play(3);
             clockReload.restart();
             reload=0;
         }
@@ -420,8 +413,7 @@ void MainWindow::drawElements(){
         ss<<"Amo : "<<30-reload<<"/30";
         menuReload->changerText(ss.str());
     }
-    else {
-        sound->play(3);
+    else { 
         menuReload->changerText("Amo : Reloading...");
     }
 
