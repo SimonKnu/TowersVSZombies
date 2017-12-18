@@ -22,7 +22,7 @@ Sound* Sound::getInstance(){
 
 //********************************************************************************//
 
-//Permet d'ajouter le fichier audio ds le buffer et d'ajouter le buffer dans une liste
+//Permet d'ajouter le fichier audio gràce au buffer. Ce buffer sera ajouté dans une liste
 void Sound::addFile(std::string txt){
     sf::SoundBuffer buffer;
     sf::Sound sound;
@@ -36,7 +36,7 @@ void Sound::addFile(std::string txt){
     sounds.push_back(sound);
 }
 
-//Permet setter le buffer sur le l'objet sound et de démarrer la musique
++//Permet d'ajouter le buffer sur le l'objet sound et de démarrer la son
 void Sound::play(int index){
     sounds.at(index).setBuffer(buffers.at(index));
     sounds.at(index).play();
