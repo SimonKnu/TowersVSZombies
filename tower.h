@@ -10,11 +10,10 @@ private:
     sf::Sprite sprite;
     int animation;
 public:
-    Tower();
+    Tower(int sizeX=64, int sizeY=64, int posX=400, int posY=400);
     Tower(const Tower &p);
     ~Tower();
     Tower& operator=(const Tower& p);
-    Tower(int sizeX, int sizeY, int posX, int posY);
 
     sf::Sprite getSprite();
     sf::Vector2f getPosition();

@@ -51,10 +51,10 @@ class MainWindow : public Containeur
         sf::RectangleShape *lifeBar;
         sf::RectangleShape *lifeBar2;
 
-        int wave=0;                           //Permet de compter le nombre de manches
+        int wave=0;                             //Permet de compter le nombre de manches
         int mob=5;                              //Permet de savoir le nombre de montres à faire apparaitre
-        bool changeWave=true;             //Permet de savoir si on change de manche pour déclancher la pause
-        int posSpawn;                                //Permet de déterminer la position du spawn des zombies
+        bool changeWave=true;                   //Permet de savoir si on change de manche pour déclancher la pause
+        int posSpawn;                           //Permet de déterminer la position du spawn des zombies
         int numberBullet=0;                     //Permet de limiter le nombre de balles tirées
         int reload=0;
         std::vector<int> numberBulletTower;
