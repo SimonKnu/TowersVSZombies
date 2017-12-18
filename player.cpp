@@ -74,6 +74,7 @@ void Player::setMoney(int money){
     }
 }
 
+//Retour à l'ancienne position
 void Player::goBack(){
     this->setPosition(previousPosition.x, previousPosition.y);
 }

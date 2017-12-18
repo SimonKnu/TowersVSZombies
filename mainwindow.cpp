@@ -19,7 +19,7 @@ MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur)
     menuBase= new Menu("Base : ",1080/8*5+150-50,720/(600/575)-32);
     menuTurret= new Menu("",540,360);
 
-
+    //Bar de vie du joueur
     lifeBar = new sf::RectangleShape(sf::Vector2f(1080/(80/15), 720/60));
         lifeBar->setFillColor(sf::Color::Red);
         lifeBar->setPosition(sf::Vector2f(1080/8*5+150,720/(600/50)-32));
@@ -27,7 +27,7 @@ MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur)
         lifeBar2->setFillColor(sf::Color::Black);
         lifeBar2->setPosition(sf::Vector2f(1080/8*5+150+150,720/(600/50)-32));
 
-
+    //Bar de vie de la base
     lifeBase = new sf::RectangleShape(sf::Vector2f(1080/(80/15), 720/60));
         lifeBase->setFillColor(sf::Color::Red);
         lifeBase->setPosition(sf::Vector2f(1080/8*5+150,720/(600/575)-32));
@@ -35,6 +35,7 @@ MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur)
         lifeBase2->setFillColor(sf::Color::Black);
         lifeBase2->setPosition(sf::Vector2f(1080/8*5+150+150,720/(600/575)-32));
 
+        //Ajout des fichiers audio
     sound->addFile("hitmarker.wav");
     sound->addFile("damage.wav");
     sound->addFile("shot.wav");
@@ -174,7 +175,7 @@ void MainWindow::drawElements(){
 
     //Détection de la collision du joueur avec les bords
     if (player->checkCollisionBorder()){
-        this->player->goBack();
+        this->player->goBack(); //Retour à l'ancienne position
     }
 
     float destroyBaseX = 1080 -10;
@@ -245,8 +246,8 @@ void MainWindow::drawElements(){
             //Attaque le joueur si un certain temps c'est ecoulé
             if (elapsedDamage.asSeconds() > damageTime){
                  sound->play(1);
-                 this->player->setHealth(this->player->getHealth()-enemies.at(i)->getDamage());
-                 elapsedDamage = clock.restart();
+                 this->player->setHealth(this->player->getHealth()-enemies.at(i)->getDamage()); //Joueur subit des dégats
+                 elapsedDamage = clock.restart(); //Redémarre le timer pour les dégats
             }
         }
     }
@@ -475,7 +476,7 @@ void MainWindow::drawElements(){
     Containeur::getWindow()->draw(menuReload->getText());
 
 
-    //Affichage bar de vie
+    //Affichage bar de vie joueur
     Containeur::getWindow()->draw(menuHealth->getText());
     float lifeBarSize = this->player->getHealth()/100*150; //Calcul pour déterminer la taille de la barre de vie
     lifeBar->setSize(sf::Vector2f(lifeBarSize, 10));
@@ -484,7 +485,7 @@ void MainWindow::drawElements(){
     Containeur::getWindow()->draw(*lifeBar);
     Containeur::getWindow()->draw(*lifeBar2);
 
-
+    //Affichage bar de vie base
     float lifeBarBase = healthBase/100*150; //Calcul pour déterminer la taille de la barre de vie de la base
     Containeur::getWindow()->draw(menuBase->getText());
     lifeBase->setSize(sf::Vector2f(lifeBarBase, 10));
