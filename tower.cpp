@@ -9,6 +9,23 @@ Tower::Tower()
 
 }
 
+Tower::Tower(const Tower &t){
+    this->sprite=t.sprite;
+    this->animation=t.animation;
+}
+
+Tower::~Tower(){
+
+}
+
+Tower& Tower::operator=(const Tower &t){
+    if(&t != this){
+        this->sprite=t.sprite;
+        this->animation=t.animation;
+    }
+    return *this;
+}
+
 Tower::Tower(int sizeX, int sizeY, int posX, int posY)
 {
     animation=1;

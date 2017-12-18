@@ -11,6 +11,9 @@ private:
     int animation;
 public:
     Tower();
+    Tower(const Tower &p);
+    ~Tower();
+    Tower& operator=(const Tower& p);
     Tower(int sizeX, int sizeY, int posX, int posY);
 
     sf::Sprite getSprite();
