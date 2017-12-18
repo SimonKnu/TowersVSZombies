@@ -36,7 +36,7 @@ void Sound::addFile(std::string txt){
     sounds.push_back(sound);
 }
 
-+//Permet d'ajouter le buffer sur le l'objet sound et de démarrer la son
+//Permet d'ajouter le buffer sur le l'objet sound et de démarrer la son
 void Sound::play(int index){
     sounds.at(index).setBuffer(buffers.at(index));
     sounds.at(index).play();

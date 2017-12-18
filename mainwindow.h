@@ -57,12 +57,10 @@ class MainWindow : public Containeur
         int posSpawn;                           //Permet de déterminer la position du spawn des zombies
         int numberBullet=0;                     //Permet de limiter le nombre de balles tirées
         int reload=0;
-
-        std::vector<int> numberBulletTower; //gestion de la vitesse d'attaque des dronew
+        std::vector<int> numberBulletTower;     //Gestion de la vitesse d'attaque des drones
         bool pressA=false;
-
-        std::vector<int> turretAnimation; //gestion des animations des drones
-        std::vector<int> ennemyAnimation; //gestion des animations des enemies
+        std::vector<int> turretAnimation;       //Gestion des animations des drones
+        std::vector<int> ennemyAnimation;       //Gestion des animations des enemies
         int movingAnimation=0;
         float healthBase=100;
 
