@@ -1,5 +1,7 @@
 #include "MenuWindow.h"
 
+//********************************************************************************//
+
 MenuWindow::MenuWindow(sf::RenderWindow *containeur):Containeur(containeur)
 {
     menus.push_back(new Menu("Start",1080/2,720/6));
@@ -38,7 +40,7 @@ MenuWindow& MenuWindow::operator=(const MenuWindow& window){
 
 void MenuWindow::drawElements(){
     for(int i=0;i<menus.size();i++){
-        Containeur::getWindow()->draw(menus.at(i)->getText());
+        Containeur::getWindow()->draw(menus.at(i)->getText());      //On traite et affiche les éléments de la fenêtre
     }
 }
 
@@ -57,7 +59,7 @@ int MenuWindow::chosenMenu(sf::Event e){
                this->menus.at(i)->changerColor(sf::Color::White);
             }
         }
-        return 0;
+        return 0;                                   //On reste sur cette page
     }
 
     if(e.key.code == sf::Keyboard::S){
@@ -74,7 +76,7 @@ int MenuWindow::chosenMenu(sf::Event e){
                this->menus.at(i)->changerColor(sf::Color::White);
             }
         }
-        return 0;
+        return 0;                                   //On reste sur cette page
     }
 
     if(e.key.code == sf::Keyboard::Return){
@@ -96,5 +98,5 @@ int MenuWindow::chosenMenu(sf::Event e){
             break;
         }
     }
-    return 0;
+    return 0;                                       //On reste sur cette page tant qu'il ne se passe rien
 }

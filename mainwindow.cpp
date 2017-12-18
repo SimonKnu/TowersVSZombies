@@ -44,24 +44,163 @@ MainWindow::MainWindow(sf::RenderWindow* containeur):Containeur(containeur)
 }
 
 MainWindow::MainWindow(const MainWindow &window):Containeur(window){
+    map = window.map;
 
+    sound = window.sound;
+    player = window.player;
+
+    menuWave = window.menuWave;
+    menuMoney = window.menuMoney;
+    menuReload = window.menuReload;
+    menuHealth = window.menuHealth;
+    menuBase = window.menuBase;
+    menuTurret = window.menuTurret;
+
+    lifeBar = window.lifeBar;
+    lifeBar2 = window.lifeBar2;
+    lifeBase = window.lifeBase;
+    lifeBase2 = window.lifeBase2;
+
+    wave = window.wave;
+    mob = window.mob;
+    changeWave = window.changeWave;
+    posSpawn = window.posSpawn;
+    numberBullet = window.numberBullet;
+    reload = window.reload;
+    pressA = window.pressA;
+    healthBase = window.healthBase;
+    movingAnimation = window.movingAnimation;
+
+    for(int i=0;i<numberBulletTower.size();i++){
+        numberBulletTower.push_back(window.numberBulletTower.at(i));
+    }
+    for(int i=0;i<turretAnimation.size();i++){
+        turretAnimation.push_back(turretAnimation.at(i));
+    }
+    for(int i=0;i<ennemyAnimation.size();i++){
+        ennemyAnimation.push_back(window.ennemyAnimation.at(i));
+    }
+
+    clock = window.clock;
+    clockReload = window.clockReload;
+    clockTurret = window.clockTurret;
+
+    for(int i=0;i<enemies.size();i++){
+        enemies.push_back(new Enemy(*window.enemies.at(i)));
+    }
+    for(int i=0;i<bullets.size();i++){
+        bullets.push_back(new Bullet(*window.bullets.at(i)));
+    }
+    for(int i=0;i<towers.size();i++){
+        towers.push_back(new Tower(*window.towers.at(i)));
+    }
+    b1 = window.b1;
 }
 
 
 MainWindow::~MainWindow(){
     delete player;
-    player=0;
+    player = 0;
+    delete sound;
+    sound = 0;
+
+    delete menuReload;
+    menuReload = 0;
+    delete menuWave;
+    menuWave = 0;
+    delete menuMoney;
+    menuMoney = 0;
+    delete menuHealth;
+    menuHealth = 0;
+    delete menuBase;
+    menuBase = 0;
+    delete menuTurret;
+    menuTurret = 0;
+
+    delete lifeBase;
+    lifeBase = 0;
+    delete lifeBase2;
+    lifeBase2 = 0;
+
+    delete lifeBar;
+    lifeBar = 0;
+    delete lifeBar2;
+    lifeBar2 = 0;
+
 
     for(int i=0;i<enemies.size();i++){
         delete enemies.at(i);
         enemies.at(i)=0;
     }
     enemies.clear();
+
+    for(int i=0;i<bullets.size();i++){
+        delete bullets.at(i);
+        bullets.at(i)=0;
+    }
+    bullets.clear();
+
+    for(int i=0;i<towers.size();i++){
+        delete towers.at(i);
+        towers.at(i)=0;
+    }
+    towers.clear();
 }
 
 MainWindow& MainWindow::operator=(const MainWindow& window){
     if(this!=&window){
         Containeur::operator=(window);
+        map = window.map;
+
+        sound = window.sound;
+        player = window.player;
+
+        menuWave = window.menuWave;
+        menuMoney = window.menuMoney;
+        menuReload = window.menuReload;
+        menuHealth = window.menuHealth;
+        menuBase = window.menuBase;
+        menuTurret = window.menuTurret;
+
+        lifeBar = window.lifeBar;
+        lifeBar2 = window.lifeBar2;
+        lifeBase = window.lifeBase;
+        lifeBase2 = window.lifeBase2;
+
+        wave = window.wave;
+        mob = window.mob;
+        changeWave = window.changeWave;
+        posSpawn = window.posSpawn;
+        numberBullet = window.numberBullet;
+        reload = window.reload;
+        pressA = window.pressA;
+        healthBase = window.healthBase;
+        movingAnimation = window.movingAnimation;
+
+        for(int i=0;i<numberBulletTower.size();i++){
+            numberBulletTower.push_back(window.numberBulletTower.at(i));
+        }
+        for(int i=0;i<turretAnimation.size();i++){
+            turretAnimation.push_back(turretAnimation.at(i));
+        }
+        for(int i=0;i<ennemyAnimation.size();i++){
+            ennemyAnimation.push_back(window.ennemyAnimation.at(i));
+        }
+
+        clock = window.clock;
+        clockReload = window.clockReload;
+        clockTurret = window.clockTurret;
+
+        for(int i=0;i<enemies.size();i++){
+            enemies.push_back(new Enemy(*window.enemies.at(i)));
+        }
+        for(int i=0;i<bullets.size();i++){
+            bullets.push_back(new Bullet(*window.bullets.at(i)));
+        }
+        for(int i=0;i<towers.size();i++){
+            towers.push_back(new Tower(*window.towers.at(i)));
+        }
+        b1 = window.b1;
     }
     return *this;
 }
@@ -179,6 +318,7 @@ void MainWindow::drawElements(){
 
     float destroyBaseX = 1080 -10;
     float destroyBaseY = 720/2 -10;
+
     //Gestion des zombie (déplacment, attaque)
     for (int i=0;i<this->enemies.size();i++){
 
@@ -207,17 +347,20 @@ void MainWindow::drawElements(){
         //Si la base est plus loin que le joueur -> Joueur, sinon -> Base
         if(lengthEnemyBase>lengthEnemyPlayer){
             enemyPlayerX /= lengthEnemyPlayer;
-            enemyPlayerY /= lengthEnemyPlayer; // normalize (make it 1 unit length) ---> Source : https://mike.newgrounds.com/news/post/265836 ---> PS : Il ressemble à Mr.Colmant
+            enemyPlayerY /= lengthEnemyPlayer;  // normalize (make it 1 unit length)
+            //Source : https://mike.newgrounds.com/news/post/265836 ---> #Colmant
 
+
+            //Permet de calculer l'angle pour rotate les zombies vers le joueur
             float angle = -atan2( enemyPlayerX , enemyPlayerY) * 180 / 3.14;
             enemies.at(i)->rotate(angle);
 
-            enemyPlayerX *= 0.12; //0.12 = vitesse des zombies
-            enemyPlayerY *= 0.12; //scale to our desired speed
+            enemyPlayerX *= 0.12;               //0.12 = vitesse des zombies
+            enemyPlayerY *= 0.12;               //scale to our desired speed
             enemies.at(i)->move(enemyPlayerX,enemyPlayerY);
         }
         else {
-
+            //Même chose qu'au dessus mais pour la base cette fois
             enemyBaseX /= lengthEnemyBase;
             enemyBaseY /= lengthEnemyBase;
 
@@ -251,7 +394,7 @@ void MainWindow::drawElements(){
         }
     }
 
-    //Calcul de la visée (orientation) des drones (attaque l'ennemie le plus proche dans un rayon de 250px)
+        //Calcul de la visée (orientation) des drones (attaque l'ennemie le plus proche dans un rayon de 250px)
         for(int i=0; i<towers.size(); i++){
             float dist=999999999*999999999;
             float distEnemy;
@@ -294,6 +437,7 @@ void MainWindow::drawElements(){
         }
 
     //Supprime zombie s'il est dans la base
+    //On parcourt le vector à l'envers pour éviter tout problème
     if(enemies.empty() == false) {
         for(int k = enemies.size() - 1; k >= 0; k--) {
             if(enemies.at(k)->getPosition().x >= destroyBaseX   &&   enemies.at(k)->getPosition().y >= destroyBaseY){
@@ -333,6 +477,7 @@ void MainWindow::drawElements(){
         numberBullet=0;
     }
 
+    //Gestion des tirs et du rechargement
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
         if(reload<30){
             if(elapsedReload.asSeconds()>3){
@@ -366,7 +511,7 @@ void MainWindow::drawElements(){
         if (bullets[i]->checkCollisionBorder()){
              bullets.erase(bullets.begin() + i);
         }
-        else if (this->enemies.size()>0){ //Collision zombie
+        else if (this->enemies.size()>0){   //Collision zombie
 
             for (int k=0;k<this->enemies.size();k++){
                 //Détection de la collision de la balle avec un zombie
@@ -375,14 +520,14 @@ void MainWindow::drawElements(){
                     sound->play(0);
 
 
-                    this->enemies.at(k)->setHealth(25);//Dommage causé par la balle
+                    this->enemies.at(k)->setHealth(25);         //Dommage causé par la balle
 
                     if(this->enemies.at(k)->getHealth()<=0){
                         this->enemies.erase(enemies.begin()+k); //Suppression du zombie
-                        this->player->setMoney(5); //Ajout du gain
+                        this->player->setMoney(5);              //Ajout du gain
 
                         if(enemies.size()==0){
-                            clock.restart();           //On redémarre une manche
+                            clock.restart();                    //On redémarre une manche
                         }
                     }
                     break;
@@ -404,13 +549,13 @@ void MainWindow::drawElements(){
     //Système de manche avec un délai entre les différentes manches. Plus les manches augmentent, plus les zombies sont résistants et nombreux.
     if(enemies.size()==0){
         sound->pause(4);
-        elapsed = clock.getElapsedTime();//Permet de connaitre le temps écouler depuis le lancement de la clock
+        elapsed = clock.getElapsedTime();   //Permet de connaitre le temps écouler depuis le lancement de la clock
 
-        if(elapsed.asSeconds() <= 15){   //15 secondes de pause entre chaque manche
+        if(elapsed.asSeconds() <= 5){       //5 secondes de pause entre chaque manche
             if(changeWave){
-                wave+=1;               //On passe à la manche suivante -> Difficulté augmente
+                wave+=1;                    //On passe à la manche suivante -> Difficulté augmente
 
-                std::stringstream ss;    //Permet de set le menu permettant d'afficher le nombre de manche à l'écran
+                std::stringstream ss;       //Permet de set le menu permettant d'afficher le nombre de manche à l'écran
                 ss<<"Wave "<<wave;
                 menuWave->changerText(ss.str());
 
@@ -463,7 +608,7 @@ void MainWindow::drawElements(){
     }
 
 
-    //Affichage argent
+    //Affichage de l'argent
     std::stringstream ss;
     ss<<this->player->getMoney()<<" $";
     menuMoney->changerText(ss.str());
@@ -471,11 +616,11 @@ void MainWindow::drawElements(){
 
     ss.str();
 
-
+    //Affichage des balles restantes/du rechargement en cours
     Containeur::getWindow()->draw(menuReload->getText());
 
 
-    //Affichage bar de vie
+    //Affichage barre de vie du joueur
     Containeur::getWindow()->draw(menuHealth->getText());
     float lifeBarSize = this->player->getHealth()/100*150; //Calcul pour déterminer la taille de la barre de vie
     lifeBar->setSize(sf::Vector2f(lifeBarSize, 10));
@@ -485,6 +630,7 @@ void MainWindow::drawElements(){
     Containeur::getWindow()->draw(*lifeBar2);
 
 
+    //Affichage de la barre de vie de la base
     float lifeBarBase = healthBase/100*150; //Calcul pour déterminer la taille de la barre de vie de la base
     Containeur::getWindow()->draw(menuBase->getText());
     lifeBase->setSize(sf::Vector2f(lifeBarBase, 10));
@@ -492,14 +638,15 @@ void MainWindow::drawElements(){
     Containeur::getWindow()->draw(*lifeBase);
     Containeur::getWindow()->draw(*lifeBase2);
 
-
+    //Affichage du joueur
     Containeur::getWindow()->draw(this->player->getRect());
 
+    //Affichage des balles
     for (size_t i = 0; i < bullets.size(); i++){
         Containeur::getWindow()->draw(bullets.at(i)->getShape());
     }
 
-    //affichage des ennemy et gestion de l'animation de ceux ci
+    //Affichage des ennemy et gestion de l'animation de ceux ci
     for (size_t j = 0; j < enemies.size(); j++){
         if(ennemyAnimation.at(j)==250){
             enemies.at(j)->changeAnimation();
@@ -509,7 +656,7 @@ void MainWindow::drawElements(){
         Containeur::getWindow()->draw(this->enemies.at(j)->getRect());
     }
 
-    //affichage des drones et gestion de l'animation de ceux ci
+    //Affichage des drones et gestion de l'animation de ceux ci
     for (size_t k = 0; k < towers.size(); k++){
         if(turretAnimation.at(k)==100){
             towers.at(k)->changeAnimation();
@@ -519,7 +666,7 @@ void MainWindow::drawElements(){
         Containeur::getWindow()->draw(this->towers.at(k)->getSprite());
     }
 
-    //Fin de jeu
+    //On vérifie que le joueur est toujours en vie. Si ce n'est pas le cas, on arrete la partie et on enregistre la dernière manche
     if(this->player->getHealth()<=0){
         this->player->setFinalWave(wave);
     }
@@ -528,14 +675,14 @@ void MainWindow::drawElements(){
 
 int MainWindow::chosenMenu(sf::Event e){
     if(e.key.code == sf::Keyboard::Escape){
-        return 3;
+        return 3;           //On est dirigé vers la page "wait"
     }
-    return 1;
+    return 1;               //On reste sur cette page tant qu'il ne se passe rien
 }
 
 //********************************************************************************//
 
-//permet d'orienter le joueur vers la position souris
+//Permet d'orienter le joueur vers la position souris
 void MainWindow::rotatePlayer()
 {
     sf::Vector2i mouse;

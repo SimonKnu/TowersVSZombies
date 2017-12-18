@@ -46,13 +46,13 @@ TutoWindow& TutoWindow::operator=(const TutoWindow& window){
 
 void TutoWindow::drawElements(){
     for(int i=0;i<menus.size();i++){
-        Containeur::getWindow()->draw(menus.at(i)->getText());
+        Containeur::getWindow()->draw(menus.at(i)->getText());      //On traite et affiche les éléments de la fenêtree
     }
 }
 
 int TutoWindow::chosenMenu(sf::Event e){
     if(e.key.code == sf::Keyboard::Return || e.key.code == sf::Keyboard::Escape){
-        return 0;
+        return 0;           //On retourne au menu principal
     }
-    return 5;
+    return 5;               //On reste sur cette page tant qu'il ne se passe rien
 }

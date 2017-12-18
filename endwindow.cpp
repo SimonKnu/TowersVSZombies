@@ -61,17 +61,19 @@ void EndWindow::drawElements(){
 
 
     for(int i=0;i<menus.size();i++){
-        Containeur::getWindow()->draw(menus.at(i)->getText());
+        Containeur::getWindow()->draw(menus.at(i)->getText());      //On traite et affiche les éléments de la fenêtre
     }
 }
 
 int EndWindow::chosenMenu(sf::Event e){
     if(e.key.code == sf::Keyboard::Q){
+        //Permet de pouvoir défiler les menus et de se positioner sur le bon élèment grâce au clavier
         compteur--;
         if(compteur<0){
             compteur = 1;
         }
 
+        //On change la couleur en fonction de l'indice qui est sélectionné
         for(int i=0;i<menus.size();i++){
             if(i != compteur){
                 this->menus.at(i)->changerColor(sf::Color::Red);
@@ -80,15 +82,17 @@ int EndWindow::chosenMenu(sf::Event e){
                this->menus.at(i)->changerColor(sf::Color::White);
             }
         }
-        return 4;
+        return 4;                                   //On reste sur cette page
     }
 
     if(e.key.code == sf::Keyboard::D){
+        //Permet de pouvoir défiler les menus et de se positioner sur le bon élèment grâce au clavier
         compteur++;
         if(compteur>1){
             compteur = 0;
         }
 
+        //On change la couleur en fonction de l'indice qui est sélectionné
         for(int i=0;i<menus.size();i++){
             if(i != compteur){
                this->menus.at(i)->changerColor(sf::Color::Red);
@@ -97,13 +101,13 @@ int EndWindow::chosenMenu(sf::Event e){
                this->menus.at(i)->changerColor(sf::Color::White);
             }
         }
-        return 4;
+        return 4;                                   //On reste sur cette page
     }
 
     if(e.key.code == sf::Keyboard::Return){
         switch (compteur) {
             case 0:
-                return 7;                           //Restart
+                return 7;                           //Restart la game directement
             break;
 
             case 1:
@@ -111,5 +115,5 @@ int EndWindow::chosenMenu(sf::Event e){
             break;
         }
     }
-    return 4;
+    return 4;                                       //On reste sur cette page tant qu'il ne se passe rien
 }

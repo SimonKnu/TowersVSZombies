@@ -1,7 +1,7 @@
 #include "menu.h"
 #include <iostream>
 
-//--------------------------------------------------------------------//
+//********************************************************************************//
 
 Menu::Menu(std::string text, int posX, int posY){
     if(!font.loadFromFile("bloodgut.ttf")){
@@ -30,8 +30,7 @@ Menu& Menu::operator=(const Menu& window){
     return *this;
 }
 
-//--------------------------------------------------------------------//
-
+//********************************************************************************//
 
 sf::Text Menu::getText() const{
     return this->title;
