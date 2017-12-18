@@ -4,8 +4,19 @@
 
 using std::stringstream;
 
-Tower::Tower()
+//********************************************************************************//
+
+Tower::Tower(int sizeX, int sizeY, int posX, int posY)
 {
+    animation=1;
+    if(!texture.loadFromFile("turret1.png")){
+        std::cout<< "erreur de chargement du sprite!" << std::endl;
+    }
+    else{
+        sprite.setTexture(texture);
+        sprite.setPosition(sf::Vector2f(posX,posY));
+        sprite.setOrigin(sf::Vector2f(sizeX/2, sizeY/2));
+    }
 
 }
 
@@ -26,19 +37,7 @@ Tower& Tower::operator=(const Tower &t){
     return *this;
 }
 
-Tower::Tower(int sizeX, int sizeY, int posX, int posY)
-{
-    animation=1;
-    if(!texture.loadFromFile("turret1.png")){
-        std::cout<< "erreur de chargement du sprite!" << std::endl;
-    }
-    else{
-        sprite.setTexture(texture);
-        sprite.setPosition(sf::Vector2f(posX,posY));
-        sprite.setOrigin(sf::Vector2f(sizeX/2, sizeY/2));
-    }
-
-}
+//********************************************************************************//
 
 sf::Sprite Tower::getSprite()
 {
